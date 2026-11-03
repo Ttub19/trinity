@@ -70,8 +70,8 @@ button,input,textarea{font:inherit;color:inherit}
 @media (max-width:900px){
   .stage{display:block;padding:0}
   .notes{display:none}
-  .phone{width:100%;height:100%;min-height:100vh;border-radius:0;padding:0;box-shadow:none;background:var(--paper)}
-  .screen{border-radius:0;min-height:100vh}
+  .phone{width:100%;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--paper)}
+  .screen{border-radius:0;height:100dvh}
   .notch,.statusbar{display:none}
 }
 
@@ -167,6 +167,67 @@ textarea{min-height:76px;resize:vertical}
 .btn:disabled{opacity:.5;cursor:default}
 .offline{font-size:12px;color:var(--muted)}
 .disclaimer{font-size:11.5px;color:var(--muted);padding:0 18px 20px;margin:0}
+/* ---------- tab bar + reels ---------- */
+.tabbar{flex:none;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);background:var(--surface);padding:6px 10px 16px}
+.tabbar button{border:0;background:transparent;display:grid;justify-items:center;gap:2px;font-size:11.5px;color:var(--muted);cursor:pointer;padding:4px}
+.tabbar button[aria-current="page"]{color:var(--lens);font-weight:600}
+.screen.dark{background:#0B1422}
+.screen.dark .statusbar{color:#fff}
+.screen.dark #app{overflow:hidden}
+.screen.dark .tabbar{background:#0B1422;border-color:#1E2A3D}
+.screen.dark .tabbar button{color:#8FA1B5}
+.screen.dark .tabbar button[aria-current="page"]{color:#5FD0DA}
+.reels{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;background:#0B1422;--crit:#EF7A72;--warn:#F0B055;--good:#6FD39B;--na:#45556B;--ink:#F2F6FA;--muted:#9FB0C3}
+.reel{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;color:#F2F6FA;background:#0F1B2D;cursor:pointer;user-select:none}
+.reel + .reel{border-top:1px solid #1E2A3D}
+.progress{position:absolute;top:10px;left:12px;right:12px;display:flex;gap:4px;z-index:3}
+.progress span{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:#fff}
+.scene{position:absolute;inset:0;padding:56px 24px 112px;display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:0;transition:opacity .35s ease}
+.scene.on{opacity:1}
+.scene h2{font-size:32px;line-height:1.2;font-weight:700;color:#F2F6FA}
+.scene .sub{font-size:16px;color:#B8C6D6;margin:0}
+.scene .src{font-size:12px;color:#8FA1B5;margin:4px 0 0}
+.big{font-family:var(--display);font-size:80px;font-weight:700;line-height:1;color:#5FD0DA}
+.big.red{color:#F08A82}
+.split{display:flex;height:14px;border-radius:7px;overflow:hidden;background:#2A3A52}
+.split i{display:block;width:0;background:#F08A82;transition:width 1.2s ease .3s}
+.scene.on .split i{width:var(--w)}
+.splitlab{display:flex;justify-content:space-between;font-size:12.5px;color:#B8C6D6}
+.dots{display:grid;grid-template-columns:repeat(5,30px);gap:10px}
+.dots i{width:30px;height:30px;border-radius:50%;background:#2A3A52;transition:background .3s ease}
+.scene.on .dots i.hit{background:#F08A82}
+.cmp2{display:flex;align-items:baseline;gap:14px;font-family:var(--display);flex-wrap:wrap}
+.cmp2 .from{font-size:40px;color:#9FB0C3;font-weight:600}
+.cmp2 .to{font-size:60px;color:#F08A82;font-weight:700}
+.cmp2 small{display:block;font-family:var(--body);font-size:12.5px;color:#8FA1B5;font-weight:400}
+.reelchecks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.reelchecks li{display:flex;gap:10px;align-items:center;font-size:16px;opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.scene.on .reelchecks li{opacity:1;transform:none}
+.reelchecks i{width:10px;height:10px;border-radius:3px;background:#5FD0DA;flex:none}
+.reel .ring circle{opacity:0;transition:opacity .25s ease}
+.scene.on .ring circle{opacity:1}
+.reel .ring text{fill:#F2F6FA}
+.reel .ring tspan{fill:#9FB0C3}
+.reelqs{margin:0;padding-left:22px;display:grid;gap:8px;font-size:16px}
+.cta{justify-self:start;align-self:flex-start;border:0;background:#5FD0DA;color:#0B1422;font-weight:600;border-radius:12px;padding:10px 16px;cursor:pointer}
+.reel-meta{position:absolute;left:16px;right:76px;bottom:16px;z-index:3}
+.reel-meta b{font-family:var(--display);font-size:16px}
+.reel-meta .tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;margin-left:6px;background:rgba(255,255,255,.14);color:#DDE6EF;vertical-align:2px}
+.reel-meta small{display:block;font-size:11.5px;color:#9FB0C3;margin-top:2px}
+.reel-side{position:absolute;right:12px;bottom:18px;z-index:3;display:grid;gap:4px;justify-items:center}
+.reel-side button{width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;cursor:pointer}
+.reel-side span{font-size:11px;color:#C9D5E2;margin-bottom:8px}
+.pausemark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;pointer-events:none}
+.reelhint{position:absolute;top:22px;left:0;right:0;text-align:center;font-size:11.5px;color:#8FA1B5;z-index:3;pointer-events:none}
+.promo{margin:0 18px 4px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#0F1B2D;color:#F2F6FA;border:0;border-radius:14px;padding:12px 14px;cursor:pointer;text-align:left;width:calc(100% - 36px)}
+.promo b{font-family:var(--display);display:block}
+.promo span{font-size:12.5px;color:#B8C6D6}
+.promo .play{width:36px;height:36px;border-radius:50%;background:#5FD0DA;display:grid;place-items:center;color:#0B1422}
+.ghostbtn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 14px;cursor:pointer;font-weight:500;color:var(--lens);display:inline-flex;gap:8px;align-items:center}
+@media (prefers-reduced-motion: reduce){
+  .scene,.split i,.dots i,.reelchecks li,.reel .ring circle{transition:none}
+}
 @media (prefers-reduced-motion: no-preference){
   .tab{animation:fade .2s ease-out}
   @keyframes fade{from{opacity:.3}to{opacity:1}}
@@ -191,6 +252,10 @@ textarea{min-height:76px;resize:vertical}
       <div class="notch" aria-hidden="true"></div>
       <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G</span></div>
       <div id="app"></div>
+      <nav class="tabbar" aria-label="เมนูหลัก">
+        <button type="button" data-nav="home"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>หุ้น IPO</button>
+        <button type="button" data-nav="reels"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="2.5" width="14" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 8l5 3-5 3z" fill="currentColor"/></svg>คลิปสั้น</button>
+      </nav>
     </div>
   </div>
 </div>
@@ -311,8 +376,125 @@ function scoreClaim(c){
   return {n, pct, verdict, cls};
 }
 
+/* ================= reels: built from each card's data ================= */
+const REELS = [
+  {id:'intro', ipo:null, title:'IPO Lens คืออะไร', tag:'ข้อมูลจริง', scenes:[
+    {type:'hook', h:'จองหุ้น IPO ตามกระแส?', sub:'ดูนี่ก่อน 20 วินาที'},
+    {type:'dots', big:'11 จาก 15', label:'หุ้น IPO ปี 2568 ราคาต่ำกว่าราคาจอง', hit:11, total:15, src:'ที่มา: ตลาดหลักทรัพย์ฯ พ.ย. 2568 (ไทยรัฐ)'},
+    {type:'hook', h:'IPO Lens อ่านหนังสือชี้ชวนหลายร้อยหน้าให้', sub:'แล้วตรวจ 6 เรื่องที่มักซ่อนอยู่'},
+    {type:'checks'},
+    {type:'hook', h:'เลื่อนขึ้นเพื่อดูหุ้นจริง', sub:'PHAT หุ้น IPO ปี 2569'}
+  ]},
+  {id:'phat', ipo:'phat', title:'PHAT ถูกจริงไหม', tag:'หุ้นจริง', scenes:[
+    {type:'hook', h:'P/E 5.91 เท่า ถูกจริงไหม?', sub:'บมจ. กลุ่มภัทร (PHAT) กรณีศึกษาจากหุ้น IPO ปี 2569'},
+    {type:'split', big:'71%', label:'ของกำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียว', w:71, left:'ไตรมาส 2/2568: 113.75 ลบ.', right:'อีก 3 ไตรมาส: 45.87 ลบ.', src:'ที่มา: InfoQuest สัดส่วน IPO Lens คำนวณ'},
+    {type:'compare', label:'อัตรากำไรขั้นต้นหดลงครึ่งหนึ่ง', from:'8.13%', fromNote:'ปี 2568', to:'4.09%', toNote:'ไตรมาส 1/2569', src:'ที่มา: บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
+    {type:'ring', h:'การ์ดเตือนได้ 5 จาก 6 เรื่อง', sub:'ด้วยข้อมูลที่มีก่อนวันจอง 4–6 ส.ค.'},
+    {type:'compare', label:'ผลจริงวันแรกที่เข้าตลาด', from:'2.00', fromNote:'ราคาจอง (บาท)', to:'1.84', toNote:'ราคาเปิด ต่ำจอง 8%', src:'ที่มา: โพสต์ทูเดย์ 20 ส.ค. 2569'},
+    {type:'ask'}
+  ]},
+  {id:'spack', ipo:'spack', title:'SPACK กำไรกระโดดปีเดียว', tag:'ข้อมูลสมมติ', scenes:[
+    {type:'hook', h:'รายได้โตทุกปี แต่กำไรกระโดดปีเดียว', sub:'บมจ. สยามแพ็ค (SPACK) ข้อมูลสมมติ'},
+    {type:'compare', label:'กำไรสุทธิ (ล้านบาท)', from:'34.5', fromNote:'เฉลี่ย 4 ปีก่อน', to:'88', toNote:'ปีก่อนยื่น 2567', src:'ที่มา: งบจาก DBD (ข้อมูลสมมติ)'},
+    {type:'compare', label:'P/E เทียบกับกลุ่ม', from:'16', fromNote:'ค่าเฉลี่ยกลุ่ม (เท่า)', to:'28', toNote:'SPACK (เท่า)', src:'ที่มา: แบบ 69-1 (ข้อมูลสมมติ)'},
+    {type:'ring', h:'พบสัญญาณเตือน 3 จาก 6 เรื่อง', sub:'อีก 1 เรื่องยังไม่มีข้อมูล'},
+    {type:'ask'}
+  ]},
+  {id:'cmate', ipo:'cmate', title:'CMATE ลูกค้าเป็นใคร', tag:'ข้อมูลสมมติ', scenes:[
+    {type:'hook', h:'โตปีละ 41% แต่ลูกค้าเป็นใคร?', sub:'บมจ. คลาวด์เมท (CMATE) ข้อมูลสมมติ'},
+    {type:'split', big:'38%', label:'ของรายได้มาจากบริษัทในเครือผู้ถือหุ้นใหญ่', w:38, left:'บริษัทในเครือ 38%', right:'ลูกค้าภายนอก 62%', src:'ที่มา: แบบ 69-1 (ข้อมูลสมมติ)'},
+    {type:'ring', h:'พบสัญญาณเตือน 3 จาก 6 เรื่อง', sub:'จุดแข็งคือไม่มีเงินกู้จากธนาคาร'},
+    {type:'ask'}
+  ]}
+];
+const SCENE_MS = 3800;
+const player = {reel:0, scene:0, t:0, paused:false, ended:false, timer:null, io:null};
+
+function sceneHTML(reel, sc){
+  const ipo = reel.ipo ? IPOS[reel.ipo] : null;
+  switch (sc.type){
+    case 'hook': return `<h2>${esc(sc.h)}</h2><p class="sub">${esc(sc.sub)}</p>`;
+    case 'dots': return `<div class="big red num" style="font-size:60px" data-count="${sc.hit}" data-suffix=" จาก ${sc.total}">${esc(sc.big)}</div><p class="sub">${esc(sc.label)}</p><div class="dots" aria-hidden="true">${Array.from({length:sc.total}, (_, i) => `<i class="${i < sc.hit ? 'hit' : ''}" style="transition-delay:${0.3 + i * 0.08}s"></i>`).join('')}</div><p class="src">${esc(sc.src)}</p>`;
+    case 'split': return `<div class="big red num" data-count="${parseInt(sc.big)}" data-suffix="%">${esc(sc.big)}</div><p class="sub">${esc(sc.label)}</p><div class="split" style="--w:${sc.w}%"><i></i></div><div class="splitlab"><span>${esc(sc.left)}</span><span>${esc(sc.right)}</span></div><p class="src">${esc(sc.src)}</p>`;
+    case 'compare': return `<p class="sub" style="font-size:18px;color:#F2F6FA;font-weight:600">${esc(sc.label)}</p><div class="cmp2 num"><span class="from">${esc(sc.from)}<small>${esc(sc.fromNote)}</small></span><span aria-hidden="true" style="font-size:32px;color:#8FA1B5">→</span><span class="to">${esc(sc.to)}<small>${esc(sc.toNote)}</small></span></div><p class="src">${esc(sc.src)}</p>`;
+    case 'ring': return `<div>${ring(ipo, 150)}</div><h2 style="font-size:28px">${esc(sc.h)}</h2><p class="sub">${esc(sc.sub)}</p>`;
+    case 'checks': return `<h2 style="font-size:24px">6 เรื่องที่ IPO Lens ตรวจ</h2><ul class="reelchecks">${CHECKS.map((k, i) => `<li style="transition-delay:${0.2 + i * 0.35}s"><i></i>${k.label}</li>`).join('')}</ul>`;
+    case 'ask': return `<h2 style="font-size:26px">ก่อนจอง ถามเรื่องนี้</h2><ol class="reelqs">${ipo.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol><button class="cta" type="button" data-opencard="${ipo.id}">เปิดการ์ดเต็ม</button>`;
+  }
+  return '';
+}
+function reelsScreen(){
+  return `<div class="reels" id="reels">${REELS.map((r, i) => `
+    <section class="reel" data-reel="${i}" aria-label="คลิป ${esc(r.title)}">
+      <div class="progress" aria-hidden="true">${r.scenes.map(() => '<span><i></i></span>').join('')}</div>
+      ${i === 0 ? '<div class="reelhint">แตะซ้ายหรือขวาเพื่อข้ามฉาก แตะกลางจอเพื่อหยุด</div>' : ''}
+      ${r.scenes.map((sc, k) => `<div class="scene${k === 0 ? ' on' : ''}" data-scene="${k}">${sceneHTML(r, sc)}</div>`).join('')}
+      <div class="pausemark" hidden>หยุดชั่วคราว</div>
+      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>สรุปจากการ์ดของ IPO Lens ไม่ใช่คำแนะนำการลงทุน</small></div>
+      ${r.ipo ? `<div class="reel-side"><button type="button" data-opencard="${r.ipo}" aria-label="เปิดการ์ดเต็มของ ${IPOS[r.ipo].ticker}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6.5 8h7M6.5 11h7M6.5 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><span>การ์ด</span></div>` : ''}
+    </section>`).join('')}</div>`;
+}
+function reelEl(i){ return document.querySelector(`.reel[data-reel="${i}"]`); }
+function paint(){
+  const el = reelEl(player.reel); if (!el) return;
+  el.querySelectorAll('.scene').forEach((s, k) => {
+    const was = s.classList.contains('on'), now = k === player.scene;
+    s.classList.toggle('on', now);
+    if (now && !was) countUp(s);
+  });
+  el.querySelectorAll('.progress i').forEach((b, k) => {
+    b.style.width = k < player.scene ? '100%' : k > player.scene ? '0%' : Math.min(100, player.t / SCENE_MS * 100) + '%';
+  });
+  el.querySelector('.pausemark').hidden = !player.paused;
+}
+function countUp(sceneEl){
+  sceneEl.querySelectorAll('[data-count]').forEach(n => {
+    const end = +n.dataset.count, suf = n.dataset.suffix || '', t0 = performance.now();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches){ n.textContent = end + suf; return; }
+    const step = now => { const p = Math.min(1, (now - t0) / 900); n.textContent = Math.round(end * p) + suf; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+}
+function startReel(i){
+  clearInterval(player.timer);
+  if (player.reel !== i){ const old = reelEl(player.reel); if (old) old.querySelectorAll('.scene').forEach((s, k) => s.classList.toggle('on', k === 0)); }
+  Object.assign(player, {reel:i, scene:0, t:0, paused:false, ended:false});
+  state.reel = i;
+  const el = reelEl(i); if (el) el.querySelectorAll('.scene').forEach(s => s.classList.remove('on'));
+  paint();
+  player.timer = setInterval(tick, 50);
+}
+function tick(){
+  if (player.paused || player.ended) return;
+  player.t += 50;
+  if (player.t >= SCENE_MS){
+    const n = REELS[player.reel].scenes.length;
+    if (player.scene < n - 1){ player.scene++; player.t = 0; }
+    else { player.t = SCENE_MS; player.ended = true; }
+  }
+  paint();
+}
+function stopPlayer(){ clearInterval(player.timer); if (player.io) player.io.disconnect(); player.io = null; }
+function bindReels(){
+  const box = document.getElementById('reels'); if (!box) return;
+  box.scrollTop = (state.reel || 0) * box.clientHeight;
+  player.io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) startReel(+e.target.dataset.reel); }), {root:box, threshold:0.6});
+  box.querySelectorAll('.reel').forEach(r => player.io.observe(r));
+  box.querySelectorAll('.reel').forEach(r => r.addEventListener('click', e => {
+    if (e.target.closest('button,a')) return;
+    const i = +r.dataset.reel; if (i !== player.reel) return;
+    const x = (e.clientX - r.getBoundingClientRect().left) / r.clientWidth, n = REELS[i].scenes.length;
+    if (x < 0.3){ player.scene = Math.max(0, player.scene - 1); player.t = 0; player.ended = false; }
+    else if (x > 0.7){ if (player.scene < n - 1){ player.scene++; player.t = 0; } }
+    else if (player.ended){ startReel(i); return; }
+    else player.paused = !player.paused;
+    paint();
+  }));
+  box.querySelectorAll('[data-opencard]').forEach(b => b.addEventListener('click', () => go({screen:'ipo', ipo:b.dataset.opencard, tab:'summary'})));
+}
+
 /* ================= state ================= */
-const state = {screen:'home', ipo:null, tab:'summary'};
+const state = {screen:'home', ipo:null, tab:'summary', reel:0};
 const chats = {};
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt = n => n.toLocaleString('th-TH', {maximumFractionDigits:2});
@@ -321,17 +503,20 @@ const STEPS = [
   {label:'การ์ดของ PHAT', go:{screen:'ipo', ipo:'phat', tab:'summary'}},
   {label:'งบก่อนเข้าตลาด', go:{screen:'ipo', ipo:'phat', tab:'fin'}},
   {label:'ตรวจข่าว', go:{screen:'ipo', ipo:'phat', tab:'news'}},
-  {label:'ถาม AI', go:{screen:'ipo', ipo:'phat', tab:'ai'}}
+  {label:'ถาม AI', go:{screen:'ipo', ipo:'phat', tab:'ai'}},
+  {label:'คลิปสั้น', go:{screen:'reels', reel:1}}
 ];
 const NOTES = [
   {title:'ปัญหาที่ต้องแก้', tags:['Problem Clarity'], points:['ปี 2568 หุ้น IPO 11 จาก 15 บริษัทราคาต่ำกว่าราคาจอง','คนรุ่นใหม่จองตามกระแส เพราะหนังสือชี้ชวนยาวหลายร้อยหน้า','วงแหวนข้างชื่อหุ้นบอกทันทีว่าพบสัญญาณเตือนกี่ข้อ']},
   {title:'การ์ดหน้าเดียว จากหุ้นจริง', tags:['Innovation','Responsible AI'], points:['PHAT ขายที่ P/E 5.91 เท่า ดูถูก แต่การ์ดเตือนได้ 5 จาก 6 เรื่องด้วยข้อมูลที่มีก่อนวันจอง','ผลจริง: เปิดเทรดวันแรกต่ำจอง 8% และไตรมาสถัดมาขาดทุน','ทุกสัญญาณกดดูที่มาได้ ไม่มีคำว่าควรซื้อหรือไม่ควรซื้อ']},
   {title:'มองย้อนไปก่อนเข้าตลาด', tags:['Innovation','Technical Feasibility'], points:['กำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียวถึง 71%','ของจริงจะดึงงบ 5 ปีตอนยังเป็นบริษัทเอกชนจาก DBD DataWarehouse+ มาเทียบกับแบบ 69-1','ข้อมูลทั้งหมดเป็นข้อมูลสาธารณะ']},
   {title:'ตรวจข่าวว่าน่าเชื่อถือแค่ไหน', tags:['Responsible AI','Innovation'], points:['เทียบข่าวเรื่องเดียวกันจากหลายสื่อ ถ้าตรงกันอย่างน้อย 80% จาก 2 แหล่งขึ้นไป จึงขึ้นว่าน่าเชื่อถือ','ข่าวประชาสัมพันธ์ฉบับเดียวกันที่ลงหลายเว็บนับเป็นแหล่งเดียว','ตัวอย่าง: "ตอบรับล้นหลาม" มาจากบริษัทเอง ยืนยันไม่ได้']},
-  {title:'ถาม AI ได้ แต่ AI ตอบจากการ์ดเท่านั้น', tags:['Responsible AI','Business Value'], points:['AI ตอบจากข้อมูลในการ์ดและบอกที่มาทุกครั้ง','ถ้าไม่มีข้อมูล AI จะบอกว่าไม่รู้ ไม่เดาเอง','ใช้เป็นเครื่องมือของผู้แนะนำการลงทุนเวลาคุยกับลูกค้าได้ด้วย']}
+  {title:'ถาม AI ได้ แต่ AI ตอบจากการ์ดเท่านั้น', tags:['Responsible AI','Business Value'], points:['AI ตอบจากข้อมูลในการ์ดและบอกที่มาทุกครั้ง','ถ้าไม่มีข้อมูล AI จะบอกว่าไม่รู้ ไม่เดาเอง','ใช้เป็นเครื่องมือของผู้แนะนำการลงทุนเวลาคุยกับลูกค้าได้ด้วย']},
+  {title:'สรุปเป็นคลิปสั้นสำหรับคนรุ่นใหม่', tags:['Invest Like Gen Z','Innovation'], points:['คลิปสร้างจากข้อมูลในการ์ดอัตโนมัติ หุ้นทุกตัวจึงมีคลิปของตัวเองโดยไม่ต้องตัดต่อ','ทุกฉากบอกที่มาของตัวเลข และปิดท้ายด้วยคำถามก่อนจอง ไม่ใช่ปุ่มชวนซื้อ','แตะซ้ายหรือขวาเพื่อข้ามฉาก เลื่อนขึ้นเพื่อดูคลิปถัดไป']}
 ];
 function stepIndex(){
   if (state.screen === 'home') return 0;
+  if (state.screen === 'reels') return 5;
   return {summary:1, fin:2, news:3, ai:4}[state.tab] ?? 1;
 }
 
@@ -394,6 +579,7 @@ function home(){
   return `
     <div class="appbar"><div><h1>IPO Lens</h1><div class="sub">อ่านหุ้น IPO ก่อนกดจอง</div></div></div>
     <div class="fact"><b class="num">11 จาก 15</b>หุ้น IPO ปี 2568 ราคาต่ำกว่าราคาจอง<br><small>ตลาดหลักทรัพย์ฯ พ.ย. 2568 <a href="https://www.thairath.co.th/money/investment/capital_market/2893569">ที่มา</a></small></div>
+    <button class="promo" type="button" data-reelof="intro"><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span><span><b>ดูสรุปเป็นคลิปสั้น</b><span>หุ้นแต่ละตัวใน 20 วินาที</span></span><span aria-hidden="true">›</span></button>
     <div class="sec-title">เปิดจองเร็วๆ นี้ <em>ข้อมูลสมมติ</em></div>
     <div class="rows">${ids.map(id => rowHTML(IPOS[id])).join('')}</div>
     <div class="sec-title">กรณีศึกษาจากหุ้นจริง <em>เข้าตลาดแล้ว</em></div>
@@ -429,6 +615,7 @@ function summary(ipo){
       <h3 style="font-size:15.5px">สัญญาณที่ต้องระวัง</h3>
       ${ipo.signals.map((s, i) => `<div class="sig ${s.level}"><b>${esc(s.title)}</b><p>${esc(s.text)}</p><button class="srcbtn" type="button" aria-expanded="false" aria-controls="src-${i}" data-src>ดูที่มาของตัวเลข</button><div class="srcnote" id="src-${i}" hidden>${esc(s.src)}</div></div>`).join('')}
     </div>
+    <div><button class="ghostbtn" type="button" data-reelof="${ipo.id}"><svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="2.5" width="14" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 8l5 3-5 3z" fill="currentColor"/></svg>ดูการ์ดนี้เป็นคลิปสั้น</button></div>
     <div class="card"><h3>จุดแข็ง</h3><ul class="list">${ipo.strengths.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
     <div class="card"><h3>คำถามที่ควรถามก่อนจอง</h3><ol class="list">${ipo.questions.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`;
 }
@@ -561,10 +748,14 @@ async function checkPasted(){
 /* ================= render ================= */
 function scrollBottom(){ const a = document.getElementById('app'); a.scrollTop = a.scrollHeight; }
 function rerender(keepScroll){
+  stopPlayer();
   const app = document.getElementById('app'), y = app.scrollTop;
-  app.innerHTML = state.screen === 'home' ? home() : ipoScreen(IPOS[state.ipo]);
+  app.innerHTML = state.screen === 'home' ? home() : state.screen === 'reels' ? reelsScreen() : ipoScreen(IPOS[state.ipo]);
   app.scrollTop = keepScroll ? y : 0;
+  document.querySelector('.screen').classList.toggle('dark', state.screen === 'reels');
+  document.querySelectorAll('[data-nav]').forEach(b => b.setAttribute('aria-current', (b.dataset.nav === 'reels') === (state.screen === 'reels') ? 'page' : 'false'));
   bind(); notes();
+  if (state.screen === 'reels') bindReels();
 }
 function go(next){ Object.assign(state, next); rerender(); }
 function bind(){
@@ -579,7 +770,9 @@ function bind(){
   if (f) f.addEventListener('submit', e => { e.preventDefault(); const v = document.getElementById('askinput').value.trim(); if (v) ask(ipo, v); });
   const cn = document.getElementById('checknews');
   if (cn) cn.addEventListener('click', checkPasted);
+  app.querySelectorAll('[data-reelof]').forEach(b => b.addEventListener('click', () => go({screen:'reels', reel:REELS.findIndex(r => r.id === b.dataset.reelof)})));
 }
+document.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => go(b.dataset.nav === 'reels' ? {screen:'reels', reel:0} : {screen:'home'})));
 function notes(){
   const i = stepIndex();
   document.getElementById('steps').innerHTML = STEPS.map((s, k) => `<li><button type="button" data-step="${k}" ${k === i ? 'aria-current="step"' : ''}><span class="n">${k + 1}</span><span>${s.label}</span></button></li>`).join('');
