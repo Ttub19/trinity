@@ -203,6 +203,7 @@ textarea{min-height:76px;resize:vertical}
 .scene h2{font-size:32px;line-height:1.2;font-weight:700;color:#F2F6FA}
 .scene .sub{font-size:16px;color:#B8C6D6;margin:0}
 .scene .src{font-size:12px;color:#8FA1B5;margin:4px 0 0}
+.reel-art{display:block;width:100%;max-width:310px;height:auto;border-radius:16px;box-shadow:0 12px 28px -12px rgba(0,0,0,.6)}
 .big{font-family:var(--display);font-size:80px;font-weight:700;line-height:1;color:#5FD0DA}
 .big.red{color:#F08A82}
 .split{display:flex;height:14px;border-radius:7px;overflow:hidden;background:#2A3A52}
@@ -240,8 +241,54 @@ textarea{min-height:76px;resize:vertical}
 .promo span{font-size:12.5px;color:#B8C6D6}
 .promo .play{width:36px;height:36px;border-radius:50%;background:#5FD0DA;display:grid;place-items:center;color:#0B1422}
 .ghostbtn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 14px;cursor:pointer;font-weight:500;color:var(--lens);display:inline-flex;gap:8px;align-items:center}
+/* ---------- anchor reels (น้องฮูก) ---------- */
+.reel.anchor{background:#0B1626}
+.studio{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.owlbox{position:relative;width:min(66%,250px)}
+.owlbox .owlwrap{width:100%}
+.desk{position:absolute;left:-30%;right:-30%;bottom:-34px;pointer-events:none}
+.desk svg{display:block;width:100%;height:auto}
+.ticker{position:absolute;top:40px;left:0;right:0;height:26px;z-index:3;background:rgba(95,208,218,.12);border-top:1px solid rgba(95,208,218,.25);border-bottom:1px solid rgba(95,208,218,.25);overflow:hidden;pointer-events:none;display:flex;align-items:center}
+.ticker .tag0{flex:none;height:100%;display:flex;align-items:center;padding:0 10px;background:#5FD0DA;color:#0B1422;font-size:11.5px;font-weight:700;font-family:var(--display);position:relative;z-index:1}
+.ticker .run{display:flex;gap:28px;white-space:nowrap;font-size:12px;color:#DDE6EF;padding-left:14px}
+.ticker .run b{font-weight:600}
+.ticker .ok{color:#6FD39B} .ticker .no{color:#F0B055} .ticker .bad{color:#EF7A72}
+@media (prefers-reduced-motion: no-preference){ .ticker .run{animation:ticker 26s linear infinite} @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}} }
+.ai-label{position:absolute;top:72px;right:12px;z-index:3;font-size:11px;padding:2px 9px;border-radius:999px;background:rgba(95,208,218,.16);color:#9FE3E9;pointer-events:none}
+.anchor-stage{position:absolute;left:0;right:0;top:78px;display:grid;justify-items:center;gap:6px;pointer-events:none}
+.owlwrap{width:100%}
+.owlwrap svg{display:block;width:100%;height:auto;overflow:visible}
+.anchor-name{font-size:12px;color:#9FB0C3;margin-top:40px;position:relative}
+.owl .lid{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0)}
+.owl .brow{transform-box:view-box;transition:transform .35s ease}
+.owl .pupil{transition:transform .35s ease}
+.owl .jaw{transform-box:view-box;transition:transform .08s linear}
+.owl .brow-l{transform-origin:50px 60px}
+.owl .brow-r{transform-origin:150px 60px}
+.mood-concerned .brow-l{transform:rotate(-14deg)}
+.mood-concerned .brow-r{transform:rotate(14deg)}
+.mood-concerned .pupil{transform:translateY(-3px)}
+.mood-happy .brow-l,.mood-happy .brow-r{transform:translateY(-7px)}
+.talking .jaw{animation:jaw .22s ease-in-out infinite alternate}
+@keyframes jaw{from{transform:translateY(0)}to{transform:translateY(7px)}}
+.lower{position:absolute;left:16px;right:70px;bottom:168px;z-index:3;display:flex;gap:8px;align-items:center;flex-wrap:wrap;pointer-events:none}
+.lower .chip{font-size:12.5px}
+.lower span.lbl{font-size:13px;color:#DDE6EF}
+.subtitle{position:absolute;left:14px;right:70px;bottom:84px;z-index:3;min-height:72px;background:rgba(4,10,20,.62);border-radius:14px;padding:10px 14px;font-size:17px;line-height:1.45;color:#fff;display:flex;align-items:center;pointer-events:none}
+.tapstart{position:absolute;left:50%;bottom:180px;transform:translateX(-50%);z-index:4;border:0;border-radius:999px;padding:12px 20px;background:#5FD0DA;color:#0B1422;font-weight:600;font-size:15px;cursor:pointer;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.voicenote{position:absolute;left:16px;right:16px;bottom:160px;z-index:3;font-size:11.5px;color:#F0B055;text-align:center;pointer-events:none}
+.reel.anchor .reel-meta{right:76px}
+.reel-side .on{background:#5FD0DA;color:#0B1422}
+@media (max-height:700px){ .owlbox{width:min(46%,170px)} .lower{bottom:156px} }
+@media (prefers-reduced-motion: no-preference){
+  .owl .lid{animation:blink 4.2s infinite}
+  .owl .body{animation:bob 3.2s ease-in-out infinite}
+  @keyframes blink{0%,94%,100%{transform:scaleY(0)}96%,98%{transform:scaleY(1)}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+}
 @media (prefers-reduced-motion: reduce){
   .scene,.split i,.dots i,.reelchecks li,.reel .ring circle{transition:none}
+  .talking .jaw{animation:none;transform:translateY(4px)}
 }
 @media (prefers-reduced-motion: no-preference){
   .tab{animation:fade .2s ease-out}
@@ -393,15 +440,23 @@ function scoreClaim(c){
 
 /* ================= reels: built from each card's data ================= */
 const REELS = [
-  {id:'intro', ipo:null, title:'IPO Lens คืออะไร', tag:'ข้อมูลจริง', scenes:[
-    {type:'hook', h:'จองหุ้น IPO ตามกระแส?', sub:'ดูนี่ก่อน 20 วินาที'},
-    {type:'dots', big:'11 จาก 15', label:'หุ้น IPO ปี 2568 ราคาต่ำกว่าราคาจอง', hit:11, total:15, src:'ที่มา: ตลาดหลักทรัพย์ฯ พ.ย. 2568 (ไทยรัฐ)'},
-    {type:'hook', h:'IPO Lens อ่านหนังสือชี้ชวนหลายร้อยหน้าให้', sub:'แล้วตรวจ 6 เรื่องที่มักซ่อนอยู่'},
-    {type:'checks'},
-    {type:'hook', h:'เลื่อนขึ้นเพื่อดูหุ้นจริง', sub:'PHAT หุ้น IPO ปี 2569'}
+  {id:'news-intro', type:'anchor', ipo:null, title:'น้องฮูกเล่าข่าว IPO', tag:'บทและเสียงโดย AI', lines:[
+    {mood:'happy', text:'สวัสดีครับ น้องฮูกจาก IPO Lens เองครับ วันนี้มาเล่าเรื่องหุ้น IPO ให้ฟังสั้นๆ'},
+    {mood:'concerned', text:'รู้ไหมครับ ปี 2568 หุ้น IPO 11 จาก 15 บริษัท ราคาต่ำกว่าราคาจอง', chip:{label:'11 จาก 15', cls:'c-crit', sub:'ที่มา: ตลาดหลักทรัพย์ฯ พ.ย. 2568'}},
+    {mood:'neutral', text:'น้องฮูกจะช่วยอ่านหนังสือชี้ชวน แล้วเทียบข่าวจากหลายสำนัก บอกว่าข่าวไหนเชื่อได้ ข่าวไหนยังต้องรอ'},
+    {mood:'neutral', text:'ข่าวที่ตรงกันอย่างน้อย 80 เปอร์เซ็นต์ จากสองแหล่งขึ้นไป น้องฮูกถึงจะบอกว่าน่าเชื่อถือครับ', chip:{label:'เกณฑ์ 80%', cls:'c-info', sub:'นับเฉพาะแหล่งที่เป็นอิสระ'}},
+    {mood:'happy', text:'เลื่อนขึ้นไปฟังเรื่องหุ้น PHAT กันต่อเลยครับ'}
+  ]},
+  {id:'news-phat', type:'anchor', ipo:'phat', title:'น้องฮูกเล่าเรื่อง PHAT', tag:'หุ้นจริง', lines:[
+    {mood:'happy', text:'สวัสดีครับ วันนี้น้องฮูกมาเล่าเรื่องหุ้น PHAT หรือบริษัทกลุ่มภัทรครับ'},
+    {mood:'neutral', text:'PHAT ขายหุ้น IPO ที่ราคา 2 บาท ข่าวนี้ตรงกันทุกสำนัก เชื่อถือได้ครับ', claim:'c1'},
+    {mood:'concerned', text:'แต่ที่ต้องระวังคือ กำไรที่ใช้คิด P/E มาจากไตรมาสเดียวถึง 71 เปอร์เซ็นต์', chip:{label:'71%', cls:'c-crit', sub:'ที่มา: InfoQuest สัดส่วน IPO Lens คำนวณ'}},
+    {mood:'concerned', text:'ส่วนข่าวที่บอกว่านักลงทุนตอบรับล้นหลาม มาจากข่าวประชาสัมพันธ์ของบริษัทเอง ตอนนี้ยังยืนยันไม่ได้นะครับ', claim:'c3'},
+    {mood:'neutral', text:'ผลจริงคือ วันแรกที่เข้าตลาด ราคาเปิดที่ 1.84 บาท ต่ำกว่าราคาจอง 8 เปอร์เซ็นต์', claim:'c2'},
+    {mood:'happy', text:'ก่อนจองหุ้นตัวไหน ลองเปิดการ์ดดูก่อนนะครับ น้องฮูกไม่ได้แนะนำให้ซื้อหรือขาย แค่ช่วยอ่านให้ครับ'}
   ]},
   {id:'phat', ipo:'phat', title:'PHAT ถูกจริงไหม', tag:'หุ้นจริง', scenes:[
-    {type:'hook', h:'P/E 5.91 เท่า ถูกจริงไหม?', sub:'บมจ. กลุ่มภัทร (PHAT) กรณีศึกษาจากหุ้น IPO ปี 2569'},
+    {type:'hook', img:'assets/reel-phat.svg', alt:'ภาพประกอบสวนปาล์มและโรงสกัดน้ำมันปาล์ม', h:'P/E 5.91 เท่า ถูกจริงไหม?', sub:'บมจ. กลุ่มภัทร (PHAT) โรงสกัดน้ำมันปาล์มที่กระบี่ กรณีศึกษาจากหุ้น IPO ปี 2569'},
     {type:'split', big:'71%', label:'ของกำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียว', w:71, left:'ไตรมาส 2/2568: 113.75 ลบ.', right:'อีก 3 ไตรมาส: 45.87 ลบ.', src:'ที่มา: InfoQuest สัดส่วน IPO Lens คำนวณ'},
     {type:'compare', label:'อัตรากำไรขั้นต้นหดลงครึ่งหนึ่ง', from:'8.13%', fromNote:'ปี 2568', to:'4.09%', toNote:'ไตรมาส 1/2569', src:'ที่มา: บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
     {type:'ring', h:'การ์ดเตือนได้ 5 จาก 6 เรื่อง', sub:'ด้วยข้อมูลที่มีก่อนวันจอง 4–6 ส.ค.'},
@@ -409,26 +464,157 @@ const REELS = [
     {type:'ask'}
   ]},
   {id:'spack', ipo:'spack', title:'SPACK กำไรกระโดดปีเดียว', tag:'ข้อมูลสมมติ', scenes:[
-    {type:'hook', h:'รายได้โตทุกปี แต่กำไรกระโดดปีเดียว', sub:'บมจ. สยามแพ็ค (SPACK) ข้อมูลสมมติ'},
+    {type:'hook', img:'assets/reel-spack.svg', alt:'ภาพประกอบกล่องบรรจุภัณฑ์บนสายพาน', h:'รายได้โตทุกปี แต่กำไรกระโดดปีเดียว', sub:'บมจ. สยามแพ็ค (SPACK) ข้อมูลสมมติ'},
     {type:'compare', label:'กำไรสุทธิ (ล้านบาท)', from:'34.5', fromNote:'เฉลี่ย 4 ปีก่อน', to:'88', toNote:'ปีก่อนยื่น 2567', src:'ที่มา: งบจาก DBD (ข้อมูลสมมติ)'},
     {type:'compare', label:'P/E เทียบกับกลุ่ม', from:'16', fromNote:'ค่าเฉลี่ยกลุ่ม (เท่า)', to:'28', toNote:'SPACK (เท่า)', src:'ที่มา: แบบ 69-1 (ข้อมูลสมมติ)'},
     {type:'ring', h:'พบสัญญาณเตือน 3 จาก 6 เรื่อง', sub:'อีก 1 เรื่องยังไม่มีข้อมูล'},
     {type:'ask'}
   ]},
   {id:'cmate', ipo:'cmate', title:'CMATE ลูกค้าเป็นใคร', tag:'ข้อมูลสมมติ', scenes:[
-    {type:'hook', h:'โตปีละ 41% แต่ลูกค้าเป็นใคร?', sub:'บมจ. คลาวด์เมท (CMATE) ข้อมูลสมมติ'},
+    {type:'hook', img:'assets/reel-cmate.svg', alt:'ภาพประกอบระบบคลาวด์ที่เชื่อมกับลูกค้าและบริษัทในเครือ', h:'โตปีละ 41% แต่ลูกค้าเป็นใคร?', sub:'บมจ. คลาวด์เมท (CMATE) ข้อมูลสมมติ'},
     {type:'split', big:'38%', label:'ของรายได้มาจากบริษัทในเครือผู้ถือหุ้นใหญ่', w:38, left:'บริษัทในเครือ 38%', right:'ลูกค้าภายนอก 62%', src:'ที่มา: แบบ 69-1 (ข้อมูลสมมติ)'},
     {type:'ring', h:'พบสัญญาณเตือน 3 จาก 6 เรื่อง', sub:'จุดแข็งคือไม่มีเงินกู้จากธนาคาร'},
     {type:'ask'}
   ]}
 ];
 const SCENE_MS = 3800;
-const player = {reel:0, scene:0, t:0, paused:false, ended:false, timer:null, io:null};
+const player = {reel:0, scene:0, t:0, paused:false, ended:false, timer:null, io:null, line:0, token:0, running:false};
+
+/* ---------- น้องฮูก: original mascot, drawn in SVG ---------- */
+function owlSVG(){
+  const eye = cx => `<circle cx="${cx}" cy="92" r="34" fill="#E8EEF3"/><circle cx="${cx}" cy="92" r="20" fill="#fff"/><circle class="pupil" cx="${cx}" cy="94" r="10" fill="#142033"/><circle cx="${cx + 4}" cy="89" r="3" fill="#fff"/><ellipse class="lid" cx="${cx}" cy="92" rx="22" ry="22" fill="#3E5C76"/>`;
+  return `<svg viewBox="0 0 200 224" role="img" aria-label="น้องฮูก นกฮูกผู้ช่วยอ่านข่าว"><g class="owl"><g class="body">
+    <path d="M54 54 L42 16 L82 40 Z" fill="#2F4A61"/><path d="M146 54 L158 16 L118 40 Z" fill="#2F4A61"/>
+    <path d="M26 118 q-8 52 30 80 q-8-42 4-80z" fill="#2F4A61"/><path d="M174 118 q8 52 -30 80 q8-42 -4-80z" fill="#2F4A61"/>
+    <ellipse cx="100" cy="128" rx="76" ry="86" fill="#3E5C76"/>
+    <ellipse cx="100" cy="162" rx="47" ry="48" fill="#A9C3D6"/>
+    <path d="M80 152q6 6 12 0M108 152q6 6 12 0M94 172q6 6 12 0" stroke="#7F9CB3" stroke-width="3" fill="none" stroke-linecap="round"/>
+    ${eye(72)}${eye(128)}
+    <circle cx="72" cy="92" r="26" fill="none" stroke="#5FD0DA" stroke-width="5"/><circle cx="128" cy="92" r="26" fill="none" stroke="#5FD0DA" stroke-width="5"/>
+    <path d="M97 88 q3-5 6 0" stroke="#5FD0DA" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path class="brow brow-l" d="M50 60 Q72 50 94 60" stroke="#1E3346" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path class="brow brow-r" d="M106 60 Q128 50 150 60" stroke="#1E3346" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path class="jaw" d="M91 121 L109 121 L100 139 Z" fill="#C9862A"/>
+    <path d="M86 111 L114 111 L100 131 Z" fill="#F0B055"/>
+    <rect x="76" y="186" width="48" height="17" rx="8.5" fill="#5FD0DA"/><text x="100" y="198.5" font-size="10.5" text-anchor="middle" fill="#0B1422" font-weight="700" font-family="Bai Jamjuree, sans-serif">IPO Lens</text>
+    <path d="M80 214h12M108 214h12" stroke="#F0B055" stroke-width="6" stroke-linecap="round"/>
+  </g></g></svg>`;
+}
+
+function studioSVG(){
+  const bars = [44,62,52,78,70,96,84,110].map((h, i) => `<rect x="${92 + i * 26}" y="${236 - h}" width="14" height="${h}" rx="2" fill="#5FD0DA" opacity="${0.18 + i * 0.05}"/>`).join('');
+  const city = [[0,40],[22,64],[40,48],[58,86],[80,58],[98,104],[120,70],[140,52],[160,92],[184,62],[204,118],[228,74],[250,56],[270,96],[292,66],[312,84],[334,50],[354,72],[372,44]].map(([x, h]) => `<rect x="${x}" y="${470 - h}" width="20" height="${h}" fill="#13253C"/>`).join('');
+  return `<svg class="studio" viewBox="0 0 390 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="390" height="700" fill="#0B1626"/>
+    <g stroke="#13243A" stroke-width="1">${Array.from({length:14}, (_, i) => `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="470"/>`).join('')}</g>
+    ${city}
+    <rect x="62" y="96" width="266" height="166" rx="14" fill="#0F2134" stroke="#1F3A55" stroke-width="2"/>
+    <g stroke="#1A3149">${[130,160,190,220].map(y => `<line x1="76" y1="${y}" x2="314" y2="${y}"/>`).join('')}</g>
+    ${bars}
+    <polyline points="90,214 118,198 144,206 170,176 196,184 222,152 248,162 274,128 300,136" fill="none" stroke="#5FD0DA" stroke-width="2.5" stroke-linejoin="round" opacity=".55"/>
+    <circle cx="300" cy="136" r="4.5" fill="#5FD0DA" opacity=".7"/>
+    <text x="80" y="120" font-size="11" fill="#5FD0DA" opacity=".7" font-family="Bai Jamjuree, sans-serif" font-weight="600" letter-spacing="1.5">IPO LENS NEWS</text>
+    <circle cx="70" cy="40" r="90" fill="#5FD0DA" opacity=".05"/><circle cx="330" cy="60" r="110" fill="#F0B055" opacity=".04"/>
+    <rect y="470" width="390" height="230" fill="#0A1422"/>
+    <ellipse cx="195" cy="470" rx="220" ry="18" fill="#5FD0DA" opacity=".06"/>
+  </svg>`;
+}
+function deskSVG(){
+  return `<svg viewBox="0 0 400 96" aria-hidden="true"><path d="M8 18 H392 L372 92 H28 Z" fill="#162B44"/><rect x="0" y="8" width="400" height="16" rx="6" fill="#20405F"/><rect x="0" y="8" width="400" height="3" rx="1.5" fill="#5FD0DA" opacity=".6"/>
+    <rect x="132" y="40" width="136" height="32" rx="8" fill="#0F2134" stroke="#5FD0DA" stroke-opacity=".5"/>
+    <text x="200" y="61" text-anchor="middle" font-size="14" font-weight="700" fill="#5FD0DA" font-family="Bai Jamjuree, sans-serif">IPO Lens ข่าว</text></svg>`;
+}
+function tickerHTML(){
+  const items = CLAIMS.map(c => { const r = scoreClaim(c), k = r.cls === 'c-good' ? 'ok' : r.cls === 'c-crit' ? 'bad' : 'no'; return `<span><b>PHAT</b> ${esc(c.text)} <span class="${k}">● ${r.verdict}</span></span>`; }).join('');
+  return `<div class="ticker" aria-hidden="true"><span class="tag0">ข่าวตรวจแล้ว</span><div class="run">${items}${items}</div></div>`;
+}
+
+/* ---------- voice (device text-to-speech, Thai) ---------- */
+const voice = {supported:'speechSynthesis' in window, unlocked:false, muted:false, th:null, listed:false};
+function pickVoice(){
+  if (!voice.supported) return;
+  const v = speechSynthesis.getVoices();
+  if (v.length) voice.listed = true;
+  voice.th = v.find(x => /^th/i.test(x.lang)) || null;
+}
+if (voice.supported){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+const canSpeakThai = () => voice.supported && !voice.muted && (voice.th || !voice.listed);
+function lineChip(line){
+  if (line.claim){ const c = CLAIMS.find(x => x.id === line.claim), r = scoreClaim(c); return {label:r.verdict, cls:r.cls, sub:`ตรวจข่าว: ${c.text} (ตรงกัน ${r.pct}% จาก ${r.n} แหล่ง)`}; }
+  return line.chip || null;
+}
+function anchorEl(i){ return reelEl(i); }
+function anchorShow(i, k, ms){
+  const el = anchorEl(i), r = REELS[i], line = r.lines[k]; if (!el || !line) return;
+  const wrap = el.querySelector('.owlwrap');
+  wrap.className = 'owlwrap mood-' + (line.mood || 'neutral');
+  el.querySelector('.subtitle').textContent = line.text;
+  const ch = lineChip(line), low = el.querySelector('.lower');
+  if (ch){ low.hidden = false; low.innerHTML = `<span class="chip ${ch.cls}">${esc(ch.label)}</span><span class="lbl">${esc(ch.sub)}</span>`; } else { low.hidden = true; low.innerHTML = ''; }
+  el.querySelectorAll('.progress i').forEach((b, n) => {
+    b.style.transition = 'none';
+    b.style.width = n < k ? '100%' : '0%';
+    if (n === k){ void b.offsetWidth; b.style.transition = `width ${ms}ms linear`; b.style.width = '100%'; }
+  });
+}
+function talking(i, on){ const w = anchorEl(i) && anchorEl(i).querySelector('.owlwrap'); if (w) w.classList.toggle('talking', on); }
+function anchorPlay(i, k){
+  const r = REELS[i]; if (!r || k >= r.lines.length){ player.running = false; talking(i, false); const el = anchorEl(i); if (el){ el.querySelector('.tapstart').hidden = false; el.querySelector('.tapstart span').textContent = 'ฟังอีกครั้ง'; } return; }
+  const token = ++player.token; player.line = k; player.running = true;
+  const text = r.lines[k].text, est = Math.max(2200, text.length * 85);
+  anchorShow(i, k, est);
+  const done = () => { if (token !== player.token) return; talking(i, false); setTimeout(() => { if (token === player.token) anchorPlay(i, k + 1); }, 380); };
+  const el = anchorEl(i), note = el.querySelector('.voicenote');
+  if (canSpeakThai()){
+    note.hidden = true;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'th-TH'; if (voice.th) u.voice = voice.th; u.rate = 1; u.pitch = 1.05;
+    let started = false;
+    u.onstart = () => { started = true; talking(i, true); };
+    u.onend = done;
+    u.onerror = () => { if (token !== player.token) return; talking(i, true); setTimeout(done, est); };
+    speechSynthesis.speak(u);
+    setTimeout(() => { if (token === player.token && !started){ talking(i, true); setTimeout(done, est); } }, 1500);
+  } else {
+    note.hidden = false;
+    note.textContent = voice.muted ? 'ปิดเสียงอยู่ แสดงซับแทน' : 'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน';
+    talking(i, true);
+    setTimeout(done, est);
+  }
+}
+function anchorStop(){ player.token++; player.running = false; if (voice.supported) speechSynthesis.cancel(); talking(player.reel, false); }
+function anchorReset(i){
+  const el = anchorEl(i); if (!el) return;
+  anchorShow(i, 0, 0);
+  el.querySelectorAll('.progress i').forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
+  const tap = el.querySelector('.tapstart');
+  if (voice.unlocked){ tap.hidden = true; anchorPlay(i, 0); }
+  else { tap.hidden = false; tap.querySelector('span').textContent = 'แตะเพื่อฟังน้องฮูก'; }
+}
+async function rewriteWithAI(i, btn){
+  const r = REELS[i], ipo = IPOS[r.ipo];
+  const sample = await getSampler();
+  const el = anchorEl(i), note = el.querySelector('.voicenote');
+  if (!sample){ note.hidden = false; note.textContent = 'ยังไม่ได้เชื่อม AI ใส่ AI_ENDPOINT ในโค้ด หรือเปิดหน้านี้บน claude.ai'; return; }
+  btn.disabled = true; note.hidden = false; note.textContent = 'AI กำลังเขียนบทจากการ์ดและผลตรวจข่าว...';
+  const claims = CLAIMS.map(c => ({id:c.id, ข่าว:c.text, ผลตรวจ:scoreClaim(c).verdict}));
+  try {
+    const v = await sample.json('คุณคือ "น้องฮูก" นกฮูกผู้ช่วยอ่านข่าวของแอป IPO Lens น้ำเสียงเป็นกันเองแต่น่าเชื่อถือ ใช้ครับ เขียนบทคลิปสั้นภาษาไทย 5 ถึง 6 บรรทัด แต่ละบรรทัดไม่เกิน 110 ตัวอักษร พูดเป็นภาษาพูดที่อ่านออกเสียงได้ ใช้เฉพาะข้อมูลที่ให้มา ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ข่าวที่ผลตรวจไม่ใช่ "น่าเชื่อถือ" ต้องพูดชัดว่ายังยืนยันไม่ได้หรือข้อมูลยังขัดกัน บรรทัดสุดท้ายชวนให้เปิดการ์ดอ่านก่อนตัดสินใจ ตอบเป็น JSON เท่านั้น รูปแบบ {"lines":[{"text":"...","mood":"neutral|concerned|happy","claim":"id ของข่าวที่พูดถึง หรือ null"}]}\n\nข้อมูลการ์ด: ' + context(ipo) + '\n\nผลตรวจข่าว: ' + JSON.stringify(claims), {modelTier:'default', cache:false});
+    const ok = v && Array.isArray(v.lines) && v.lines.length >= 3 && v.lines.length <= 8 && v.lines.every(l => typeof l.text === 'string' && l.text.length > 0 && l.text.length <= 160);
+    if (!ok) throw new Error('bad');
+    r.lines = v.lines.map(l => ({text:l.text, mood:['neutral','concerned','happy'].includes(l.mood) ? l.mood : 'neutral', claim:CLAIMS.some(c => c.id === l.claim) ? l.claim : undefined}));
+    voice.unlocked = true; state.reel = i; rerender();
+  } catch(e){
+    note.textContent = e && e.code === 'rate_limited' ? 'ขอบทใหม่ถี่เกินไป รอสักครู่แล้วลองใหม่' : 'AI เขียนบทไม่สำเร็จ ใช้บทเดิมไปก่อน';
+    btn.disabled = false;
+  }
+}
 
 function sceneHTML(reel, sc){
   const ipo = reel.ipo ? IPOS[reel.ipo] : null;
   switch (sc.type){
-    case 'hook': return `<h2>${esc(sc.h)}</h2><p class="sub">${esc(sc.sub)}</p>`;
+    case 'hook': return `${sc.img ? `<img class="reel-art" src="${sc.img}" alt="${esc(sc.alt || '')}">` : ''}<h2>${esc(sc.h)}</h2><p class="sub">${esc(sc.sub)}</p>`;
     case 'dots': return `<div class="big red num" style="font-size:60px" data-count="${sc.hit}" data-suffix=" จาก ${sc.total}">${esc(sc.big)}</div><p class="sub">${esc(sc.label)}</p><div class="dots" aria-hidden="true">${Array.from({length:sc.total}, (_, i) => `<i class="${i < sc.hit ? 'hit' : ''}" style="transition-delay:${0.3 + i * 0.08}s"></i>`).join('')}</div><p class="src">${esc(sc.src)}</p>`;
     case 'split': return `<div class="big red num" data-count="${parseInt(sc.big)}" data-suffix="%">${esc(sc.big)}</div><p class="sub">${esc(sc.label)}</p><div class="split" style="--w:${sc.w}%"><i></i></div><div class="splitlab"><span>${esc(sc.left)}</span><span>${esc(sc.right)}</span></div><p class="src">${esc(sc.src)}</p>`;
     case 'compare': return `<p class="sub" style="font-size:18px;color:#F2F6FA;font-weight:600">${esc(sc.label)}</p><div class="cmp2 num"><span class="from">${esc(sc.from)}<small>${esc(sc.fromNote)}</small></span><span aria-hidden="true" style="font-size:32px;color:#8FA1B5">→</span><span class="to">${esc(sc.to)}<small>${esc(sc.toNote)}</small></span></div><p class="src">${esc(sc.src)}</p>`;
@@ -438,11 +624,30 @@ function sceneHTML(reel, sc){
   }
   return '';
 }
+function anchorHTML(r, i){
+  return `<section class="reel anchor" data-reel="${i}" aria-label="คลิป ${esc(r.title)}">
+      <div class="progress" aria-hidden="true">${r.lines.map(() => '<span><i></i></span>').join('')}</div>
+      ${studioSVG()}
+      ${tickerHTML()}
+      <div class="ai-label">บทและเสียงสร้างโดย AI</div>
+      <div class="anchor-stage"><div class="owlbox"><div class="owlwrap mood-neutral">${owlSVG()}</div><div class="desk">${deskSVG()}</div></div><div class="anchor-name">น้องฮูก ผู้ช่วยอ่านข่าวของ IPO Lens</div></div>
+      <div class="lower" hidden></div>
+      <div class="voicenote" hidden></div>
+      <div class="subtitle" aria-live="polite">${esc(r.lines[0].text)}</div>
+      <button class="tapstart" type="button" data-tapstart="${i}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v12l11-6z" fill="currentColor"/></svg><span>แตะเพื่อฟังน้องฮูก</span></button>
+      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>${r.ipo ? 'เล่าจากการ์ดและผลตรวจข่าว ' : ''}ไม่ใช่คำแนะนำการลงทุน</small></div>
+      <div class="reel-side">
+        <button type="button" data-mute aria-pressed="${voice.muted}" aria-label="เปิดหรือปิดเสียง">${voice.muted ? '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/><path d="M13 7l5 6M18 7l-5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>' : '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/><path d="M13 7.5a3.5 3.5 0 010 5M15 5.5a6.5 6.5 0 010 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>'}</button><span>เสียง</span>
+        ${r.ipo ? `<button type="button" data-rewrite="${i}" aria-label="ให้ AI เขียนบทใหม่"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l1.8 4.2L16 8l-4.2 1.8L10 14l-1.8-4.2L4 8l4.2-1.8z" fill="currentColor"/><path d="M15.5 13l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z" fill="currentColor"/></svg></button><span>บทใหม่</span>
+        <button type="button" data-opencard="${r.ipo}" aria-label="เปิดการ์ดเต็มของ ${IPOS[r.ipo].ticker}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6.5 8h7M6.5 11h7M6.5 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><span>การ์ด</span>` : ''}
+      </div>
+    </section>`;
+}
 function reelsScreen(){
-  return `<div class="reels" id="reels">${REELS.map((r, i) => `
+  return `<div class="reels" id="reels">${REELS.map((r, i) => r.type === 'anchor' ? anchorHTML(r, i) : `
     <section class="reel" data-reel="${i}" aria-label="คลิป ${esc(r.title)}">
       <div class="progress" aria-hidden="true">${r.scenes.map(() => '<span><i></i></span>').join('')}</div>
-      ${i === 0 ? '<div class="reelhint">แตะซ้ายหรือขวาเพื่อข้ามฉาก แตะกลางจอเพื่อหยุด</div>' : ''}
+      ${i === 2 ? '<div class="reelhint">แตะซ้ายหรือขวาเพื่อข้ามฉาก แตะกลางจอเพื่อหยุด</div>' : ''}
       ${r.scenes.map((sc, k) => `<div class="scene${k === 0 ? ' on' : ''}" data-scene="${k}">${sceneHTML(r, sc)}</div>`).join('')}
       <div class="pausemark" hidden>หยุดชั่วคราว</div>
       <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>สรุปจากการ์ดของ IPO Lens ไม่ใช่คำแนะนำการลงทุน</small></div>
@@ -451,7 +656,7 @@ function reelsScreen(){
 }
 function reelEl(i){ return document.querySelector(`.reel[data-reel="${i}"]`); }
 function paint(){
-  const el = reelEl(player.reel); if (!el) return;
+  const el = reelEl(player.reel); if (!el || REELS[player.reel].type === 'anchor') return;
   el.querySelectorAll('.scene').forEach((s, k) => {
     const was = s.classList.contains('on'), now = k === player.scene;
     s.classList.toggle('on', now);
@@ -472,6 +677,8 @@ function countUp(sceneEl){
 }
 function startReel(i){
   clearInterval(player.timer);
+  anchorStop();
+  if (REELS[i].type === 'anchor'){ player.reel = i; state.reel = i; anchorReset(i); return; }
   if (player.reel !== i){ const old = reelEl(player.reel); if (old) old.querySelectorAll('.scene').forEach((s, k) => s.classList.toggle('on', k === 0)); }
   Object.assign(player, {reel:i, scene:0, t:0, paused:false, ended:false});
   state.reel = i;
@@ -489,15 +696,35 @@ function tick(){
   }
   paint();
 }
-function stopPlayer(){ clearInterval(player.timer); if (player.io) player.io.disconnect(); player.io = null; }
+function stopPlayer(){ clearInterval(player.timer); anchorStop(); if (player.io) player.io.disconnect(); player.io = null; }
 function bindReels(){
   const box = document.getElementById('reels'); if (!box) return;
   box.scrollTop = (state.reel || 0) * box.clientHeight;
   player.io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) startReel(+e.target.dataset.reel); }), {root:box, threshold:0.6});
   box.querySelectorAll('.reel').forEach(r => player.io.observe(r));
+  box.querySelectorAll('[data-tapstart]').forEach(b => b.addEventListener('click', () => {
+    const i = +b.dataset.tapstart; voice.unlocked = true; b.hidden = true;
+    if (voice.supported){ try { speechSynthesis.cancel(); speechSynthesis.resume(); } catch(e){} }
+    const from = b.dataset.resume ? +b.dataset.resume : 0; delete b.dataset.resume;
+    player.reel = i; anchorPlay(i, from);
+  }));
+  box.querySelectorAll('[data-mute]').forEach(b => b.addEventListener('click', () => {
+    voice.muted = !voice.muted;
+    box.querySelectorAll('[data-mute]').forEach(x => { x.setAttribute('aria-pressed', String(voice.muted)); x.classList.toggle('on', voice.muted); });
+    if (player.running){ const i = player.reel, k = player.line; anchorStop(); anchorPlay(i, k); }
+  }));
+  box.querySelectorAll('[data-rewrite]').forEach(b => b.addEventListener('click', () => rewriteWithAI(+b.dataset.rewrite, b)));
   box.querySelectorAll('.reel').forEach(r => r.addEventListener('click', e => {
     if (e.target.closest('button,a')) return;
     const i = +r.dataset.reel; if (i !== player.reel) return;
+    if (REELS[i].type === 'anchor'){
+      if (!voice.unlocked) return;
+      const x = (e.clientX - r.getBoundingClientRect().left) / r.clientWidth, n = REELS[i].lines.length;
+      if (x < 0.3){ anchorStop(); anchorPlay(i, Math.max(0, player.line - 1)); }
+      else if (x > 0.7){ anchorStop(); anchorPlay(i, Math.min(n - 1, player.line + 1)); }
+      else if (player.running){ anchorStop(); const tap = r.querySelector('.tapstart'); tap.hidden = false; tap.querySelector('span').textContent = 'ฟังต่อ'; tap.dataset.resume = player.line; }
+      return;
+    }
     const x = (e.clientX - r.getBoundingClientRect().left) / r.clientWidth, n = REELS[i].scenes.length;
     if (x < 0.3){ player.scene = Math.max(0, player.scene - 1); player.t = 0; player.ended = false; }
     else if (x > 0.7){ if (player.scene < n - 1){ player.scene++; player.t = 0; } }
@@ -519,7 +746,7 @@ const STEPS = [
   {label:'งบก่อนเข้าตลาด', go:{screen:'ipo', ipo:'phat', tab:'fin'}},
   {label:'ตรวจข่าว', go:{screen:'ipo', ipo:'phat', tab:'news'}},
   {label:'ถาม AI', go:{screen:'ipo', ipo:'phat', tab:'ai'}},
-  {label:'คลิปสั้น', go:{screen:'reels', reel:1}}
+  {label:'น้องฮูกเล่าข่าว', go:{screen:'reels', reel:1}}
 ];
 const NOTES = [
   {title:'ปัญหาที่ต้องแก้', tags:['Problem Clarity'], points:['ปี 2568 หุ้น IPO 11 จาก 15 บริษัทราคาต่ำกว่าราคาจอง','คนรุ่นใหม่จองตามกระแส เพราะหนังสือชี้ชวนยาวหลายร้อยหน้า','วงแหวนข้างชื่อหุ้นบอกทันทีว่าพบสัญญาณเตือนกี่ข้อ']},
@@ -527,7 +754,7 @@ const NOTES = [
   {title:'มองย้อนไปก่อนเข้าตลาด', tags:['Innovation','Technical Feasibility'], points:['กำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียวถึง 71%','ของจริงจะดึงงบ 5 ปีตอนยังเป็นบริษัทเอกชนจาก DBD DataWarehouse+ มาเทียบกับแบบ 69-1','ข้อมูลทั้งหมดเป็นข้อมูลสาธารณะ']},
   {title:'ตรวจข่าวว่าน่าเชื่อถือแค่ไหน', tags:['Responsible AI','Innovation'], points:['เทียบข่าวเรื่องเดียวกันจากหลายสื่อ ถ้าตรงกันอย่างน้อย 80% จาก 2 แหล่งขึ้นไป จึงขึ้นว่าน่าเชื่อถือ','ข่าวประชาสัมพันธ์ฉบับเดียวกันที่ลงหลายเว็บนับเป็นแหล่งเดียว','ตัวอย่าง: "ตอบรับล้นหลาม" มาจากบริษัทเอง ยืนยันไม่ได้']},
   {title:'ถาม AI ได้ แต่ AI ตอบจากการ์ดเท่านั้น', tags:['Responsible AI','Business Value'], points:['AI ตอบจากข้อมูลในการ์ดและบอกที่มาทุกครั้ง','ถ้าไม่มีข้อมูล AI จะบอกว่าไม่รู้ ไม่เดาเอง','ใช้เป็นเครื่องมือของผู้แนะนำการลงทุนเวลาคุยกับลูกค้าได้ด้วย']},
-  {title:'สรุปเป็นคลิปสั้นสำหรับคนรุ่นใหม่', tags:['Invest Like Gen Z','Innovation'], points:['คลิปสร้างจากข้อมูลในการ์ดอัตโนมัติ หุ้นทุกตัวจึงมีคลิปของตัวเองโดยไม่ต้องตัดต่อ','ทุกฉากบอกที่มาของตัวเลข และปิดท้ายด้วยคำถามก่อนจอง ไม่ใช่ปุ่มชวนซื้อ','แตะซ้ายหรือขวาเพื่อข้ามฉาก เลื่อนขึ้นเพื่อดูคลิปถัดไป']}
+  {title:'น้องฮูกเล่าข่าวเป็นคลิปสั้น', tags:['Invest Like Gen Z','Responsible AI'], points:['น้องฮูกพูดตามผลตรวจข่าว ข่าวที่ไม่ผ่านเกณฑ์ 80% จะบอกว่ายังยืนยันไม่ได้','กดปุ่ม "บทใหม่" ให้ AI เขียนบทใหม่จากการ์ดสดๆ ต่อหน้ากรรมการ','มีป้าย "บทและเสียงสร้างโดย AI" ตลอดคลิป เลื่อนลงไปมีคลิปแบบกราฟิกต่อ']}
 ];
 function stepIndex(){
   if (state.screen === 'home') return 0;
@@ -594,7 +821,7 @@ function home(){
   return `
     <div class="appbar"><div><h1>IPO Lens</h1><div class="sub">อ่านหุ้น IPO ก่อนกดจอง</div></div></div>
     <div class="fact"><b class="num">11 จาก 15</b>หุ้น IPO ปี 2568 ราคาต่ำกว่าราคาจอง<br><small>ตลาดหลักทรัพย์ฯ พ.ย. 2568 <a href="https://www.thairath.co.th/money/investment/capital_market/2893569">ที่มา</a></small></div>
-    <button class="promo" type="button" data-reelof="intro"><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span><span><b>ดูสรุปเป็นคลิปสั้น</b><span>หุ้นแต่ละตัวใน 20 วินาที</span></span><span aria-hidden="true">›</span></button>
+    <button class="promo" type="button" data-reelof="news-intro"><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span><span><b>ฟังน้องฮูกเล่าข่าว IPO</b><span>คลิปสั้นพร้อมเสียง หุ้นแต่ละตัวใน 30 วินาที</span></span><span aria-hidden="true">›</span></button>
     <div class="sec-title">เปิดจองเร็วๆ นี้ <em>ข้อมูลสมมติ</em></div>
     <div class="rows">${ids.map(id => rowHTML(IPOS[id])).join('')}</div>
     <div class="sec-title">กรณีศึกษาจากหุ้นจริง <em>เข้าตลาดแล้ว</em></div>
@@ -693,10 +920,37 @@ function ai(ipo){
     <div class="offline" id="aistatus"></div>`;
 }
 
-/* ================= AI ================= */
+/* ================= AI =================
+   On claude.ai the page uses Claude through claude.use('sample').
+   Anywhere else (GitHub Pages, your laptop) it calls AI_ENDPOINT: your own Cloudflare Worker,
+   which holds the free Gemini API key. Never put an API key in this file: the repo is public. */
+const AI_ENDPOINT = ''; // เช่น 'https://ipo-lens-ai.<ชื่อของคุณ>.workers.dev'
+
+function workerSampler(endpoint){
+  const call = async (input, opts = {}) => {
+    const messages = typeof input === 'string' ? [{role:'user', content:input}] : input;
+    const res = await fetch(endpoint, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages, json:!!opts.json}), signal:opts.signal});
+    if (res.status === 429) throw {code:'rate_limited', message:'rate limited'};
+    if (!res.ok) throw {code:'error', message:'HTTP ' + res.status};
+    const data = await res.json();
+    const text = data.text || '';
+    if (opts.onText) opts.onText({text, delta:text});
+    return {text, truncated:false};
+  };
+  const fn = (input, opts) => call(input, opts);
+  fn.json = async (input, opts = {}) => {
+    const r = await call(input, {...opts, json:true});
+    const t = r.text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+    return JSON.parse(t);
+  };
+  return fn;
+}
 let samplerP = null;
 function getSampler(){
-  if (!samplerP) samplerP = (window.claude && claude.use) ? claude.use('sample').catch(() => null) : Promise.resolve(null);
+  if (!samplerP){
+    const viaClaude = (window.claude && claude.use) ? claude.use('sample').catch(() => null) : Promise.resolve(null);
+    samplerP = viaClaude.then(s => s || (AI_ENDPOINT ? workerSampler(AI_ENDPOINT) : null));
+  }
   return samplerP;
 }
 function context(ipo){
@@ -720,7 +974,7 @@ async function ask(ipo, q){
   const status = document.getElementById('aistatus');
   const sample = await getSampler();
   if (!sample){
-    const a = CANNED[q] || 'โหมดออฟไลน์ตอบได้เฉพาะคำถามแนะนำด้านบน เปิดหน้านี้ใน claude.ai เพื่อให้ AI ตอบคำถามอื่น';
+    const a = CANNED[q] || 'โหมดออฟไลน์ตอบได้เฉพาะคำถามแนะนำด้านบน เชื่อม AI ผ่าน AI_ENDPOINT หรือเปิดหน้านี้ใน claude.ai เพื่อถามคำถามอื่น';
     bubble.textContent = a; log.push({role:'assistant', content:a});
     status.textContent = 'คำตอบตัวอย่าง (โหมดออฟไลน์)'; return;
   }
