@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IPO Lens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: presenter notes on the left, a working phone on the right. Below 900px the phone frame drops away and the app fills the screen.
+   One memorable element: the six-segment lens ring that shows, at a glance, how many warning signs an IPO carries. */
+:root{
+  --stage:#E9EDF2; --paper:#F5F7FA; --surface:#FFFFFF; --ink:#142033; --muted:#5A6679; --line:#DCE2EA;
+  --lens:#0B6F79; --lens-soft:#DDEFF0;
+  --warn:#A8640E; --warn-soft:#FBEED6; --crit:#B3352F; --crit-soft:#F8E0DE; --good:#2A7A4D; --good-soft:#DEF0E5; --na:#9AA5B4;
+  --frame:#1B2433;
+  --display:'Bai Jamjuree','IBM Plex Sans Thai','Noto Sans Thai',sans-serif;
+  --body:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --stage:#0B111B; --paper:#111A27; --surface:#18233A; --ink:#E6ECF4; --muted:#9BA9BC; --line:#2A3852;
+    --lens:#4BBAC4; --lens-soft:#123A40;
+    --warn:#E3A44C; --warn-soft:#3A2C14; --crit:#EA766E; --crit-soft:#3E1D1B; --good:#63C58F; --good-soft:#15331F; --na:#5E6B7E;
+    --frame:#000; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --stage:#0B111B; --paper:#111A27; --surface:#18233A; --ink:#E6ECF4; --muted:#9BA9BC; --line:#2A3852;
+  --lens:#4BBAC4; --lens-soft:#123A40;
+  --warn:#E3A44C; --warn-soft:#3A2C14; --crit:#EA766E; --crit-soft:#3E1D1B; --good:#63C58F; --good-soft:#15331F; --na:#5E6B7E;
+  --frame:#000; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--stage);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);line-height:1.25;margin:0;text-wrap:balance}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--lens)}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lens);outline-offset:2px;border-radius:6px}
+[hidden]{display:none !important}
+
+/* ---------- stage ---------- */
+.stage{min-height:100%;display:grid;grid-template-columns:minmax(300px,420px) auto;gap:48px;justify-content:center;align-items:center;padding:32px 24px}
+.notes{display:flex;flex-direction:column;gap:20px;max-width:420px}
+.notes .kicker{font-size:13.5px;color:var(--muted)}
+.notes h1{font-size:34px;font-weight:700;display:flex;align-items:center;gap:10px}
+.notes .pitch{margin:0;font-size:16px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.steps button{width:100%;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--muted)}
+.steps button:hover{background:var(--surface)}
+.steps .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:13px;border:1.5px solid var(--line)}
+.steps button[aria-current="step"]{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.steps button[aria-current="step"] .n{background:var(--lens);border-color:var(--lens);color:#fff}
+.notecard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:10px}
+.notecard h2{font-size:18px;font-weight:600}
+.notecard ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.crit-tags{display:flex;gap:6px;flex-wrap:wrap}
+.crit-tags span{font-size:12.5px;font-weight:500;padding:2px 10px;border-radius:999px;background:var(--lens-soft);color:var(--lens)}
+.stage-foot{font-size:12.5px;color:var(--muted);margin:0}
+
+.phone{width:390px;height:812px;border-radius:52px;background:var(--frame);padding:12px;box-shadow:0 30px 60px -20px rgba(15,25,45,.45)}
+.screen{position:relative;width:100%;height:100%;border-radius:41px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
+.statusbar{flex:none;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:13px;font-weight:600;font-family:var(--display)}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:110px;height:30px;border-radius:20px;background:var(--frame)}
+#app{flex:1;overflow-y:auto;overscroll-behavior:contain}
+@media (max-width:900px){
+  .stage{display:block;padding:0}
+  .notes{display:none}
+  .phone{width:100%;height:100%;min-height:100vh;border-radius:0;padding:0;box-shadow:none;background:var(--paper)}
+  .screen{border-radius:0;min-height:100vh}
+  .notch,.statusbar{display:none}
+}
+
+/* ---------- app ---------- */
+.pad{padding:0 18px}
+.appbar{display:flex;align-items:center;gap:10px;padding:6px 18px 12px}
+.appbar h1{font-size:22px;font-weight:700}
+.appbar .sub{font-size:13px;color:var(--muted)}
+.back{border:0;background:var(--surface);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 1px var(--line)}
+.fact{margin:0 18px 16px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.fact b{font-family:var(--display);font-size:20px;color:var(--crit);display:block;line-height:1.2}
+.fact small{color:var(--muted);font-size:12.5px}
+.sec-title{font-size:14px;font-weight:600;color:var(--muted);margin:18px 18px 8px;display:flex;justify-content:space-between;align-items:baseline}
+.sec-title em{font-style:normal;font-weight:400;font-size:12.5px}
+.rows{display:grid;gap:8px;padding:0 18px}
+.row{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left;width:100%}
+.row:hover{border-color:var(--lens)}
+.row .t{font-weight:600;display:block}
+.row .m{font-size:12.5px;color:var(--muted)}
+.chip{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.c-crit{background:var(--crit-soft);color:var(--crit)} .c-warn{background:var(--warn-soft);color:var(--warn)} .c-good{background:var(--good-soft);color:var(--good)} .c-info{background:var(--lens-soft);color:var(--lens)}
+
+.ipohead{padding:4px 18px 14px;display:grid;gap:4px}
+.ipohead h2{font-size:22px;font-weight:700}
+.ipohead .m{font-size:13px;color:var(--muted)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.kv div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.kv span{display:block;font-size:11.5px;color:var(--muted)}
+.kv b{font-family:var(--display);font-size:16px;font-weight:600}
+
+.seg{position:sticky;top:0;z-index:2;background:var(--paper);display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px 18px;border-bottom:1px solid var(--line)}
+.seg button{border:0;background:transparent;padding:7px 0;border-radius:9px;cursor:pointer;font-size:13.5px;color:var(--muted);font-weight:500}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.tab{padding:16px 18px 28px;display:grid;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.card h3{font-size:15.5px;font-weight:600;margin-bottom:6px}
+.card p{margin:0;font-size:14px}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+
+.lensbox{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.ring text{font-family:var(--display)}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:12.5px}
+.legend li{display:flex;gap:6px;align-items:flex-start}
+.legend i{flex:none;width:9px;height:9px;border-radius:3px;margin-top:5px}
+.legend .s-na{color:var(--muted)}
+.i-crit{background:var(--crit)} .i-warn{background:var(--warn)} .i-ok{background:var(--good)} .i-na{background:var(--na)}
+
+.outcome{border-left:4px solid var(--crit);background:var(--surface);border-radius:12px;padding:12px 14px;border:1px solid var(--line);border-left-width:4px}
+.outcome h3{font-size:15px}
+.outcome ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;display:grid;gap:4px}
+
+.sig{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:12px;padding:10px 12px;background:var(--surface)}
+.sig.crit{border-left-color:var(--crit)}
+.sig b{display:block;font-size:14.5px}
+.sig p{margin:3px 0 6px;font-size:13.5px}
+.srcbtn{border:0;background:var(--lens-soft);color:var(--lens);font-size:12px;padding:2px 10px;border-radius:999px;cursor:pointer}
+.srcnote{font-size:12.5px;color:var(--muted);margin-top:6px}
+.list{margin:0;padding-left:18px;display:grid;gap:5px;font-size:13.5px}
+
+.bars text{font-family:var(--body);fill:var(--muted)}
+.bars .v{fill:var(--ink);font-weight:600}
+.metric{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--line)}
+.metric:last-child{border-bottom:0}
+.metric b{font-family:var(--display);font-weight:600}
+.pe-row{display:grid;grid-template-columns:96px 1fr 52px;gap:8px;align-items:center;font-size:13px;margin-top:6px}
+.pe-bar{height:12px;border-radius:6px;background:var(--line)}
+.pe-bar.me{background:var(--lens)}
+
+.claim{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface);display:grid;gap:8px}
+.claim-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.claim-top b{font-size:14px}
+.meter{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%}
+.claim .why{font-size:12.5px;color:var(--muted)}
+.srcs{display:flex;flex-wrap:wrap;gap:6px}
+.srcs a{font-size:11.5px;text-decoration:none;padding:2px 8px;border-radius:8px;border:1px solid var(--line);color:var(--ink)}
+.srcs a.agree{border-color:var(--good);color:var(--good)}
+.srcs a.disagree{border-color:var(--crit);color:var(--crit)}
+.srcs a.copy{border-style:dashed;color:var(--muted)}
+.rule{font-size:12.5px;background:var(--lens-soft);border-radius:12px;padding:10px 12px}
+
+.chat{display:grid;gap:10px}
+.bubble{max-width:88%;padding:9px 12px;border-radius:14px;font-size:14px;white-space:pre-wrap}
+.bubble.me{justify-self:end;background:var(--lens);color:#fff;border-bottom-right-radius:4px}
+.bubble.ai{justify-self:start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.suggest{display:flex;flex-wrap:wrap;gap:6px}
+.suggest button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer}
+.composer{display:grid;grid-template-columns:1fr auto;gap:8px}
+.composer input,textarea{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px;width:100%}
+textarea{min-height:76px;resize:vertical}
+.btn{border:0;background:var(--lens);color:#fff;border-radius:12px;padding:9px 14px;cursor:pointer;font-weight:500}
+.btn:disabled{opacity:.5;cursor:default}
+.offline{font-size:12px;color:var(--muted)}
+.disclaimer{font-size:11.5px;color:var(--muted);padding:0 18px 20px;margin:0}
+@media (prefers-reduced-motion: no-preference){
+  .tab{animation:fade .2s ease-out}
+  @keyframes fade{from{opacity:.3}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <aside class="notes" aria-label="โน้ตสำหรับการนำเสนอ">
+    <div>
+      <div class="kicker">เดโมสำหรับ Future Finance Innovation Hackathon 2026 โจทย์ AI for Insight</div>
+      <h1><svg width="34" height="34" viewBox="0 0 30 30" aria-hidden="true"><circle cx="13" cy="13" r="9" fill="none" stroke="var(--lens)" stroke-width="3"/><path d="M20 20l7 7" stroke="var(--lens)" stroke-width="3.5" stroke-linecap="round"/><path d="M8 15.5l3-3 2.5 2 3.5-5" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>IPO Lens</h1>
+    </div>
+    <p class="pitch">อ่านหุ้น IPO ย้อนไปถึงงบก่อนเข้าตลาด แล้วสรุปเป็นการ์ดหน้าเดียวก่อนกดจอง</p>
+    <ol class="steps" id="steps"></ol>
+    <div class="notecard" id="notecard" aria-live="polite"></div>
+    <p class="stage-foot">PHAT ใช้ข้อมูลจริงจากข่าวที่เผยแพร่ บริษัทอื่นเป็นข้อมูลสมมติ การ์ดไม่ใช่คำแนะนำการลงทุน</p>
+  </aside>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch" aria-hidden="true"></div>
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span>5G</span></div>
+      <div id="app"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= data ================= */
+const CHECKS = [
+  {key:'profit', label:'กำไรพุ่งหรือกระจุกในช่วงสั้น'},
+  {key:'margin', label:'อัตรากำไรล่าสุดลดลง'},
+  {key:'pe', label:'ราคาแพงกว่าบริษัทในกลุ่ม'},
+  {key:'debt', label:'หนี้และภาระดอกเบี้ยสูงขึ้น'},
+  {key:'conc', label:'รายได้กระจุกที่ลูกค้าไม่กี่ราย'},
+  {key:'sellers', label:'ผู้ถือหุ้นเดิมพร้อมขายหลังเข้าตลาด'}
+];
+
+const SRC = {
+  iq_price:{outlet:'InfoQuest', title:'PHAT เคาะราคา IPO ที่ 2.00 บาท P/E 5.91 เท่า', url:'https://www.infoquest.co.th/?p=624008'},
+  iq_list:{outlet:'InfoQuest', title:'ตลาด mai รับ PHAT เข้าเทรดวันแรก 20 ส.ค.', url:'https://www.infoquest.co.th/?p=633960'},
+  iq_insight:{outlet:'InfoQuest', title:'IPOInsight: PHAT หุ้นปาล์มน้ำมัน', url:'https://www.infoquest.co.th/?p=621675'},
+  iq_view:{outlet:'InfoQuest', title:'มองมุมต่าง: PHAT เทรดวันแรกต่ำจอง', url:'https://www.infoquest.co.th/?p=637540'},
+  bkk:{outlet:'กรุงเทพธุรกิจ', title:'PHAT เทรดวันแรกต่ำจอง 8% พร้อมบทวิเคราะห์ บล.ทิสโก้', url:'https://www.bangkokbiznews.com/finance/ipo/1248220'},
+  post:{outlet:'โพสต์ทูเดย์', title:'PHAT เปิดเทรดวันแรก 1.84 บาท ต่ำจอง 8%', url:'https://www.posttoday.com/business/stockholder/747261'},
+  pr1:{outlet:'Share2Trade', title:'PHAT เปิดจองวันแรก นักลงทุนตอบรับล้นหลาม', url:'https://www.share2trade.com/news/57817/'},
+  pr2:{outlet:'Wealthy Thai', title:'PHAT เปิดจองวันแรก นักลงทุนตอบรับล้นหลาม', url:'https://www.wealthythai.com/th/updates/news-highlight/50492'},
+  pr3:{outlet:'มิติหุ้น', title:'PHAT เปิดจองวันแรก นักลงทุนตอบรับล้นหลาม', url:'https://www.mitihoon.com/?p=664329'}
+};
+
+const IPOS = {
+  phat:{
+    id:'phat', real:true, name:'บมจ. กลุ่มภัทร', ticker:'PHAT', market:'mai', sector:'น้ำมันปาล์มดิบ',
+    status:'เข้าตลาดแล้ว 20 ส.ค. 2569', when:'จอง 4–6 ส.ค. 2569',
+    price:2.00, raise:237.72, pe:5.91, peerPe:8.72, peerName:'กลุ่มน้ำมันปาล์ม',
+    checks:{profit:'crit', margin:'crit', pe:'ok', debt:'warn', conc:'warn', sellers:'warn'},
+    summary:'P/E ดูถูก แต่กำไรที่ใช้คิด P/E มาจากไตรมาสเดียวเกือบทั้งหมด และอัตรากำไรล่าสุดหดลงครึ่งหนึ่ง',
+    signals:[
+      {key:'profit', level:'crit', title:'กำไรที่ใช้คิด P/E มาจากไตรมาสเดียว 71%', text:'P/E 5.91 เท่า คิดจากกำไร 4 ไตรมาส (เม.ย. 68 ถึง มี.ค. 69) รวม 159.62 ล้านบาท ในนั้น 113.75 ล้านบาทมาจากไตรมาส 2/2568 ไตรมาสเดียว', src:'กำไรรวมและฐานที่ใช้คิด P/E จาก InfoQuest กำไรไตรมาส 2/2568 จาก InfoQuest (มองมุมต่าง) สัดส่วน 71% IPO Lens คำนวณเอง'},
+      {key:'margin', level:'crit', title:'อัตรากำไรขั้นต้นหดลงครึ่งหนึ่ง', text:'ลดจาก 8.13% ในปี 2568 เหลือ 4.09% ในไตรมาส 1/2569 กำไรสุทธิไตรมาสนั้นเหลือ 3.47 ล้านบาท หรือ 0.44% ของรายได้', src:'งบไตรมาส 1/2569 ซึ่งเปิดเผยก่อนวันจอง อ้างอิงบทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
+      {key:'debt', level:'warn', title:'ความสามารถจ่ายดอกเบี้ยลดลงมาก', text:'อัตราส่วนความสามารถชำระดอกเบี้ยลดจาก 7.29 เท่า (ปี 2568) เหลือ 1.43 เท่า (ไตรมาส 1/2569) เงินกู้ระยะสั้นเพิ่มเป็น 430 ล้านบาท', src:'บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
+      {key:'conc', level:'warn', title:'ลูกค้า 5 รายใหญ่คิดเป็น 84.5% ของรายได้', text:'ถ้าลูกค้ารายใหญ่ลดคำสั่งซื้อ รายได้จะกระทบหนัก', src:'ข้อมูลไตรมาส 1/2569 อ้างอิงบทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
+      {key:'sellers', level:'warn', title:'กองทุนที่ถือหุ้นเดิมมีแผนขายหลังเข้าตลาด', text:'นักวิเคราะห์ระบุว่ากองทุน PE ถือหุ้นเกือบ 20% ของหุ้น IPO และมีเป้าหมายขายทำกำไรหลังเข้าตลาด', src:'บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'}
+    ],
+    strengths:['รายได้ปี 2568 โต 46% เป็น 2,377.51 ล้านบาท และเริ่มส่งออกไปอินเดีย','โรงงานอยู่ที่กระบี่ ใกล้แหล่งวัตถุดิบ ซึ่งผลิตปาล์มราว 20.9% ของทั้งประเทศ','P/E 5.91 เท่า ต่ำกว่าค่าเฉลี่ยกลุ่มที่ 8.72 เท่า'],
+    questions:['กำไรไตรมาส 2/2568 ที่สูงถึง 113.75 ล้านบาทมาจากอะไร และจะเกิดซ้ำได้ไหม','ทำไมอัตรากำไรไตรมาส 1/2569 ลดลงครึ่งหนึ่ง แล้วไตรมาส 2 เป็นอย่างไร','กองทุนที่ถือหุ้นเดิมติดช่วงห้ามขายนานแค่ไหน'],
+    after:[
+      {text:'เปิดเทรดวันแรกที่ 1.84 บาท ต่ำกว่าราคาจอง 8%', src:'post'},
+      {text:'งบไตรมาส 2/2569 ขาดทุน 0.73 ล้านบาท ประกาศวันที่ 19 ส.ค. หลังปิดจองแล้ว', src:'iq_view'},
+      {text:'กำไร 6 เดือนแรกปี 2569 เหลือ 2.73 ล้านบาท จาก 66.69 ล้านบาทในปีก่อน', src:'iq_view'}
+    ],
+    fin:{
+      kind:'quarters',
+      labels:['Q1/68','Q2/68','Q3–Q4/68','Q1/69','Q2/69'],
+      profit:[-47.06,113.75,42.40,3.47,-0.73],
+      hot:1, after:4,
+      note:'Q1/68 และ Q3–Q4/68 คำนวณจากตัวเลขรายปีและครึ่งปีที่เปิดเผย',
+      metrics:[
+        ['รายได้ปี 2567 → 2568','1,627.99 → 2,377.51 ล้านบาท'],
+        ['กำไรสุทธิปี 2567 → 2568','44.67 → 109.09 ล้านบาท'],
+        ['อัตรากำไรขั้นต้น 2568 → Q1/69','8.13% → 4.09%'],
+        ['หนี้สินต่อทุน ก่อน → หลัง IPO','1.88 → ประมาณ 1.1 เท่า']
+      ]
+    }
+  },
+  spack:{
+    id:'spack', real:false, name:'บมจ. สยามแพ็ค', ticker:'SPACK', market:'mai', sector:'บรรจุภัณฑ์',
+    status:'เปิดจองเร็วๆ นี้', when:'จอง 17–19 พ.ย. 2569',
+    price:3.20, raise:640, pe:28, peerPe:16, peerName:'กลุ่มบรรจุภัณฑ์',
+    checks:{profit:'crit', margin:'ok', pe:'warn', debt:'warn', conc:'ok', sellers:'na'},
+    summary:'รายได้โตสม่ำเสมอ แต่กำไรพุ่งขึ้นเฉพาะปีก่อนยื่น และราคาแพงกว่ากลุ่มเกือบเท่าตัว',
+    signals:[
+      {key:'profit', level:'crit', title:'กำไรพุ่งเฉพาะปีก่อนยื่น', text:'กำไรปี 2567 อยู่ที่ 88 ล้านบาท สูงกว่าค่าเฉลี่ย 4 ปีก่อนหน้า (34.5 ล้านบาท) ประมาณ 2.5 เท่า ขณะที่รายได้โตแค่ 12%', src:'งบปี 2563–2567 จาก DBD DataWarehouse+ (ข้อมูลสมมติ)'},
+      {key:'pe', level:'warn', title:'ราคาแพงกว่าบริษัทในกลุ่ม', text:'P/E 28 เท่า เทียบกับค่าเฉลี่ยกลุ่ม 16 เท่า', src:'แบบ 69-1 ส่วนข้อมูลการเสนอขาย (ข้อมูลสมมติ)'},
+      {key:'debt', level:'warn', title:'เงินระดมทุนเกือบครึ่งใช้คืนหนี้', text:'45% ของเงินที่ระดมได้ใช้ชำระเงินกู้ธนาคาร', src:'แบบ 69-1 ส่วนวัตถุประสงค์การใช้เงิน (ข้อมูลสมมติ)'}
+    ],
+    strengths:['รายได้โตต่อเนื่อง 5 ปี เฉลี่ยปีละ 9.5%','ลูกค้า 5 รายใหญ่รวมกันไม่ถึง 30% ของยอดขาย'],
+    questions:['กำไรปี 2567 มาจากรายการพิเศษหรือเปล่า','หลังคืนหนี้แล้ว แผนขยายโรงงานจะใช้เงินจากไหน'],
+    fin:{kind:'years', labels:['2563','2564','2565','2566','2567'], revenue:[820,910,980,1050,1180], profit:[32,35,30,41,88], hot:4}
+  },
+  cmate:{
+    id:'cmate', real:false, name:'บมจ. คลาวด์เมท', ticker:'CMATE', market:'mai', sector:'ซอฟต์แวร์คลาวด์',
+    status:'เปิดจองเร็วๆ นี้', when:'จอง 1–3 ธ.ค. 2569',
+    price:2.10, raise:420, pe:41, peerPe:30, peerName:'กลุ่มเทคโนโลยี',
+    checks:{profit:'ok', margin:'ok', pe:'warn', debt:'ok', conc:'crit', sellers:'warn'},
+    summary:'โตเร็วและไม่มีหนี้ แต่รายได้เกือบ 4 ใน 10 ส่วนมาจากบริษัทในเครือผู้ถือหุ้นใหญ่',
+    signals:[
+      {key:'conc', level:'crit', title:'รายได้ 38% มาจากบริษัทในเครือผู้ถือหุ้นใหญ่', text:'ถ้าบริษัทในเครือลดการใช้บริการ รายได้จะหายไปเกือบ 4 ใน 10 ส่วน', src:'แบบ 69-1 ส่วนรายการระหว่างกัน (ข้อมูลสมมติ)'},
+      {key:'pe', level:'warn', title:'ราคาแพงกว่าบริษัทในกลุ่ม', text:'P/E 41 เท่า เทียบกับค่าเฉลี่ยกลุ่ม 30 เท่า', src:'แบบ 69-1 ส่วนข้อมูลการเสนอขาย (ข้อมูลสมมติ)'},
+      {key:'sellers', level:'warn', title:'ผู้ถือหุ้นเดิม 12% ไม่ติดช่วงห้ามขาย', text:'หุ้นกลุ่มนี้ขายได้ตั้งแต่วันแรกที่เข้าตลาด', src:'แบบ 69-1 ส่วนโครงสร้างผู้ถือหุ้น (ข้อมูลสมมติ)'}
+    ],
+    strengths:['รายได้โตเฉลี่ยปีละ 41% ใน 4 ปี','ไม่มีเงินกู้ยืมจากธนาคาร'],
+    questions:['สัญญากับบริษัทในเครือมีอายุกี่ปี และกำหนดราคาอย่างไร','ถ้าไม่นับบริษัทในเครือ ลูกค้าภายนอกโตเร็วแค่ไหน'],
+    fin:{kind:'years', labels:['2563','2564','2565','2566','2567'], revenue:[120,180,260,350,470], profit:[-8,4,12,19,27], hot:-1}
+  }
+};
+
+/* News check: only PHAT has a real news set. Copies of one press release count as one source. */
+const CLAIMS = [
+  {id:'c1', text:'ราคา IPO 2.00 บาทต่อหุ้น', topicSources:['iq_price','iq_view','bkk','post','pr1'], agree:['iq_price','iq_view','bkk','post','pr1'], disagree:[], copies:[]},
+  {id:'c2', text:'เปิดเทรดวันแรกที่ 1.84 บาท ต่ำจอง 8%', topicSources:['bkk','post'], agree:['bkk','post'], disagree:[], copies:[]},
+  {id:'c3', text:'นักลงทุนตอบรับการจองล้นหลาม', topicSources:['pr1','pr2','pr3'], agree:['pr1','pr2','pr3'], disagree:[], copies:['pr2','pr3'], pr:true,
+   why:'ทั้ง 3 ข่าวเป็นข่าวประชาสัมพันธ์ฉบับเดียวกันของบริษัท จึงนับเป็นแหล่งเดียว และยังไม่มีสื่อที่เป็นอิสระรายงานยอดจองจริง'},
+  {id:'c4', text:'โรงงานมีกำลังผลิต 90 ตันต่อชั่วโมง', topicSources:['iq_insight','bkk'], agree:['iq_insight'], disagree:['bkk'], copies:[],
+   why:'กรุงเทพธุรกิจรายงาน 60 ตันต่อชั่วโมง และบอกว่าส่วนขยายเป็น 90 ตันยังอยู่ระหว่างทดสอบ ตัวเลขจึงขึ้นกับว่านับก่อนหรือหลังขยาย'},
+  {id:'c5', text:'งบไตรมาส 2/2569 ขาดทุน 0.73 ล้านบาท', topicSources:['iq_view'], agree:['iq_view'], disagree:[], copies:[],
+   why:'พบสื่อรายงานเพียงแหล่งเดียว ควรตรวจกับงบที่บริษัทประกาศในเว็บตลาดหลักทรัพย์ฯ'}
+];
+const outletOf = id => SRC[id].outlet;
+function scoreClaim(c){
+  const indep = new Set(c.topicSources.filter(id => !c.copies.includes(id)).map(outletOf));
+  const agreeOut = new Set(c.agree.filter(id => !c.copies.includes(id)).map(outletOf));
+  const disOut = new Set(c.disagree.map(outletOf));
+  const n = new Set([...agreeOut, ...disOut]).size || indep.size;
+  const pct = n ? Math.round(agreeOut.size / n * 100) : 0;
+  let verdict, cls;
+  if (c.pr && indep.size < 2){ verdict = 'ยืนยันไม่ได้ มาจากบริษัทเอง'; cls = 'c-warn'; }
+  else if (n < 2){ verdict = 'มีแหล่งเดียว ยังไม่พอยืนยัน'; cls = 'c-warn'; }
+  else if (pct >= 80){ verdict = 'น่าเชื่อถือ'; cls = 'c-good'; }
+  else { verdict = 'ข้อมูลยังขัดกัน'; cls = 'c-crit'; }
+  return {n, pct, verdict, cls};
+}
+
+/* ================= state ================= */
+const state = {screen:'home', ipo:null, tab:'summary'};
+const chats = {};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => n.toLocaleString('th-TH', {maximumFractionDigits:2});
+const STEPS = [
+  {label:'หน้าแรก', go:{screen:'home'}},
+  {label:'การ์ดของ PHAT', go:{screen:'ipo', ipo:'phat', tab:'summary'}},
+  {label:'งบก่อนเข้าตลาด', go:{screen:'ipo', ipo:'phat', tab:'fin'}},
+  {label:'ตรวจข่าว', go:{screen:'ipo', ipo:'phat', tab:'news'}},
+  {label:'ถาม AI', go:{screen:'ipo', ipo:'phat', tab:'ai'}}
+];
+const NOTES = [
+  {title:'ปัญหาที่ต้องแก้', tags:['Problem Clarity'], points:['ปี 2568 หุ้น IPO 11 จาก 15 บริษัทราคาต่ำกว่าราคาจอง','คนรุ่นใหม่จองตามกระแส เพราะหนังสือชี้ชวนยาวหลายร้อยหน้า','วงแหวนข้างชื่อหุ้นบอกทันทีว่าพบสัญญาณเตือนกี่ข้อ']},
+  {title:'การ์ดหน้าเดียว จากหุ้นจริง', tags:['Innovation','Responsible AI'], points:['PHAT ขายที่ P/E 5.91 เท่า ดูถูก แต่การ์ดเตือนได้ 5 จาก 6 เรื่องด้วยข้อมูลที่มีก่อนวันจอง','ผลจริง: เปิดเทรดวันแรกต่ำจอง 8% และไตรมาสถัดมาขาดทุน','ทุกสัญญาณกดดูที่มาได้ ไม่มีคำว่าควรซื้อหรือไม่ควรซื้อ']},
+  {title:'มองย้อนไปก่อนเข้าตลาด', tags:['Innovation','Technical Feasibility'], points:['กำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียวถึง 71%','ของจริงจะดึงงบ 5 ปีตอนยังเป็นบริษัทเอกชนจาก DBD DataWarehouse+ มาเทียบกับแบบ 69-1','ข้อมูลทั้งหมดเป็นข้อมูลสาธารณะ']},
+  {title:'ตรวจข่าวว่าน่าเชื่อถือแค่ไหน', tags:['Responsible AI','Innovation'], points:['เทียบข่าวเรื่องเดียวกันจากหลายสื่อ ถ้าตรงกันอย่างน้อย 80% จาก 2 แหล่งขึ้นไป จึงขึ้นว่าน่าเชื่อถือ','ข่าวประชาสัมพันธ์ฉบับเดียวกันที่ลงหลายเว็บนับเป็นแหล่งเดียว','ตัวอย่าง: "ตอบรับล้นหลาม" มาจากบริษัทเอง ยืนยันไม่ได้']},
+  {title:'ถาม AI ได้ แต่ AI ตอบจากการ์ดเท่านั้น', tags:['Responsible AI','Business Value'], points:['AI ตอบจากข้อมูลในการ์ดและบอกที่มาทุกครั้ง','ถ้าไม่มีข้อมูล AI จะบอกว่าไม่รู้ ไม่เดาเอง','ใช้เป็นเครื่องมือของผู้แนะนำการลงทุนเวลาคุยกับลูกค้าได้ด้วย']}
+];
+function stepIndex(){
+  if (state.screen === 'home') return 0;
+  return {summary:1, fin:2, news:3, ai:4}[state.tab] ?? 1;
+}
+
+/* ================= pieces ================= */
+function ring(ipo, size){
+  const r = size * 0.38, c = size / 2, C = 2 * Math.PI * r, seg = C / 6, gap = size > 60 ? 6 : 4;
+  const col = {crit:'var(--crit)', warn:'var(--warn)', ok:'var(--good)', na:'var(--na)'};
+  const found = CHECKS.filter(k => ['crit','warn'].includes(ipo.checks[k.key])).length;
+  let s = `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="พบสัญญาณเตือน ${found} จาก 6 เรื่อง">`;
+  CHECKS.forEach((k, i) => {
+    s += `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${col[ipo.checks[k.key]]}" stroke-width="${size * 0.11}" stroke-dasharray="${seg - gap} ${C - seg + gap}" stroke-dashoffset="${-i * seg}" transform="rotate(-90 ${c} ${c})" stroke-linecap="butt"/>`;
+  });
+  s += `<text x="${c}" y="${c + size * 0.08}" text-anchor="middle" font-size="${size * 0.26}" font-weight="700" fill="var(--ink)">${found}<tspan font-size="${size * 0.14}" fill="var(--muted)">/6</tspan></text></svg>`;
+  return s;
+}
+function foundCount(ipo){ return CHECKS.filter(k => ['crit','warn'].includes(ipo.checks[k.key])).length; }
+function levelChip(ipo){
+  const n = foundCount(ipo), crit = Object.values(ipo.checks).includes('crit');
+  return `<span class="chip ${n === 0 ? 'c-good' : crit ? 'c-crit' : 'c-warn'}">${n ? 'พบ ' + n + ' สัญญาณ' : 'ไม่พบสัญญาณ'}</span>`;
+}
+
+function bars(ipo){
+  const f = ipo.fin, W = 330;
+  if (f.kind === 'quarters'){
+    const vals = f.profit, max = Math.max(...vals), min = Math.min(...vals, 0), span = max - min, h = 130, top = 26;
+    const base = top + h * (max / span), colW = (W - 10) / vals.length;
+    let s = `<svg class="bars" viewBox="0 0 ${W} 200" width="100%" role="img" aria-label="กำไรสุทธิรายไตรมาสของ ${ipo.ticker}">`;
+    s += `<defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="var(--muted)" stroke-width="2"/></pattern></defs>`;
+    s += `<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)"/>`;
+    vals.forEach((v, i) => {
+      const x = 5 + i * colW + colW * 0.2, w = colW * 0.6, bh = Math.max(Math.abs(v) / span * h, 2), y = v >= 0 ? base - bh : base;
+      const fill = i === f.after ? 'url(#hatch)' : i === f.hot ? 'var(--crit)' : v < 0 ? 'var(--na)' : 'var(--lens)';
+      s += `<rect x="${x}" y="${y}" width="${w}" height="${bh}" rx="3" fill="${fill}"/>`;
+      s += `<text class="v num" x="${x + w / 2}" y="${v >= 0 ? y - 5 : y + bh + 13}" font-size="11.5" text-anchor="middle">${fmt(v)}</text>`;
+      s += `<text x="${x + w / 2}" y="194" font-size="11" text-anchor="middle">${f.labels[i]}</text>`;
+    });
+    return s + '</svg>';
+  }
+  const row = (vals, top, h, label, hotOn) => {
+    const max = Math.max(...vals, 0), min = Math.min(...vals, 0), span = (max - min) || 1, base = top + h * (max / span), colW = (W - 60) / vals.length;
+    let o = `<text x="0" y="${top + h / 2 + 4}" font-size="12" style="fill:var(--ink);font-weight:600">${label}</text><line x1="60" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)"/>`;
+    vals.forEach((v, i) => {
+      const x = 60 + i * colW + colW * 0.2, w = colW * 0.6, bh = Math.max(Math.abs(v) / span * h, 2), y = v >= 0 ? base - bh : base;
+      const fill = hotOn && i === ipo.fin.hot ? 'var(--crit)' : v < 0 ? 'var(--na)' : 'var(--lens)';
+      o += `<rect x="${x}" y="${y}" width="${w}" height="${bh}" rx="3" fill="${fill}"/><text class="v num" x="${x + w / 2}" y="${v >= 0 ? y - 4 : y + bh + 12}" font-size="11" text-anchor="middle">${fmt(v)}</text>`;
+    });
+    return o;
+  };
+  let s = `<svg class="bars" viewBox="0 0 ${W} 220" width="100%" role="img" aria-label="รายได้และกำไรสุทธิ 5 ปีของ ${ipo.ticker}">`;
+  s += row(f.revenue, 18, 60, 'รายได้', false) + row(f.profit, 112, 60, 'กำไรสุทธิ', true);
+  const colW = (W - 60) / f.labels.length;
+  f.labels.forEach((l, i) => { s += `<text x="${60 + i * colW + colW / 2}" y="214" font-size="11" text-anchor="middle">${l}</text>`; });
+  return s + '</svg>';
+}
+
+/* ================= screens ================= */
+function home(){
+  const ids = ['spack','cmate'];
+  const rowHTML = ipo => `<button class="row" type="button" data-open="${ipo.id}">${ring(ipo, 48)}<span><span class="t">${esc(ipo.name)}</span><span class="m">${ipo.ticker} ${ipo.market} ${ipo.when}</span></span>${levelChip(ipo)}</button>`;
+  return `
+    <div class="appbar"><div><h1>IPO Lens</h1><div class="sub">อ่านหุ้น IPO ก่อนกดจอง</div></div></div>
+    <div class="fact"><b class="num">11 จาก 15</b>หุ้น IPO ปี 2568 ราคาต่ำกว่าราคาจอง<br><small>ตลาดหลักทรัพย์ฯ พ.ย. 2568 <a href="https://www.thairath.co.th/money/investment/capital_market/2893569">ที่มา</a></small></div>
+    <div class="sec-title">เปิดจองเร็วๆ นี้ <em>ข้อมูลสมมติ</em></div>
+    <div class="rows">${ids.map(id => rowHTML(IPOS[id])).join('')}</div>
+    <div class="sec-title">กรณีศึกษาจากหุ้นจริง <em>เข้าตลาดแล้ว</em></div>
+    <div class="rows">${rowHTML(IPOS.phat)}</div>
+    <p class="disclaimer" style="margin-top:18px">วงแหวนแบ่งเป็น 6 ช่อง แต่ละช่องคือเรื่องที่ระบบตรวจ สีแดงและส้มคือพบสัญญาณ สีเขียวคือไม่พบ สีเทาคือยังไม่มีข้อมูล</p>`;
+}
+
+function ipoScreen(ipo){
+  const tabs = [['summary','สรุป'],['fin','งบ'],['news','ข่าว'],['ai','ถาม AI']];
+  return `
+    <div class="appbar"><button class="back" type="button" data-back aria-label="กลับหน้าแรก"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="sub">${ipo.real ? 'กรณีศึกษาจากหุ้นจริง' : 'ข้อมูลสมมติ'}</div></div>
+    <div class="ipohead">
+      <h2>${esc(ipo.name)} <span class="muted" style="font-weight:500;font-size:16px">${ipo.ticker}</span></h2>
+      <div class="m">${ipo.market} หมวด${esc(ipo.sector)} ${ipo.when}</div>
+      <div class="kv">
+        <div><span>ราคาจอง</span><b class="num">${ipo.price.toFixed(2)} บาท</b></div>
+        <div><span>ระดมทุน</span><b class="num">${fmt(ipo.raise)} ลบ.</b></div>
+        <div><span>P/E</span><b class="num">${ipo.pe} เท่า</b></div>
+      </div>
+    </div>
+    <div class="seg" role="tablist">${tabs.map(([k, l]) => `<button role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}</button>`).join('')}</div>
+    <div class="tab">${({summary, fin, news, ai})[state.tab](ipo)}</div>
+    <p class="disclaimer">การ์ดนี้ให้ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำให้ซื้อหรือไม่ซื้อ</p>`;
+}
+
+function summary(ipo){
+  return `
+    <div class="card"><div class="lensbox">${ring(ipo, 120)}
+      <ul class="legend">${CHECKS.map(k => { const s = ipo.checks[k.key]; return `<li class="${s === 'na' ? 's-na' : ''}"><i class="i-${s}"></i>${k.label}${s === 'na' ? ' (ยังไม่มีข้อมูล)' : ''}</li>`; }).join('')}</ul>
+    </div><p style="margin-top:12px">${esc(ipo.summary)}</p></div>
+    ${ipo.after ? `<div class="outcome"><h3>เกิดอะไรขึ้นหลังเข้าตลาด</h3><p class="small muted" style="margin:2px 0 0">การ์ดนี้ใช้เฉพาะข้อมูลที่มีก่อนวันจอง ${ipo.when.replace('จอง ', '')} ส่วนนี้คือผลจริง</p><ul>${ipo.after.map(a => `<li>${esc(a.text)} <a class="small" href="${SRC[a.src].url}">${SRC[a.src].outlet}</a></li>`).join('')}</ul></div>` : ''}
+    <div style="display:grid;gap:8px">
+      <h3 style="font-size:15.5px">สัญญาณที่ต้องระวัง</h3>
+      ${ipo.signals.map((s, i) => `<div class="sig ${s.level}"><b>${esc(s.title)}</b><p>${esc(s.text)}</p><button class="srcbtn" type="button" aria-expanded="false" aria-controls="src-${i}" data-src>ดูที่มาของตัวเลข</button><div class="srcnote" id="src-${i}" hidden>${esc(s.src)}</div></div>`).join('')}
+    </div>
+    <div class="card"><h3>จุดแข็ง</h3><ul class="list">${ipo.strengths.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+    <div class="card"><h3>คำถามที่ควรถามก่อนจอง</h3><ol class="list">${ipo.questions.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`;
+}
+
+function fin(ipo){
+  const f = ipo.fin, peMax = Math.max(ipo.pe, ipo.peerPe) * 1.15;
+  return `
+    <div class="card">
+      <h3>${f.kind === 'quarters' ? 'กำไรสุทธิรายไตรมาส (ล้านบาท)' : 'งบ 5 ปีตอนยังเป็นบริษัทเอกชน (ล้านบาท)'}</h3>
+      <p class="small muted" style="margin-bottom:8px">${f.kind === 'quarters' ? 'แท่งสีแดงคือไตรมาสที่ทำกำไรเป็น 71% ของกำไรที่ใช้คิด P/E แท่งลายคือไตรมาสที่ประกาศหลังปิดจอง' : 'จากงบที่ยื่นต่อกรมพัฒนาธุรกิจการค้า แท่งสีแดงคือปีที่กำไรพุ่งผิดปกติก่อนยื่นขอเข้าตลาด'}</p>
+      ${bars(ipo)}
+      ${f.note ? `<p class="small muted" style="margin-top:6px">${f.note}</p>` : ''}
+    </div>
+    ${f.metrics ? `<div class="card"><h3>ตัวเลขสำคัญ</h3>${f.metrics.map(([a, b]) => `<div class="metric"><span>${a}</span><b class="num">${b}</b></div>`).join('')}<p class="small muted" style="margin-top:6px">ที่มา: InfoQuest และบทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ</p></div>` : ''}
+    <div class="card"><h3>ราคาเทียบกับบริษัทในกลุ่ม</h3>
+      <div class="pe-row"><span>${ipo.ticker}</span><div class="pe-bar me" style="width:${ipo.pe / peMax * 100}%"></div><span class="num">${ipo.pe} เท่า</span></div>
+      <div class="pe-row"><span>${esc(ipo.peerName)}</span><div class="pe-bar" style="width:${ipo.peerPe / peMax * 100}%"></div><span class="num">${ipo.peerPe} เท่า</span></div>
+      ${ipo.real ? '<p class="small muted" style="margin-top:8px">P/E ต่ำไม่ได้แปลว่าถูกเสมอ ถ้ากำไรที่ใช้คิดมาจากช่วงที่ดีผิดปกติ</p>' : ''}
+    </div>`;
+}
+
+function news(ipo){
+  if (!ipo.real) return `<div class="card"><h3>ยังไม่มีข่าวในเดโม</h3><p>เดโมนี้ตรวจข่าวเฉพาะ PHAT ซึ่งเป็นหุ้นจริง</p></div>`;
+  return `
+    <div class="rule"><b>เกณฑ์:</b> นับสื่อที่เป็นอิสระต่อกัน ข่าวประชาสัมพันธ์ฉบับเดียวกันนับเป็น 1 แหล่ง ข่าวจะขึ้นว่า "น่าเชื่อถือ" เมื่อมีอย่างน้อย 2 แหล่ง และตรงกันอย่างน้อย 80%</div>
+    ${CLAIMS.map(c => { const r = scoreClaim(c); const barCol = r.cls === 'c-good' ? 'var(--good)' : r.cls === 'c-crit' ? 'var(--crit)' : 'var(--warn)';
+      return `<div class="claim">
+        <div class="claim-top"><b>${esc(c.text)}</b><span class="chip ${r.cls}">${r.verdict}</span></div>
+        <div class="meter" aria-hidden="true"><i style="width:${r.pct}%;background:${barCol}"></i></div>
+        <div class="small muted num">ตรงกัน ${r.pct}% จาก ${r.n} แหล่งที่เป็นอิสระ</div>
+        ${c.why ? `<div class="why">${esc(c.why)}</div>` : ''}
+        <div class="srcs">${c.topicSources.map(id => `<a href="${SRC[id].url}" class="${c.copies.includes(id) ? 'copy' : c.disagree.includes(id) ? 'disagree' : 'agree'}" title="${esc(SRC[id].title)}">${SRC[id].outlet}${c.copies.includes(id) ? ' (สำเนา)' : ''}</a>`).join('')}</div>
+      </div>`; }).join('')}
+    <div class="card"><h3>ได้ข่าวมาจากที่อื่น ลองวางตรวจ</h3>
+      <p class="small muted" style="margin-bottom:8px">AI จะเทียบกับข่าวที่รวบรวมไว้ด้านบน</p>
+      <textarea id="pasted" aria-label="ข้อความข่าวที่ต้องการตรวจ" placeholder="เช่น PHAT ยอดจองทะลุ 10 เท่า"></textarea>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:8px"><button class="btn" type="button" id="checknews">ตรวจข่าวนี้</button><span class="offline" id="newsstatus"></span></div>
+      <div id="newsresult" class="small" style="margin-top:8px"></div>
+    </div>`;
+}
+
+const SUGGEST = {
+  phat:['ทำไม P/E ต่ำแต่ยังต้องระวัง','กำไรไตรมาส 2/2568 มาจากอะไร','สรุปให้เพื่อนฟังใน 3 บรรทัด'],
+  spack:['กำไรปี 2567 ผิดปกติแค่ไหน','สรุปให้เพื่อนฟังใน 3 บรรทัด'],
+  cmate:['รายได้จากบริษัทในเครือเสี่ยงยังไง','สรุปให้เพื่อนฟังใน 3 บรรทัด']
+};
+const CANNED = {
+  'ทำไม P/E ต่ำแต่ยังต้องระวัง':'P/E 5.91 เท่า คิดจากกำไร 4 ไตรมาสรวม 159.62 ล้านบาท แต่ 113.75 ล้านบาทมาจากไตรมาส 2/2568 ไตรมาสเดียว ถ้าไม่นับไตรมาสนั้น กำไรที่เหลือน้อยมาก และไตรมาส 1/2569 อัตรากำไรขั้นต้นก็ลดเหลือ 4.09%\nที่มา: InfoQuest, บทวิเคราะห์ บล.ทิสโก้',
+  'กำไรไตรมาส 2/2568 มาจากอะไร':'ข้อมูลในการ์ดไม่ได้บอกว่ากำไรไตรมาสนั้นมาจากอะไร บอกแค่ว่าเท่ากับ 113.75 ล้านบาท เรื่องนี้ควรถามบริษัทหรือผู้แนะนำการลงทุนก่อนจอง\nที่มา: InfoQuest',
+  'สรุปให้เพื่อนฟังใน 3 บรรทัด':'1. ราคาดูถูก แต่กำไรส่วนใหญ่มาจากไตรมาสเดียว\n2. อัตรากำไรล่าสุดหดลงครึ่งหนึ่ง และภาระดอกเบี้ยหนักขึ้น\n3. จุดแข็งคือรายได้โต 46% และโรงงานอยู่ใกล้แหล่งวัตถุดิบ\nที่มา: InfoQuest, บทวิเคราะห์ บล.ทิสโก้'
+};
+
+function ai(ipo){
+  const log = chats[ipo.id] || [];
+  return `
+    <div class="card"><p class="small">AI ตอบจากข้อมูลในการ์ดนี้เท่านั้น บอกที่มาทุกครั้ง และจะไม่แนะนำให้ซื้อหรือขาย</p></div>
+    <div class="chat" id="chatlog">${log.map(m => `<div class="bubble ${m.role === 'user' ? 'me' : 'ai'}">${esc(m.content)}</div>`).join('')}</div>
+    <div class="suggest">${(SUGGEST[ipo.id] || []).map(q => `<button type="button" data-ask="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+    <form class="composer" id="askform"><input id="askinput" aria-label="พิมพ์คำถาม" placeholder="ถามเรื่องหุ้นตัวนี้" autocomplete="off"><button class="btn" type="submit">ส่ง</button></form>
+    <div class="offline" id="aistatus"></div>`;
+}
+
+/* ================= AI ================= */
+let samplerP = null;
+function getSampler(){
+  if (!samplerP) samplerP = (window.claude && claude.use) ? claude.use('sample').catch(() => null) : Promise.resolve(null);
+  return samplerP;
+}
+function context(ipo){
+  return JSON.stringify({
+    ชื่อ:ipo.name, ตัวย่อ:ipo.ticker, ตลาด:ipo.market, ข้อมูลจริงหรือสมมติ:ipo.real ? 'จริง' : 'สมมติ', ราคาจอง:ipo.price, PE:ipo.pe, PEกลุ่ม:ipo.peerPe,
+    สรุป:ipo.summary,
+    การตรวจ6เรื่อง:CHECKS.map(k => ({เรื่อง:k.label, ผล:{crit:'พบ รุนแรง', warn:'พบ', ok:'ไม่พบ', na:'ไม่มีข้อมูล'}[ipo.checks[k.key]]})),
+    สัญญาณ:ipo.signals.map(s => ({หัวข้อ:s.title, รายละเอียด:s.text, ที่มา:s.src})),
+    จุดแข็ง:ipo.strengths, คำถามก่อนจอง:ipo.questions,
+    ผลหลังเข้าตลาด:ipo.after ? ipo.after.map(a => a.text + ' (' + SRC[a.src].outlet + ')') : null,
+    ตัวเลขงบ:ipo.fin
+  });
+}
+async function ask(ipo, q){
+  const log = chats[ipo.id] = chats[ipo.id] || [];
+  log.push({role:'user', content:q});
+  rerender();
+  const chatEl = document.getElementById('chatlog');
+  const bubble = document.createElement('div'); bubble.className = 'bubble ai'; bubble.textContent = 'กำลังอ่านการ์ด...';
+  chatEl.appendChild(bubble); scrollBottom();
+  const status = document.getElementById('aistatus');
+  const sample = await getSampler();
+  if (!sample){
+    const a = CANNED[q] || 'โหมดออฟไลน์ตอบได้เฉพาะคำถามแนะนำด้านบน เปิดหน้านี้ใน claude.ai เพื่อให้ AI ตอบคำถามอื่น';
+    bubble.textContent = a; log.push({role:'assistant', content:a});
+    status.textContent = 'คำตอบตัวอย่าง (โหมดออฟไลน์)'; return;
+  }
+  const sys = 'คุณคือผู้ช่วยในแอป IPO Lens ตอบเป็นภาษาไทย สั้น ไม่เกิน 5 บรรทัด ใช้เฉพาะข้อมูลใน JSON ด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าข้อมูลไม่มีให้บอกตรงๆ ว่าการ์ดไม่มีข้อมูลนี้ และแนะนำให้ถามบริษัทหรือผู้แนะนำการลงทุน ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อแหล่งข้อมูลที่ใช้ ถ้าเป็นข้อมูลสมมติให้บอกว่าเป็นข้อมูลสมมติ ห้ามใช้ markdown\n\nข้อมูลการ์ด:\n' + context(ipo);
+  const msgs = [{role:'user', content:sys + '\n\nคำถามแรก: ' + log[0].content}];
+  for (let i = 1; i < log.length; i++) msgs.push({role:log[i].role, content:log[i].content});
+  try {
+    const res = await sample(msgs, {cache:false, modelTier:'quick', onText:({text}) => { bubble.textContent = text; scrollBottom(); }});
+    bubble.textContent = res.text; log.push({role:'assistant', content:res.text}); status.textContent = '';
+  } catch(e){
+    const a = CANNED[q];
+    if (a){ bubble.textContent = a; log.push({role:'assistant', content:a}); }
+    else { bubble.textContent = 'ตอนนี้ AI ตอบไม่ได้ ลองกดคำถามแนะนำด้านบน'; log.pop(); }
+    status.textContent = e && e.code === 'rate_limited' ? 'ถามถี่เกินไป รอสักครู่แล้วลองใหม่' : e && e.code === 'not_granted' ? 'ยังไม่ได้อนุญาตให้หน้านี้ใช้ AI จึงแสดงคำตอบตัวอย่าง' : 'แสดงคำตอบตัวอย่างแทน';
+  }
+}
+async function checkPasted(){
+  const text = document.getElementById('pasted').value.trim();
+  const out = document.getElementById('newsresult'), st = document.getElementById('newsstatus');
+  if (!text){ out.textContent = 'วางข้อความข่าวก่อน แล้วกดตรวจอีกครั้ง'; return; }
+  const btn = document.getElementById('checknews'); btn.disabled = true; st.textContent = 'กำลังเทียบกับข่าวที่รวบรวมไว้...';
+  const claims = CLAIMS.map(c => ({id:c.id, ข้อความ:c.text, ผลตรวจ:scoreClaim(c).verdict, หมายเหตุ:c.why || ''}));
+  const sample = await getSampler();
+  const fallback = () => {
+    const hit = /ล้นหลาม|ยอดจอง|เท่า/.test(text) ? CLAIMS[2] : /1\.84|ต่ำจอง|วันแรก/.test(text) ? CLAIMS[1] : /ขาดทุน/.test(text) ? CLAIMS[4] : /ตัน/.test(text) ? CLAIMS[3] : /P\/E|2\.00|ราคา/.test(text) ? CLAIMS[0] : null;
+    out.innerHTML = hit ? `เรื่องที่ใกล้เคียง: <b>${esc(hit.text)}</b> ผลตรวจ <span class="chip ${scoreClaim(hit).cls}">${scoreClaim(hit).verdict}</span>` : 'ไม่พบข่าวเรื่องนี้ในแหล่งที่รวบรวมไว้ ยังยืนยันไม่ได้';
+    st.textContent = 'ตรวจแบบคำค้น (โหมดออฟไลน์)';
+  };
+  if (!sample){ fallback(); btn.disabled = false; return; }
+  try {
+    const v = await sample.json('เทียบข้อความข่าวที่ผู้ใช้วางมา กับรายการข่าวที่ตรวจแล้วของหุ้น PHAT ตอบเป็น JSON เท่านั้นในรูปแบบ {"claimId": "id หรือ null", "match": "ตรงกัน|ขัดกัน|ไม่พบ", "reason": "เหตุผลภาษาไทยไม่เกิน 2 ประโยค"} ถ้าข้อความอ้างตัวเลขที่ไม่มีในรายการ ให้ match เป็น "ไม่พบ" และบอกว่ายังยืนยันไม่ได้\n\nรายการข่าวที่ตรวจแล้ว: ' + JSON.stringify(claims) + '\n\nข้อความที่ผู้ใช้วาง: ' + text, {modelTier:'quick', cache:false});
+    const c = CLAIMS.find(x => x.id === v.claimId);
+    const cls = v.match === 'ตรงกัน' ? 'c-good' : v.match === 'ขัดกัน' ? 'c-crit' : 'c-warn';
+    out.innerHTML = `<span class="chip ${cls}">${esc(v.match || 'ไม่พบ')}</span> ${c ? 'เทียบกับ: <b>' + esc(c.text) + '</b> ' : ''}<div style="margin-top:4px">${esc(v.reason || '')}</div>`;
+    st.textContent = '';
+  } catch(e){ fallback(); }
+  btn.disabled = false;
+}
+
+/* ================= render ================= */
+function scrollBottom(){ const a = document.getElementById('app'); a.scrollTop = a.scrollHeight; }
+function rerender(keepScroll){
+  const app = document.getElementById('app'), y = app.scrollTop;
+  app.innerHTML = state.screen === 'home' ? home() : ipoScreen(IPOS[state.ipo]);
+  app.scrollTop = keepScroll ? y : 0;
+  bind(); notes();
+}
+function go(next){ Object.assign(state, next); rerender(); }
+function bind(){
+  const app = document.getElementById('app');
+  app.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => go({screen:'ipo', ipo:b.dataset.open, tab:'summary'})));
+  app.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => go({screen:'home'})));
+  app.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { state.tab = b.dataset.tab; const y = document.getElementById('app').scrollTop; rerender(); const hd = document.querySelector('.seg'); if (hd && y > hd.offsetTop) document.getElementById('app').scrollTop = hd.offsetTop; }));
+  app.querySelectorAll('[data-src]').forEach(b => b.addEventListener('click', () => { const n = document.getElementById(b.getAttribute('aria-controls')); const open = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', String(!open)); n.hidden = open; }));
+  const ipo = IPOS[state.ipo];
+  app.querySelectorAll('[data-ask]').forEach(b => b.addEventListener('click', () => ask(ipo, b.dataset.ask)));
+  const f = document.getElementById('askform');
+  if (f) f.addEventListener('submit', e => { e.preventDefault(); const v = document.getElementById('askinput').value.trim(); if (v) ask(ipo, v); });
+  const cn = document.getElementById('checknews');
+  if (cn) cn.addEventListener('click', checkPasted);
+}
+function notes(){
+  const i = stepIndex();
+  document.getElementById('steps').innerHTML = STEPS.map((s, k) => `<li><button type="button" data-step="${k}" ${k === i ? 'aria-current="step"' : ''}><span class="n">${k + 1}</span><span>${s.label}</span></button></li>`).join('');
+  document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => go({...STEPS[+b.dataset.step].go})));
+  const n = NOTES[i];
+  const ipo = IPOS[state.ipo];
+  const extra = state.screen === 'ipo' && ipo && !ipo.real ? '<p class="small muted" style="margin:0">ตอนนี้กำลังดูบริษัทสมมติ กดขั้นที่ 2 เพื่อกลับไปที่ PHAT</p>' : '';
+  document.getElementById('notecard').innerHTML = `<div class="crit-tags">${n.tags.map(t => `<span>${t}</span>`).join('')}</div><h2>${n.title}</h2><ul>${n.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>${extra}`;
+}
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input,textarea')) return;
+  const i = stepIndex();
+  if (e.key === 'ArrowRight' && i < STEPS.length - 1) go({...STEPS[i + 1].go});
+  if (e.key === 'ArrowLeft' && i > 0) go({...STEPS[i - 1].go});
+});
+rerender();
+</script>
+</body>
+</html>
