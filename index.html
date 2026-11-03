@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>IPO Lens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,10 +44,11 @@ button,input,textarea{font:inherit;color:inherit}
 [hidden]{display:none !important}
 
 /* ---------- stage ---------- */
-.stage{min-height:100%;display:grid;grid-template-columns:minmax(300px,420px) auto;gap:48px;justify-content:center;align-items:center;padding:32px 24px}
+.stage{--ph:min(812px, calc(100vh - 40px));min-height:100%;display:grid;grid-template-columns:minmax(260px,420px) auto;gap:clamp(20px,4vw,56px);justify-content:center;align-items:center;padding:20px clamp(16px,3vw,32px)}
+@supports (height:100dvh){.stage{--ph:min(812px, calc(100dvh - 40px))}}
 .notes{display:flex;flex-direction:column;gap:20px;max-width:420px}
 .notes .kicker{font-size:13.5px;color:var(--muted)}
-.notes h1{font-size:34px;font-weight:700;display:flex;align-items:center;gap:10px}
+.notes h1{font-size:clamp(26px,3vw,34px);font-weight:700;display:flex;align-items:center;gap:10px}
 .notes .pitch{margin:0;font-size:16px}
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .steps button{width:100%;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--muted)}
@@ -62,17 +63,31 @@ button,input,textarea{font:inherit;color:inherit}
 .crit-tags span{font-size:12.5px;font-weight:500;padding:2px 10px;border-radius:999px;background:var(--lens-soft);color:var(--lens)}
 .stage-foot{font-size:12.5px;color:var(--muted);margin:0}
 
-.phone{width:390px;height:812px;border-radius:52px;background:var(--frame);padding:12px;box-shadow:0 30px 60px -20px rgba(15,25,45,.45)}
-.screen{position:relative;width:100%;height:100%;border-radius:41px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
+.phone{height:var(--ph);width:calc(var(--ph) * 0.48);border-radius:calc(var(--ph) * 0.064);background:var(--frame);padding:calc(var(--ph) * 0.0148);box-shadow:0 30px 60px -20px rgba(15,25,45,.45);flex:none}
+.screen{position:relative;width:100%;height:100%;border-radius:calc(var(--ph) * 0.05);overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
 .statusbar{flex:none;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:13px;font-weight:600;font-family:var(--display)}
 .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:110px;height:30px;border-radius:20px;background:var(--frame)}
 #app{flex:1;overflow-y:auto;overscroll-behavior:contain}
-@media (max-width:900px){
-  .stage{display:block;padding:0}
+/* tablets in portrait: notes get narrower, phone keeps its frame */
+@media (max-width:900px) and (min-width:720px){
+  .stage{grid-template-columns:minmax(240px,1fr) auto}
+  .notes{gap:14px}
+  .notes .pitch{font-size:15px}
+  .notecard ul{font-size:13.5px}
+}
+/* phones, small windows and short landscape screens: the app fills the screen */
+@media (max-width:719px), (max-height:600px){
+  html,body{background:var(--paper)}
+  .stage{display:block;padding:0;min-height:0}
   .notes{display:none}
-  .phone{width:100%;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--paper)}
-  .screen{border-radius:0;height:100dvh}
+  .phone{width:100%;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--paper)}
+  .screen{border-radius:0;height:100%;max-width:600px;margin:0 auto;padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
   .notch,.statusbar{display:none}
+  .tabbar{padding-bottom:max(12px, env(safe-area-inset-bottom))}
+}
+@media (max-width:719px) and (min-width:601px), (max-height:600px) and (min-width:601px){
+  .phone{background:var(--stage)}
+  .screen{border-left:1px solid var(--line);border-right:1px solid var(--line)}
 }
 
 /* ---------- app ---------- */
