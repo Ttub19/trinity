@@ -44,8 +44,8 @@ button,input,textarea{font:inherit;color:inherit}
 [hidden]{display:none !important}
 
 /* ---------- stage ---------- */
-.stage{--ph:min(812px, calc(100vh - 40px));min-height:100%;display:grid;grid-template-columns:minmax(260px,420px) auto;gap:clamp(20px,4vw,56px);justify-content:center;align-items:center;padding:20px clamp(16px,3vw,32px)}
-@supports (height:100dvh){.stage{--ph:min(812px, calc(100dvh - 40px))}}
+.stage{--ph:clamp(560px, calc(100vh - 40px), 812px);min-height:100%;display:grid;grid-template-columns:minmax(260px,420px) auto;gap:clamp(20px,4vw,56px);justify-content:center;align-items:center;padding:20px clamp(16px,3vw,32px)}
+@supports (height:100dvh){.stage{--ph:clamp(560px, calc(100dvh - 40px), 812px)}}
 .notes{display:flex;flex-direction:column;gap:20px;max-width:420px}
 .notes .kicker{font-size:13.5px;color:var(--muted)}
 .notes h1{font-size:clamp(26px,3vw,34px);font-weight:700;display:flex;align-items:center;gap:10px}
@@ -76,7 +76,7 @@ button,input,textarea{font:inherit;color:inherit}
   .notecard ul{font-size:13.5px}
 }
 /* phones, small windows and short landscape screens: the app fills the screen */
-@media (max-width:719px), (max-height:600px){
+@media (max-width:719px), (max-height:500px) and (pointer:coarse){
   html,body{background:var(--paper)}
   .stage{display:block;padding:0;min-height:0}
   .notes{display:none}
@@ -85,7 +85,7 @@ button,input,textarea{font:inherit;color:inherit}
   .notch,.statusbar{display:none}
   .tabbar{padding-bottom:max(12px, env(safe-area-inset-bottom))}
 }
-@media (max-width:719px) and (min-width:601px), (max-height:600px) and (min-width:601px){
+@media (max-width:719px) and (min-width:601px), (max-height:500px) and (pointer:coarse) and (min-width:601px){
   .phone{background:var(--stage)}
   .screen{border-left:1px solid var(--line);border-right:1px solid var(--line)}
 }
@@ -203,6 +203,9 @@ textarea{min-height:76px;resize:vertical}
 .scene h2{font-size:32px;line-height:1.2;font-weight:700;color:#F2F6FA}
 .scene .sub{font-size:16px;color:#B8C6D6;margin:0}
 .scene .src{font-size:12px;color:#8FA1B5;margin:4px 0 0}
+.reel-bg{position:absolute;left:0;right:0;bottom:0;width:100%;height:42%;object-fit:cover;object-position:bottom;pointer-events:none;z-index:0}
+.reel:not(.anchor) .scene{z-index:1}
+.reel:not(.anchor)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(rgba(11,22,38,0),rgba(11,22,38,.88));pointer-events:none;z-index:2}
 .reel-art{display:block;width:100%;max-width:310px;height:auto;border-radius:16px;box-shadow:0 12px 28px -12px rgba(0,0,0,.6)}
 .big{font-family:var(--display);font-size:80px;font-weight:700;line-height:1;color:#5FD0DA}
 .big.red{color:#F08A82}
@@ -455,7 +458,7 @@ const REELS = [
     {mood:'neutral', text:'ผลจริงคือ วันแรกที่เข้าตลาด ราคาเปิดที่ 1.84 บาท ต่ำกว่าราคาจอง 8 เปอร์เซ็นต์', claim:'c2'},
     {mood:'happy', text:'ก่อนจองหุ้นตัวไหน ลองเปิดการ์ดดูก่อนนะครับ น้องฮูกไม่ได้แนะนำให้ซื้อหรือขาย แค่ช่วยอ่านให้ครับ'}
   ]},
-  {id:'phat', ipo:'phat', title:'PHAT ถูกจริงไหม', tag:'หุ้นจริง', scenes:[
+  {id:'phat', ipo:'phat', bg:'assets/bg-phat.svg', title:'PHAT ถูกจริงไหม', tag:'หุ้นจริง', scenes:[
     {type:'hook', img:'assets/reel-phat.svg', alt:'ภาพประกอบสวนปาล์มและโรงสกัดน้ำมันปาล์ม', h:'P/E 5.91 เท่า ถูกจริงไหม?', sub:'บมจ. กลุ่มภัทร (PHAT) โรงสกัดน้ำมันปาล์มที่กระบี่ กรณีศึกษาจากหุ้น IPO ปี 2569'},
     {type:'split', big:'71%', label:'ของกำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียว', w:71, left:'ไตรมาส 2/2568: 113.75 ลบ.', right:'อีก 3 ไตรมาส: 45.87 ลบ.', src:'ที่มา: InfoQuest สัดส่วน IPO Lens คำนวณ'},
     {type:'compare', label:'อัตรากำไรขั้นต้นหดลงครึ่งหนึ่ง', from:'8.13%', fromNote:'ปี 2568', to:'4.09%', toNote:'ไตรมาส 1/2569', src:'ที่มา: บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
@@ -463,14 +466,14 @@ const REELS = [
     {type:'compare', label:'ผลจริงวันแรกที่เข้าตลาด', from:'2.00', fromNote:'ราคาจอง (บาท)', to:'1.84', toNote:'ราคาเปิด ต่ำจอง 8%', src:'ที่มา: โพสต์ทูเดย์ 20 ส.ค. 2569'},
     {type:'ask'}
   ]},
-  {id:'spack', ipo:'spack', title:'SPACK กำไรกระโดดปีเดียว', tag:'ข้อมูลสมมติ', scenes:[
+  {id:'spack', ipo:'spack', bg:'assets/bg-spack.svg', title:'SPACK กำไรกระโดดปีเดียว', tag:'ข้อมูลสมมติ', scenes:[
     {type:'hook', img:'assets/reel-spack.svg', alt:'ภาพประกอบกล่องบรรจุภัณฑ์บนสายพาน', h:'รายได้โตทุกปี แต่กำไรกระโดดปีเดียว', sub:'บมจ. สยามแพ็ค (SPACK) ข้อมูลสมมติ'},
     {type:'compare', label:'กำไรสุทธิ (ล้านบาท)', from:'34.5', fromNote:'เฉลี่ย 4 ปีก่อน', to:'88', toNote:'ปีก่อนยื่น 2567', src:'ที่มา: งบจาก DBD (ข้อมูลสมมติ)'},
     {type:'compare', label:'P/E เทียบกับกลุ่ม', from:'16', fromNote:'ค่าเฉลี่ยกลุ่ม (เท่า)', to:'28', toNote:'SPACK (เท่า)', src:'ที่มา: แบบ 69-1 (ข้อมูลสมมติ)'},
     {type:'ring', h:'พบสัญญาณเตือน 3 จาก 6 เรื่อง', sub:'อีก 1 เรื่องยังไม่มีข้อมูล'},
     {type:'ask'}
   ]},
-  {id:'cmate', ipo:'cmate', title:'CMATE ลูกค้าเป็นใคร', tag:'ข้อมูลสมมติ', scenes:[
+  {id:'cmate', ipo:'cmate', bg:'assets/bg-cmate.svg', title:'CMATE ลูกค้าเป็นใคร', tag:'ข้อมูลสมมติ', scenes:[
     {type:'hook', img:'assets/reel-cmate.svg', alt:'ภาพประกอบระบบคลาวด์ที่เชื่อมกับลูกค้าและบริษัทในเครือ', h:'โตปีละ 41% แต่ลูกค้าเป็นใคร?', sub:'บมจ. คลาวด์เมท (CMATE) ข้อมูลสมมติ'},
     {type:'split', big:'38%', label:'ของรายได้มาจากบริษัทในเครือผู้ถือหุ้นใหญ่', w:38, left:'บริษัทในเครือ 38%', right:'ลูกค้าภายนอก 62%', src:'ที่มา: แบบ 69-1 (ข้อมูลสมมติ)'},
     {type:'ring', h:'พบสัญญาณเตือน 3 จาก 6 เรื่อง', sub:'จุดแข็งคือไม่มีเงินกู้จากธนาคาร'},
@@ -530,12 +533,15 @@ function tickerHTML(){
 }
 
 /* ---------- voice (device text-to-speech, Thai) ---------- */
-const voice = {supported:'speechSynthesis' in window, unlocked:false, muted:false, th:null, listed:false};
+const voice = {supported:'speechSynthesis' in window, unlocked:false, muted:false, th:null, listed:false, male:false};
 function pickVoice(){
   if (!voice.supported) return;
   const v = speechSynthesis.getVoices();
   if (v.length) voice.listed = true;
-  voice.th = v.find(x => /^th/i.test(x.lang)) || null;
+  const thai = v.filter(x => /^th/i.test(x.lang));
+  const male = thai.find(x => /niwat|pattara|male|man\b|ชาย/i.test(x.name));
+  voice.th = male || thai[0] || null;
+  voice.male = !!male;
 }
 if (voice.supported){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 const canSpeakThai = () => voice.supported && !voice.muted && (voice.th || !voice.listed);
@@ -569,7 +575,7 @@ function anchorPlay(i, k){
     note.hidden = true;
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'th-TH'; if (voice.th) u.voice = voice.th; u.rate = 1; u.pitch = 1.05;
+    u.lang = 'th-TH'; if (voice.th) u.voice = voice.th; u.rate = 0.98; u.pitch = voice.male ? 0.95 : 0.7;
     let started = false;
     u.onstart = () => { started = true; talking(i, true); };
     u.onend = done;
@@ -646,6 +652,7 @@ function anchorHTML(r, i){
 function reelsScreen(){
   return `<div class="reels" id="reels">${REELS.map((r, i) => r.type === 'anchor' ? anchorHTML(r, i) : `
     <section class="reel" data-reel="${i}" aria-label="คลิป ${esc(r.title)}">
+      ${r.bg ? `<img class="reel-bg" src="${r.bg}" alt="">` : ''}
       <div class="progress" aria-hidden="true">${r.scenes.map(() => '<span><i></i></span>').join('')}</div>
       ${i === 2 ? '<div class="reelhint">แตะซ้ายหรือขวาเพื่อข้ามฉาก แตะกลางจอเพื่อหยุด</div>' : ''}
       ${r.scenes.map((sc, k) => `<div class="scene${k === 0 ? ' on' : ''}" data-scene="${k}">${sceneHTML(r, sc)}</div>`).join('')}
