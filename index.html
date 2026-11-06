@@ -3,79 +3,103 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>IPO Lens</title>
+<title>Owly · ส่องหุ้น IPO ก่อนกดจอง</title>
+<meta name="description" content="Owly อ่านหนังสือชี้ชวนและงบก่อนเข้าตลาด แล้วสรุปสัญญาณเตือน 6 เรื่องเป็นการ์ดหน้าเดียว ไม่ใช่คำแนะนำการลงทุน">
+<meta name="theme-color" content="#0F5298" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A2B52" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: presenter notes on the left, a working phone on the right. Below 900px the phone frame drops away and the app fills the screen.
-   One memorable element: the six-segment lens ring that shows, at a glance, how many warning signs an IPO carries. */
+/* Owly — "quiet ledger" look.
+   Colours come straight from the logo: night navy (ink), owl slate, lens teal, beak amber.
+   Rules: one focal number per screen, teal only for interactive things, amber/red only for warnings,
+   grouped lists instead of stacks of identical cards, tight spacing inside a group and wide between groups. */
 :root{
-  --stage:#E9EDF2; --paper:#F5F7FA; --surface:#FFFFFF; --ink:#142033; --muted:#5A6679; --line:#DCE2EA;
-  --lens:#0B6F79; --lens-soft:#DDEFF0;
-  --warn:#A8640E; --warn-soft:#FBEED6; --crit:#B3352F; --crit-soft:#F8E0DE; --good:#2A7A4D; --good-soft:#DEF0E5; --na:#9AA5B4;
-  --frame:#1B2433;
+  /* palette: deep #0F5298 · royal #2565AE · blue #3C99DC · sky #66D3FA · ice #D5F3FE */
+  --stage:#D5F3FE; --paper:#F2FAFE; --surface:#FFFFFF; --track:#E1F1FB;
+  --ink:#0B2340; --ink-2:#24405F; --muted:#4A6480; --line:#D3E6F3; --line-2:#AACDE6;
+  --night:#0F5298; --night-2:#2565AE; --indigo:#2565AE; --sky:#66D3FA; --sky-2:#D5F3FE;
+  --brand:#3C99DC; --lens:#2565AE; --lens-soft:#E1F1FB; --slate:#2565AE; --slate-soft:#E1F1FB;
+  --warn:#94570A; --warn-fill:#D08A22; --warn-soft:#FCF0DC;
+  --crit:#B3382F; --crit-soft:#FAE3E0; --good:#2B7651; --good-soft:#E0F1E7; --na:#A9BDCC;
+  --btn:#0F5298; --btn-ink:#FFFFFF; --mark-y:#3C99DC;
+  --frame:#0B2340;
+  --r-lg:18px; --r-md:14px; --r-sm:10px;
   --display:'Bai Jamjuree','IBM Plex Sans Thai','Noto Sans Thai',sans-serif;
   --body:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --stage:#0B111B; --paper:#111A27; --surface:#18233A; --ink:#E6ECF4; --muted:#9BA9BC; --line:#2A3852;
-    --lens:#4BBAC4; --lens-soft:#123A40;
-    --warn:#E3A44C; --warn-soft:#3A2C14; --crit:#EA766E; --crit-soft:#3E1D1B; --good:#63C58F; --good-soft:#15331F; --na:#5E6B7E;
-    --frame:#000; color-scheme:dark;
+    --stage:#04101F; --paper:#071A30; --surface:#0D2643; --track:#12325A;
+    --ink:#EAF6FD; --ink-2:#C6E0F2; --muted:#9EC3DE; --line:#18375C; --line-2:#24497A;
+    --night:#0A2B52; --night-2:#0D2643; --indigo:#2565AE; --sky:#66D3FA; --sky-2:#123A63;
+    --brand:#66D3FA; --lens:#66D3FA; --lens-soft:#0F3357; --slate:#3C99DC; --slate-soft:#12325A;
+    --warn:#EDB062; --warn-fill:#E59F43; --warn-soft:#3A2A12; --crit:#F08178; --crit-soft:#3D1D1B; --good:#6CCB96; --good-soft:#15321F; --na:#4D6A88;
+    --btn:#66D3FA; --btn-ink:#06223F; --mark-y:#66D3FA; --frame:#000; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --stage:#0B111B; --paper:#111A27; --surface:#18233A; --ink:#E6ECF4; --muted:#9BA9BC; --line:#2A3852;
-  --lens:#4BBAC4; --lens-soft:#123A40;
-  --warn:#E3A44C; --warn-soft:#3A2C14; --crit:#EA766E; --crit-soft:#3E1D1B; --good:#63C58F; --good-soft:#15331F; --na:#5E6B7E;
-  --frame:#000; color-scheme:dark;
+  --stage:#04101F; --paper:#071A30; --surface:#0D2643; --track:#12325A;
+    --ink:#EAF6FD; --ink-2:#C6E0F2; --muted:#9EC3DE; --line:#18375C; --line-2:#24497A;
+    --night:#0A2B52; --night-2:#0D2643; --indigo:#2565AE; --sky:#66D3FA; --sky-2:#123A63;
+    --brand:#66D3FA; --lens:#66D3FA; --lens-soft:#0F3357; --slate:#3C99DC; --slate-soft:#12325A;
+    --warn:#EDB062; --warn-fill:#E59F43; --warn-soft:#3A2A12; --crit:#F08178; --crit-soft:#3D1D1B; --good:#6CCB96; --good-soft:#15321F; --na:#4D6A88;
+    --btn:#66D3FA; --btn-ink:#06223F; --mark-y:#66D3FA; --frame:#000; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{background:var(--stage);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:var(--display);line-height:1.25;margin:0;text-wrap:balance}
+body{background:var(--stage);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{font-family:var(--display);line-height:1.3;margin:0;text-wrap:balance;font-weight:600}
+p{text-wrap:pretty}
 .num{font-variant-numeric:tabular-nums}
-a{color:var(--lens)}
+a{color:var(--lens);text-underline-offset:3px}
 button,input,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--lens);outline-offset:2px;border-radius:6px}
+button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--lens);outline-offset:2px;border-radius:8px}
 [hidden]{display:none !important}
+.wordmark{font-family:var(--display);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.wordmark i{font-style:normal;color:var(--mark-y)}
 
 /* ---------- stage ---------- */
-.stage{--ph:clamp(560px, calc(100vh - 40px), 812px);min-height:100%;display:grid;grid-template-columns:minmax(260px,420px) auto;gap:clamp(20px,4vw,56px);justify-content:center;align-items:center;padding:20px clamp(16px,3vw,32px)}
+.stage{--ph:clamp(560px, calc(100vh - 40px), 812px);min-height:100%;display:grid;grid-template-columns:minmax(260px,400px) auto;gap:clamp(24px,5vw,72px);justify-content:center;align-items:center;padding:20px clamp(16px,3vw,32px)}
 @supports (height:100dvh){.stage{--ph:clamp(560px, calc(100dvh - 40px), 812px)}}
-.notes{display:flex;flex-direction:column;gap:20px;max-width:420px}
-.notes .kicker{font-size:13.5px;color:var(--muted)}
-.notes h1{font-size:clamp(26px,3vw,34px);font-weight:700;display:flex;align-items:center;gap:10px}
-.notes .pitch{margin:0;font-size:16px}
-.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.steps button{width:100%;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--muted)}
-.steps button:hover{background:var(--surface)}
-.steps .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:13px;border:1.5px solid var(--line)}
-.steps button[aria-current="step"]{background:var(--surface);border-color:var(--line);color:var(--ink)}
-.steps button[aria-current="step"] .n{background:var(--lens);border-color:var(--lens);color:#fff}
-.notecard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:10px}
-.notecard h2{font-size:18px;font-weight:600}
-.notecard ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.notes{display:flex;flex-direction:column;gap:22px;max-width:400px}
+.brandline{display:flex;align-items:center;gap:12px}
+.brandline img{width:56px;height:56px;flex:none;padding:4px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1px var(--line)}
+.brandline .wordmark{font-size:34px;line-height:1}
+.notes .kicker{font-size:13px;color:var(--muted);margin-bottom:10px}
+.notes .pitch{margin:0;font-size:16.5px;color:var(--ink-2);max-width:34ch}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:2px;counter-reset:s}
+.steps button{width:100%;display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:center;text-align:left;border:0;background:transparent;border-radius:var(--r-sm);padding:7px 10px;cursor:pointer;color:var(--muted);font-size:14.5px}
+.steps button:hover{color:var(--ink)}
+.steps .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:12.5px;box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.steps button[aria-current="step"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 1px 0 var(--line),0 0 0 1px var(--line)}
+.steps button[aria-current="step"] .n{background:var(--ink);box-shadow:none;color:var(--paper)}
+.notecard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;display:grid;gap:10px}
+.notecard h2{font-size:18px}
+.notecard ul{margin:0;padding-left:18px;display:grid;gap:7px;font-size:14.5px;color:var(--ink-2)}
+.notecard li::marker{color:var(--slate)}
 .crit-tags{display:flex;gap:6px;flex-wrap:wrap}
-.crit-tags span{font-size:12.5px;font-weight:500;padding:2px 10px;border-radius:999px;background:var(--lens-soft);color:var(--lens)}
-.stage-foot{font-size:12.5px;color:var(--muted);margin:0}
+.crit-tags span{font-size:12px;font-weight:600;padding:2px 9px;border-radius:6px;background:var(--slate-soft);color:var(--slate)}
+.stage-foot{font-size:12.5px;color:var(--muted);margin:0;max-width:40ch}
 
-.phone{height:var(--ph);width:calc(var(--ph) * 0.48);border-radius:calc(var(--ph) * 0.064);background:var(--frame);padding:calc(var(--ph) * 0.0148);box-shadow:0 30px 60px -20px rgba(15,25,45,.45);flex:none}
+.phone{height:var(--ph);width:calc(var(--ph) * 0.48);border-radius:calc(var(--ph) * 0.064);background:var(--frame);padding:calc(var(--ph) * 0.0148);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 40px 80px -30px rgba(20,31,49,.55),0 12px 24px -12px rgba(20,31,49,.3);flex:none}
 .screen{position:relative;width:100%;height:100%;border-radius:calc(var(--ph) * 0.05);overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
 .statusbar{flex:none;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:13px;font-weight:600;font-family:var(--display)}
 .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:110px;height:30px;border-radius:20px;background:var(--frame)}
-#app{flex:1;overflow-y:auto;overscroll-behavior:contain}
-/* tablets in portrait: notes get narrower, phone keeps its frame */
+#app{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+#app::-webkit-scrollbar{display:none}
 @media (max-width:900px) and (min-width:720px){
   .stage{grid-template-columns:minmax(240px,1fr) auto}
-  .notes{gap:14px}
+  .notes{gap:16px}
   .notes .pitch{font-size:15px}
   .notecard ul{font-size:13.5px}
 }
-/* phones, small windows and short landscape screens: the app fills the screen */
 @media (max-width:719px), (max-height:500px) and (pointer:coarse){
   html,body{background:var(--paper)}
   .stage{display:block;padding:0;min-height:0}
@@ -83,117 +107,176 @@ button,input,textarea{font:inherit;color:inherit}
   .phone{width:100%;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--paper)}
   .screen{border-radius:0;height:100%;max-width:600px;margin:0 auto;padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
   .notch,.statusbar{display:none}
-  .tabbar{padding-bottom:max(12px, env(safe-area-inset-bottom))}
+  .tabbar{padding-bottom:max(10px, env(safe-area-inset-bottom))}
 }
 @media (max-width:719px) and (min-width:601px), (max-height:500px) and (pointer:coarse) and (min-width:601px){
   .phone{background:var(--stage)}
   .screen{border-left:1px solid var(--line);border-right:1px solid var(--line)}
 }
 
-/* ---------- app ---------- */
-.pad{padding:0 18px}
-.appbar{display:flex;align-items:center;gap:10px;padding:6px 18px 12px}
-.appbar h1{font-size:22px;font-weight:700}
-.appbar .sub{font-size:13px;color:var(--muted)}
-.back{border:0;background:var(--surface);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 1px var(--line)}
-.fact{margin:0 18px 16px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:14px}
-.fact b{font-family:var(--display);font-size:20px;color:var(--crit);display:block;line-height:1.2}
-.fact small{color:var(--muted);font-size:12.5px}
-.sec-title{font-size:14px;font-weight:600;color:var(--muted);margin:18px 18px 8px;display:flex;justify-content:space-between;align-items:baseline}
-.sec-title em{font-style:normal;font-weight:400;font-size:12.5px}
-.rows{display:grid;gap:8px;padding:0 18px}
-.row{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left;width:100%}
-.row:hover{border-color:var(--lens)}
-.row .t{font-weight:600;display:block}
-.row .m{font-size:12.5px;color:var(--muted)}
-.chip{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
-.c-crit{background:var(--crit-soft);color:var(--crit)} .c-warn{background:var(--warn-soft);color:var(--warn)} .c-good{background:var(--good-soft);color:var(--good)} .c-info{background:var(--lens-soft);color:var(--lens)}
-
-.ipohead{padding:4px 18px 14px;display:grid;gap:4px}
-.ipohead h2{font-size:22px;font-weight:700}
-.ipohead .m{font-size:13px;color:var(--muted)}
-.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.kv div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
-.kv span{display:block;font-size:11.5px;color:var(--muted)}
-.kv b{font-family:var(--display);font-size:16px;font-weight:600}
-
-.seg{position:sticky;top:0;z-index:2;background:var(--paper);display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px 18px;border-bottom:1px solid var(--line)}
-.seg button{border:0;background:transparent;padding:7px 0;border-radius:9px;cursor:pointer;font-size:13.5px;color:var(--muted);font-weight:500}
-.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
-.tab{padding:16px 18px 28px;display:grid;gap:16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
-.card h3{font-size:15.5px;font-weight:600;margin-bottom:6px}
-.card p{margin:0;font-size:14px}
+/* ---------- app: shared ---------- */
+.pad{padding:0 20px}
 .muted{color:var(--muted)}
 .small{font-size:12.5px}
+.chip{font-size:12px;font-weight:600;line-height:1.5;padding:2px 8px;border-radius:6px;white-space:nowrap}
+.c-crit{background:var(--crit-soft);color:var(--crit)} .c-warn{background:var(--warn-soft);color:var(--warn)} .c-good{background:var(--good-soft);color:var(--good)} .c-info{background:var(--lens-soft);color:var(--lens)}
+.label{font-size:12.5px;font-weight:600;color:var(--muted)}
+.sec-title{font-family:var(--display);font-size:15px;font-weight:600;color:var(--ink);margin:28px 20px 10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sec-title em{font-style:normal;font-family:var(--body);font-weight:400;font-size:12.5px;color:var(--muted)}
+.group{margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.group > * + *{border-top:1px solid var(--line)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px}
+.card h3{font-size:15.5px;margin-bottom:6px}
+.card p{margin:0;font-size:14px;color:var(--ink-2)}
+.btn{border:0;background:var(--btn);color:var(--btn-ink);border-radius:12px;padding:10px 16px;cursor:pointer;font-weight:600;min-height:44px}
+.btn:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.45;cursor:default;filter:none}
+.ghostbtn{border:1px solid var(--line-2);background:transparent;border-radius:12px;padding:10px 14px;min-height:44px;cursor:pointer;font-weight:600;color:var(--ink);display:inline-flex;gap:8px;align-items:center}
+.ghostbtn:hover{background:var(--surface)}
+.textbtn{border:0;background:none;padding:6px 0;margin:-6px 0;color:var(--lens);font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.textbtn svg{transition:transform .2s ease}
+.textbtn[aria-expanded="true"] svg{transform:rotate(90deg)}
+.offline{font-size:12px;color:var(--muted)}
+.disclaimer{font-size:12px;color:var(--muted);padding:0 20px 28px;margin:20px 0 0;line-height:1.55}
 
-.lensbox{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+/* ---------- home ---------- */
+.appbar{display:flex;align-items:center;gap:10px;padding:10px 20px 6px}
+.appbar .mark{width:38px;height:38px;flex:none;padding:3px;border-radius:50%;background:#D5F3FE}
+.appbar .wordmark{font-size:23px;line-height:1}
+.appbar .sub{font-size:12.5px;color:var(--muted);line-height:1.3}
+.topband{background:var(--night);color:#FFFFFF;padding-bottom:4px;border-radius:0 0 26px 26px;--ink:#FFFFFF;--ink-2:#E6F7FE;--muted:#D5F3FE;--line:rgba(213,243,254,.2);--track:rgba(213,243,254,.18);--mark-y:#66D3FA;--lens:#D5F3FE}
+.screen:has(.topband) .statusbar{background:var(--night);color:#FFFFFF}
+.hero{position:relative;margin:8px 20px 0;padding:16px 0 22px}
+.hero-owl{position:absolute;right:-4px;bottom:18px;width:112px;height:112px;padding:10px;border-radius:50%;background:#D5F3FE;box-shadow:0 0 0 6px rgba(102,211,250,.35);pointer-events:none}
+.hero .tally{max-width:calc(100% - 120px)}
+.hero .label{display:block;margin-bottom:6px}
+.hero .big{font-family:var(--display);font-size:46px;font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--ink);display:flex;align-items:baseline;gap:8px}
+.hero .big small{font-size:18px;font-weight:600;color:var(--muted);letter-spacing:0}
+.hero p{margin:8px 0 12px;font-size:15px;color:var(--ink-2)}
+.tally{display:grid;grid-template-columns:repeat(15,1fr);gap:4px;max-width:300px}
+.tally i{height:14px;border-radius:3px;background:var(--track)}
+.tally i.down{background:#FF9F95}
+.hero .srcline{display:block;margin-top:10px;font-size:12px;color:var(--muted)}
+.promo{margin:16px 16px 0;display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;background:var(--indigo);color:#FFFFFF;border:0;border-radius:var(--r-lg);padding:12px 16px 12px 12px;cursor:pointer;text-align:left;width:calc(100% - 32px);position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.promo img{width:56px;height:56px;display:block;padding:5px;border-radius:50%;background:#D5F3FE}
+.promo b{font-family:var(--display);display:block;font-size:15.5px;font-weight:600}
+.promo span{font-size:12.5px;color:#D5F3FE}
+.promo .play{width:40px;height:40px;border-radius:50%;background:#66D3FA;display:grid;place-items:center;color:#0B2340}
+.promo:hover .play{background:#D5F3FE}
+.row{display:grid;grid-template-columns:44px 1fr auto 12px;gap:12px;align-items:center;background:transparent;border:0;padding:12px 14px;cursor:pointer;text-align:left;width:100%}
+.row:hover{background:var(--paper)}
+.row .t{font-weight:600;display:block;line-height:1.35}
+.row .m{font-size:12.5px;color:var(--muted);display:block;line-height:1.45}
+.row .when{white-space:nowrap}
+.row .chev{color:var(--line-2)}
+.ringkey{display:flex;flex-wrap:wrap;gap:6px 14px;padding:12px 20px 0;font-size:12px;color:var(--muted)}
+.ringkey span{display:inline-flex;align-items:center;gap:6px}
+.ringkey i{width:10px;height:10px;border-radius:3px}
+
+/* ---------- IPO card ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 16px 4px}
+.back{border:0;background:transparent;width:44px;height:44px;margin-left:-8px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.back:hover{background:var(--surface)}
+.ipohead{padding:6px 20px 16px;display:grid;gap:2px}
+.ipohead .m{font-size:12.5px;color:var(--muted)}
+.ipohead h2{font-size:25px;font-weight:700;line-height:1.25}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.kv div{padding:10px 12px;min-width:0}
+.kv div + div{border-left:1px solid var(--line)}
+.kv span{display:block;font-size:12px;color:var(--muted)}
+.kv b{font-family:var(--display);font-size:17px;font-weight:600;white-space:nowrap}
+.kv b small{font-size:12px;font-weight:500;color:var(--muted)}
+
+.seg{position:sticky;top:0;z-index:2;background:color-mix(in srgb, var(--paper) 92%, transparent);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);padding:8px 16px 10px}
+.seg .track{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--track);border-radius:12px;padding:3px}
+.seg button{border:0;background:transparent;min-height:36px;border-radius:9px;cursor:pointer;font-size:13.5px;color:var(--muted);font-weight:500}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(20,31,49,.12),0 0 0 .5px rgba(20,31,49,.06)}
+.tab{padding:8px 16px 8px;display:grid;gap:12px}
+.tab > h3{font-size:15px;margin:14px 4px -2px}
+
+.verdict{display:grid;grid-template-columns:112px 1fr;gap:16px;align-items:center}
+.verdict .label{display:block;margin-bottom:4px}
+.verdict .count{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.3}
+.verdict .count b{font-size:26px;font-weight:700;margin-left:2px}
+.verdict p{margin:4px 0 0;font-size:13px;color:var(--muted)}
 .ring text{font-family:var(--display)}
-.legend{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:12.5px}
-.legend li{display:flex;gap:6px;align-items:flex-start}
+.legend{list-style:none;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12.5px;color:var(--ink-2)}
+.legend li{display:flex;gap:7px;align-items:flex-start;line-height:1.45}
 .legend i{flex:none;width:9px;height:9px;border-radius:3px;margin-top:5px}
 .legend .s-na{color:var(--muted)}
-.i-crit{background:var(--crit)} .i-warn{background:var(--warn)} .i-ok{background:var(--good)} .i-na{background:var(--na)}
+.i-crit{background:var(--crit)} .i-warn{background:var(--warn-fill)} .i-ok{background:var(--good)} .i-na{background:var(--na)}
+.card .summary-text{margin:14px 0 0;font-size:14.5px;color:var(--ink-2)}
 
-.outcome{border-left:4px solid var(--crit);background:var(--surface);border-radius:12px;padding:12px 14px;border:1px solid var(--line);border-left-width:4px}
+.sig{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:14px 16px}
+.sig .ico{width:22px;height:22px;margin-top:1px}
+.sig .lvl{font-size:11.5px;font-weight:600;letter-spacing:.02em}
+.sig.crit .lvl{color:var(--crit)} .sig.warn .lvl{color:var(--warn)}
+.sig b{display:block;font-size:14.5px;line-height:1.4;margin:1px 0 4px}
+.sig p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2)}
+.srcnote{font-size:12.5px;color:var(--muted);margin-top:8px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.outcome{padding:16px}
 .outcome h3{font-size:15px}
-.outcome ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;display:grid;gap:4px}
-
-.sig{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:12px;padding:10px 12px;background:var(--surface)}
-.sig.crit{border-left-color:var(--crit)}
-.sig b{display:block;font-size:14.5px}
-.sig p{margin:3px 0 6px;font-size:13.5px}
-.srcbtn{border:0;background:var(--lens-soft);color:var(--lens);font-size:12px;padding:2px 10px;border-radius:999px;cursor:pointer}
-.srcnote{font-size:12.5px;color:var(--muted);margin-top:6px}
-.list{margin:0;padding-left:18px;display:grid;gap:5px;font-size:13.5px}
+.timeline{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}
+.timeline li{position:relative;padding-left:20px;font-size:13.5px;color:var(--ink-2)}
+.timeline li::before{content:'';position:absolute;left:3px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--crit)}
+.timeline li + li::after{content:'';position:absolute;left:7px;top:-12px;height:19px;border-left:1.5px solid var(--line-2)}
+.list{margin:0;padding-left:20px;display:grid;gap:6px;font-size:13.5px;color:var(--ink-2)}
+.list li::marker{color:var(--slate)}
+ol.list li::marker{font-family:var(--display);font-weight:600}
 
 .bars text{font-family:var(--body);fill:var(--muted)}
 .bars .v{fill:var(--ink);font-weight:600}
-.metric{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--line)}
-.metric:last-child{border-bottom:0}
+.metric{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13.5px;padding:9px 0;border-bottom:1px solid var(--line)}
+.metric:last-of-type{border-bottom:0}
 .metric b{font-family:var(--display);font-weight:600}
-.pe-row{display:grid;grid-template-columns:96px 1fr 52px;gap:8px;align-items:center;font-size:13px;margin-top:6px}
-.pe-bar{height:12px;border-radius:6px;background:var(--line)}
-.pe-bar.me{background:var(--lens)}
+.pe-row{display:grid;grid-template-columns:96px 1fr 56px;gap:10px;align-items:center;font-size:13px;margin-top:8px}
+.pe-bar{height:10px;border-radius:5px;background:var(--na)}
+.pe-bar.me{background:var(--slate)}
 
-.claim{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface);display:grid;gap:8px}
-.claim-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.claim-top b{font-size:14px}
-.meter{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
-.meter i{display:block;height:100%}
+.rule{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:13px;color:var(--ink-2);background:var(--slate-soft);border-radius:var(--r-md);padding:12px 14px}
+.claim{padding:14px 16px;display:grid;gap:8px}
+.claim-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.claim-top b{font-size:14px;line-height:1.45;font-weight:600}
+.meter{height:6px;border-radius:3px;background:var(--track);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:3px}
 .claim .why{font-size:12.5px;color:var(--muted)}
 .srcs{display:flex;flex-wrap:wrap;gap:6px}
-.srcs a{font-size:11.5px;text-decoration:none;padding:2px 8px;border-radius:8px;border:1px solid var(--line);color:var(--ink)}
-.srcs a.agree{border-color:var(--good);color:var(--good)}
-.srcs a.disagree{border-color:var(--crit);color:var(--crit)}
-.srcs a.copy{border-style:dashed;color:var(--muted)}
-.rule{font-size:12.5px;background:var(--lens-soft);border-radius:12px;padding:10px 12px}
+.srcs a{font-size:11.5px;text-decoration:none;padding:2px 8px;border-radius:6px;background:var(--paper);color:var(--ink-2);display:inline-flex;align-items:center;gap:5px}
+.srcs a::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--na)}
+.srcs a.agree::before{background:var(--good)}
+.srcs a.disagree::before{background:var(--crit)}
+.srcs a.copy{color:var(--muted);background:transparent;box-shadow:inset 0 0 0 1px var(--line-2)}
 
 .chat{display:grid;gap:10px}
-.bubble{max-width:88%;padding:9px 12px;border-radius:14px;font-size:14px;white-space:pre-wrap}
-.bubble.me{justify-self:end;background:var(--lens);color:#fff;border-bottom-right-radius:4px}
-.bubble.ai{justify-self:start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.bubble{max-width:86%;padding:10px 13px;border-radius:16px;font-size:14px;white-space:pre-wrap;line-height:1.55}
+.bubble.me{justify-self:end;background:var(--btn);color:var(--btn-ink);border-bottom-right-radius:5px}
+.bubble.ai{justify-self:start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:5px}
+.aihead{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--ink-2)}
+.aihead img{width:34px;height:34px;flex:none}
 .suggest{display:flex;flex-wrap:wrap;gap:6px}
-.suggest button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer}
-.composer{display:grid;grid-template-columns:1fr auto;gap:8px}
-.composer input,textarea{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px;width:100%}
-textarea{min-height:76px;resize:vertical}
-.btn{border:0;background:var(--lens);color:#fff;border-radius:12px;padding:9px 14px;cursor:pointer;font-weight:500}
-.btn:disabled{opacity:.5;cursor:default}
-.offline{font-size:12px;color:var(--muted)}
-.disclaimer{font-size:11.5px;color:var(--muted);padding:0 18px 20px;margin:0}
+.suggest button{border:1px solid var(--line-2);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;color:var(--ink)}
+.suggest button:hover{border-color:var(--lens);color:var(--lens)}
+.composer{display:grid;grid-template-columns:1fr 44px;gap:8px;position:sticky;bottom:0;padding:8px 0 4px;background:var(--paper)}
+.composer input,textarea{border:1px solid var(--line-2);background:var(--surface);border-radius:12px;padding:10px 13px;width:100%;min-height:44px}
+.composer input:focus,textarea:focus{outline:none;border-color:var(--lens);box-shadow:0 0 0 3px var(--lens-soft)}
+.composer .btn{padding:0;display:grid;place-items:center}
+textarea{min-height:80px;resize:vertical}
+.c-mute{background:var(--track);color:var(--muted)}
+.tab .group{margin:0}
 /* ---------- tab bar + reels ---------- */
-.tabbar{flex:none;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);background:var(--surface);padding:6px 10px 16px}
-.tabbar button{border:0;background:transparent;display:grid;justify-items:center;gap:2px;font-size:11.5px;color:var(--muted);cursor:pointer;padding:4px}
-.tabbar button[aria-current="page"]{color:var(--lens);font-weight:600}
-.screen.dark{background:#0B1422}
+.tabbar{flex:none;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);background:var(--surface);padding:6px 10px 14px}
+.tabbar button{position:relative;border:0;background:transparent;display:grid;justify-items:center;gap:2px;font-size:11.5px;color:var(--muted);cursor:pointer;padding:6px 4px;min-height:48px}
+.tabbar button[aria-current="page"]{color:var(--ink);font-weight:600}
+.tabbar button[aria-current="page"]::before{content:'';position:absolute;top:-7px;left:50%;width:28px;margin-left:-14px;height:3px;border-radius:0 0 3px 3px;background:var(--brand)}
+.screen.dark{background:#061A33}
 .screen.dark .statusbar{color:#fff}
 .screen.dark #app{overflow:hidden}
-.screen.dark .tabbar{background:#0B1422;border-color:#1E2A3D}
+.screen.dark .tabbar{background:#061A33;border-color:#123A63}
 .screen.dark .tabbar button{color:#8FA1B5}
-.screen.dark .tabbar button[aria-current="page"]{color:#5FD0DA}
-.reels{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;background:#0B1422;--crit:#EF7A72;--warn:#F0B055;--good:#6FD39B;--na:#45556B;--ink:#F2F6FA;--muted:#9FB0C3}
-.reel{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;color:#F2F6FA;background:#0F1B2D;cursor:pointer;user-select:none}
+.screen.dark .tabbar button[aria-current="page"]{color:#66D3FA}
+.reels{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;background:#061A33;--crit:#EF7A72;--warn:#F1AA53;--warn-fill:#F1AA53;--good:#6FD39B;--na:#45556B;--ink:#F2F6FA;--muted:#9FB0C3}
+.reel{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;color:#F2F6FA;background:#0A2B52;cursor:pointer;user-select:none}
 .reel + .reel{border-top:1px solid #1E2A3D}
 .progress{position:absolute;top:10px;left:12px;right:12px;display:flex;gap:4px;z-index:3}
 .progress span{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
@@ -207,7 +290,7 @@ textarea{min-height:76px;resize:vertical}
 .reel:not(.anchor) .scene{z-index:1}
 .reel:not(.anchor)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(rgba(11,22,38,0),rgba(11,22,38,.88));pointer-events:none;z-index:2}
 .reel-art{display:block;width:100%;max-width:310px;height:auto;border-radius:16px;box-shadow:0 12px 28px -12px rgba(0,0,0,.6)}
-.big{font-family:var(--display);font-size:80px;font-weight:700;line-height:1;color:#5FD0DA}
+.big{font-family:var(--display);font-size:80px;font-weight:700;line-height:1;color:#66D3FA}
 .big.red{color:#F08A82}
 .split{display:flex;height:14px;border-radius:7px;overflow:hidden;background:#2A3A52}
 .split i{display:block;width:0;background:#F08A82;transition:width 1.2s ease .3s}
@@ -223,13 +306,13 @@ textarea{min-height:76px;resize:vertical}
 .reelchecks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .reelchecks li{display:flex;gap:10px;align-items:center;font-size:16px;opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
 .scene.on .reelchecks li{opacity:1;transform:none}
-.reelchecks i{width:10px;height:10px;border-radius:3px;background:#5FD0DA;flex:none}
+.reelchecks i{width:10px;height:10px;border-radius:3px;background:#66D3FA;flex:none}
 .reel .ring circle{opacity:0;transition:opacity .25s ease}
 .scene.on .ring circle{opacity:1}
 .reel .ring text{fill:#F2F6FA}
 .reel .ring tspan{fill:#9FB0C3}
 .reelqs{margin:0;padding-left:22px;display:grid;gap:8px;font-size:16px}
-.cta{justify-self:start;align-self:flex-start;border:0;background:#5FD0DA;color:#0B1422;font-weight:600;border-radius:12px;padding:10px 16px;cursor:pointer}
+.cta{justify-self:start;align-self:flex-start;border:0;background:#66D3FA;color:#06223F;font-weight:600;border-radius:12px;padding:10px 16px;cursor:pointer}
 .reel-meta{position:absolute;left:16px;right:76px;bottom:16px;z-index:3}
 .reel-meta b{font-family:var(--display);font-size:16px}
 .reel-meta .tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;margin-left:6px;background:rgba(255,255,255,.14);color:#DDE6EF;vertical-align:2px}
@@ -239,25 +322,20 @@ textarea{min-height:76px;resize:vertical}
 .reel-side span{font-size:11px;color:#C9D5E2;margin-bottom:8px}
 .pausemark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;pointer-events:none}
 .reelhint{position:absolute;top:22px;left:0;right:0;text-align:center;font-size:11.5px;color:#8FA1B5;z-index:3;pointer-events:none}
-.promo{margin:0 18px 4px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#0F1B2D;color:#F2F6FA;border:0;border-radius:14px;padding:12px 14px;cursor:pointer;text-align:left;width:calc(100% - 36px)}
-.promo b{font-family:var(--display);display:block}
-.promo span{font-size:12.5px;color:#B8C6D6}
-.promo .play{width:36px;height:36px;border-radius:50%;background:#5FD0DA;display:grid;place-items:center;color:#0B1422}
-.ghostbtn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 14px;cursor:pointer;font-weight:500;color:var(--lens);display:inline-flex;gap:8px;align-items:center}
 /* ---------- anchor reels (น้องฮูก) ---------- */
-.reel.anchor{background:#0B1626}
+.reel.anchor{background:#082343}
 .studio{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .owlbox{position:relative;width:min(66%,250px)}
 .owlbox .owlwrap{width:100%}
 .desk{position:absolute;left:-30%;right:-30%;bottom:-34px;pointer-events:none}
 .desk svg{display:block;width:100%;height:auto}
-.ticker{position:absolute;top:40px;left:0;right:0;height:26px;z-index:3;background:rgba(95,208,218,.12);border-top:1px solid rgba(95,208,218,.25);border-bottom:1px solid rgba(95,208,218,.25);overflow:hidden;pointer-events:none;display:flex;align-items:center}
-.ticker .tag0{flex:none;height:100%;display:flex;align-items:center;padding:0 10px;background:#5FD0DA;color:#0B1422;font-size:11.5px;font-weight:700;font-family:var(--display);position:relative;z-index:1}
+.ticker{position:absolute;top:40px;left:0;right:0;height:26px;z-index:3;background:rgba(102,211,250,.12);border-top:1px solid rgba(102,211,250,.25);border-bottom:1px solid rgba(102,211,250,.25);overflow:hidden;pointer-events:none;display:flex;align-items:center}
+.ticker .tag0{flex:none;height:100%;display:flex;align-items:center;padding:0 10px;background:#66D3FA;color:#06223F;font-size:11.5px;font-weight:700;font-family:var(--display);position:relative;z-index:1}
 .ticker .run{display:flex;gap:28px;white-space:nowrap;font-size:12px;color:#DDE6EF;padding-left:14px}
 .ticker .run b{font-weight:600}
-.ticker .ok{color:#6FD39B} .ticker .no{color:#F0B055} .ticker .bad{color:#EF7A72}
+.ticker .ok{color:#6FD39B} .ticker .no{color:#F1AA53} .ticker .bad{color:#EF7A72}
 @media (prefers-reduced-motion: no-preference){ .ticker .run{animation:ticker 26s linear infinite} @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}} }
-.ai-label{position:absolute;top:72px;right:12px;z-index:3;font-size:11px;padding:2px 9px;border-radius:999px;background:rgba(95,208,218,.16);color:#9FE3E9;pointer-events:none}
+.ai-label{position:absolute;top:72px;right:12px;z-index:3;font-size:11px;padding:2px 9px;border-radius:999px;background:rgba(102,211,250,.16);color:#9FE3E9;pointer-events:none}
 .anchor-stage{position:absolute;left:0;right:0;top:78px;display:grid;justify-items:center;gap:6px;pointer-events:none}
 .owlwrap{width:100%}
 .owlwrap svg{display:block;width:100%;height:auto;overflow:visible}
@@ -266,8 +344,8 @@ textarea{min-height:76px;resize:vertical}
 .owl .brow{transform-box:view-box;transition:transform .35s ease}
 .owl .pupil{transition:transform .35s ease}
 .owl .jaw{transform-box:view-box;transition:transform .08s linear}
-.owl .brow-l{transform-origin:50px 60px}
-.owl .brow-r{transform-origin:150px 60px}
+.owl .brow-l{transform-origin:46px 60px}
+.owl .brow-r{transform-origin:158px 54px}
 .mood-concerned .brow-l{transform:rotate(-14deg)}
 .mood-concerned .brow-r{transform:rotate(14deg)}
 .mood-concerned .pupil{transform:translateY(-3px)}
@@ -278,10 +356,10 @@ textarea{min-height:76px;resize:vertical}
 .lower .chip{font-size:12.5px}
 .lower span.lbl{font-size:13px;color:#DDE6EF}
 .subtitle{position:absolute;left:14px;right:70px;bottom:84px;z-index:3;min-height:72px;background:rgba(4,10,20,.62);border-radius:14px;padding:10px 14px;font-size:17px;line-height:1.45;color:#fff;display:flex;align-items:center;pointer-events:none}
-.tapstart{position:absolute;left:50%;bottom:180px;transform:translateX(-50%);z-index:4;border:0;border-radius:999px;padding:12px 20px;background:#5FD0DA;color:#0B1422;font-weight:600;font-size:15px;cursor:pointer;display:flex;gap:8px;align-items:center;white-space:nowrap}
-.voicenote{position:absolute;left:16px;right:16px;bottom:160px;z-index:3;font-size:11.5px;color:#F0B055;text-align:center;pointer-events:none}
+.tapstart{position:absolute;left:50%;bottom:180px;transform:translateX(-50%);z-index:4;border:0;border-radius:999px;padding:12px 20px;background:#66D3FA;color:#06223F;font-weight:600;font-size:15px;cursor:pointer;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.voicenote{position:absolute;left:16px;right:16px;bottom:160px;z-index:3;font-size:11.5px;color:#F1AA53;text-align:center;pointer-events:none}
 .reel.anchor .reel-meta{right:76px}
-.reel-side .on{background:#5FD0DA;color:#0B1422}
+.reel-side .on{background:#66D3FA;color:#06223F}
 @media (max-height:700px){ .owlbox{width:min(46%,170px)} .lower{bottom:156px} }
 @media (prefers-reduced-motion: no-preference){
   .owl .lid{animation:blink 4.2s infinite}
@@ -303,10 +381,11 @@ textarea{min-height:76px;resize:vertical}
 <div class="stage">
   <aside class="notes" aria-label="โน้ตสำหรับการนำเสนอ">
     <div>
-      <div class="kicker">เดโมสำหรับ Future Finance Innovation Hackathon 2026 โจทย์ AI for Insight</div>
-      <h1><svg width="34" height="34" viewBox="0 0 30 30" aria-hidden="true"><circle cx="13" cy="13" r="9" fill="none" stroke="var(--lens)" stroke-width="3"/><path d="M20 20l7 7" stroke="var(--lens)" stroke-width="3.5" stroke-linecap="round"/><path d="M8 15.5l3-3 2.5 2 3.5-5" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>IPO Lens</h1>
+      
+      <div class="kicker">Future Finance Innovation Hackathon 2026 · AI for Insight</div>
+      <h1 class="brandline"><img data-owl alt="" width="52" height="52"><span class="wordmark">Owl<i>y</i></span></h1>
     </div>
-    <p class="pitch">อ่านหุ้น IPO ย้อนไปถึงงบก่อนเข้าตลาด แล้วสรุปเป็นการ์ดหน้าเดียวก่อนกดจอง</p>
+    <p class="pitch">ส่องหุ้น IPO ย้อนไปถึงงบก่อนเข้าตลาด แล้วสรุปเป็นการ์ดหน้าเดียวก่อนกดจอง</p>
     <ol class="steps" id="steps"></ol>
     <div class="notecard" id="notecard" aria-live="polite"></div>
     <p class="stage-foot">PHAT ใช้ข้อมูลจริงจากข่าวที่เผยแพร่ บริษัทอื่นเป็นข้อมูลสมมติ การ์ดไม่ใช่คำแนะนำการลงทุน</p>
@@ -326,6 +405,9 @@ textarea{min-height:76px;resize:vertical}
 </div>
 
 <script>
+/* Owl mark embedded as data so it shows even when index.html is opened on its own (file preview, artifact). Source: assets/brand/owly-mark.png */
+const OWL = 'data:image/webp;base64,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';
+document.querySelectorAll('img[data-owl]').forEach(i => { i.src = OWL; });
 /* ================= data ================= */
 const CHECKS = [
   {key:'profit', label:'กำไรพุ่งหรือกระจุกในช่วงสั้น'},
@@ -356,7 +438,7 @@ const IPOS = {
     checks:{profit:'crit', margin:'crit', pe:'ok', debt:'warn', conc:'warn', sellers:'warn'},
     summary:'P/E ดูถูก แต่กำไรที่ใช้คิด P/E มาจากไตรมาสเดียวเกือบทั้งหมด และอัตรากำไรล่าสุดหดลงครึ่งหนึ่ง',
     signals:[
-      {key:'profit', level:'crit', title:'กำไรที่ใช้คิด P/E มาจากไตรมาสเดียว 71%', text:'P/E 5.91 เท่า คิดจากกำไร 4 ไตรมาส (เม.ย. 68 ถึง มี.ค. 69) รวม 159.62 ล้านบาท ในนั้น 113.75 ล้านบาทมาจากไตรมาส 2/2568 ไตรมาสเดียว', src:'กำไรรวมและฐานที่ใช้คิด P/E จาก InfoQuest กำไรไตรมาส 2/2568 จาก InfoQuest (มองมุมต่าง) สัดส่วน 71% IPO Lens คำนวณเอง'},
+      {key:'profit', level:'crit', title:'กำไรที่ใช้คิด P/E มาจากไตรมาสเดียว 71%', text:'P/E 5.91 เท่า คิดจากกำไร 4 ไตรมาส (เม.ย. 68 ถึง มี.ค. 69) รวม 159.62 ล้านบาท ในนั้น 113.75 ล้านบาทมาจากไตรมาส 2/2568 ไตรมาสเดียว', src:'กำไรรวมและฐานที่ใช้คิด P/E จาก InfoQuest กำไรไตรมาส 2/2568 จาก InfoQuest (มองมุมต่าง) สัดส่วน 71% Owly คำนวณเอง'},
       {key:'margin', level:'crit', title:'อัตรากำไรขั้นต้นหดลงครึ่งหนึ่ง', text:'ลดจาก 8.13% ในปี 2568 เหลือ 4.09% ในไตรมาส 1/2569 กำไรสุทธิไตรมาสนั้นเหลือ 3.47 ล้านบาท หรือ 0.44% ของรายได้', src:'งบไตรมาส 1/2569 ซึ่งเปิดเผยก่อนวันจอง อ้างอิงบทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
       {key:'debt', level:'warn', title:'ความสามารถจ่ายดอกเบี้ยลดลงมาก', text:'อัตราส่วนความสามารถชำระดอกเบี้ยลดจาก 7.29 เท่า (ปี 2568) เหลือ 1.43 เท่า (ไตรมาส 1/2569) เงินกู้ระยะสั้นเพิ่มเป็น 430 ล้านบาท', src:'บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
       {key:'conc', level:'warn', title:'ลูกค้า 5 รายใหญ่คิดเป็น 84.5% ของรายได้', text:'ถ้าลูกค้ารายใหญ่ลดคำสั่งซื้อ รายได้จะกระทบหนัก', src:'ข้อมูลไตรมาส 1/2569 อ้างอิงบทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
@@ -444,7 +526,7 @@ function scoreClaim(c){
 /* ================= reels: built from each card's data ================= */
 const REELS = [
   {id:'news-intro', type:'anchor', ipo:null, title:'น้องฮูกเล่าข่าว IPO', tag:'บทและเสียงโดย AI', lines:[
-    {mood:'happy', text:'สวัสดีครับ น้องฮูกจาก IPO Lens เองครับ วันนี้มาเล่าเรื่องหุ้น IPO ให้ฟังสั้นๆ'},
+    {mood:'happy', text:'สวัสดีครับ น้องฮูกจาก Owly เองครับ วันนี้มาเล่าเรื่องหุ้น IPO ให้ฟังสั้นๆ'},
     {mood:'concerned', text:'รู้ไหมครับ ปี 2568 หุ้น IPO 11 จาก 15 บริษัท ราคาต่ำกว่าราคาจอง', chip:{label:'11 จาก 15', cls:'c-crit', sub:'ที่มา: ตลาดหลักทรัพย์ฯ พ.ย. 2568'}},
     {mood:'neutral', text:'น้องฮูกจะช่วยอ่านหนังสือชี้ชวน แล้วเทียบข่าวจากหลายสำนัก บอกว่าข่าวไหนเชื่อได้ ข่าวไหนยังต้องรอ'},
     {mood:'neutral', text:'ข่าวที่ตรงกันอย่างน้อย 80 เปอร์เซ็นต์ จากสองแหล่งขึ้นไป น้องฮูกถึงจะบอกว่าน่าเชื่อถือครับ', chip:{label:'เกณฑ์ 80%', cls:'c-info', sub:'นับเฉพาะแหล่งที่เป็นอิสระ'}},
@@ -453,14 +535,14 @@ const REELS = [
   {id:'news-phat', type:'anchor', ipo:'phat', title:'น้องฮูกเล่าเรื่อง PHAT', tag:'หุ้นจริง', lines:[
     {mood:'happy', text:'สวัสดีครับ วันนี้น้องฮูกมาเล่าเรื่องหุ้น PHAT หรือบริษัทกลุ่มภัทรครับ'},
     {mood:'neutral', text:'PHAT ขายหุ้น IPO ที่ราคา 2 บาท ข่าวนี้ตรงกันทุกสำนัก เชื่อถือได้ครับ', claim:'c1'},
-    {mood:'concerned', text:'แต่ที่ต้องระวังคือ กำไรที่ใช้คิด P/E มาจากไตรมาสเดียวถึง 71 เปอร์เซ็นต์', chip:{label:'71%', cls:'c-crit', sub:'ที่มา: InfoQuest สัดส่วน IPO Lens คำนวณ'}},
+    {mood:'concerned', text:'แต่ที่ต้องระวังคือ กำไรที่ใช้คิด P/E มาจากไตรมาสเดียวถึง 71 เปอร์เซ็นต์', chip:{label:'71%', cls:'c-crit', sub:'ที่มา: InfoQuest สัดส่วน Owly คำนวณ'}},
     {mood:'concerned', text:'ส่วนข่าวที่บอกว่านักลงทุนตอบรับล้นหลาม มาจากข่าวประชาสัมพันธ์ของบริษัทเอง ตอนนี้ยังยืนยันไม่ได้นะครับ', claim:'c3'},
     {mood:'neutral', text:'ผลจริงคือ วันแรกที่เข้าตลาด ราคาเปิดที่ 1.84 บาท ต่ำกว่าราคาจอง 8 เปอร์เซ็นต์', claim:'c2'},
     {mood:'happy', text:'ก่อนจองหุ้นตัวไหน ลองเปิดการ์ดดูก่อนนะครับ น้องฮูกไม่ได้แนะนำให้ซื้อหรือขาย แค่ช่วยอ่านให้ครับ'}
   ]},
   {id:'phat', ipo:'phat', bg:'assets/bg-phat.svg', title:'PHAT ถูกจริงไหม', tag:'หุ้นจริง', scenes:[
     {type:'hook', img:'assets/reel-phat.svg', alt:'ภาพประกอบสวนปาล์มและโรงสกัดน้ำมันปาล์ม', h:'P/E 5.91 เท่า ถูกจริงไหม?', sub:'บมจ. กลุ่มภัทร (PHAT) โรงสกัดน้ำมันปาล์มที่กระบี่ กรณีศึกษาจากหุ้น IPO ปี 2569'},
-    {type:'split', big:'71%', label:'ของกำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียว', w:71, left:'ไตรมาส 2/2568: 113.75 ลบ.', right:'อีก 3 ไตรมาส: 45.87 ลบ.', src:'ที่มา: InfoQuest สัดส่วน IPO Lens คำนวณ'},
+    {type:'split', big:'71%', label:'ของกำไรที่ใช้คิด P/E มาจากไตรมาส 2/2568 ไตรมาสเดียว', w:71, left:'ไตรมาส 2/2568: 113.75 ลบ.', right:'อีก 3 ไตรมาส: 45.87 ลบ.', src:'ที่มา: InfoQuest สัดส่วน Owly คำนวณ'},
     {type:'compare', label:'อัตรากำไรขั้นต้นหดลงครึ่งหนึ่ง', from:'8.13%', fromNote:'ปี 2568', to:'4.09%', toNote:'ไตรมาส 1/2569', src:'ที่มา: บทวิเคราะห์ บล.ทิสโก้ ในกรุงเทพธุรกิจ'},
     {type:'ring', h:'การ์ดเตือนได้ 5 จาก 6 เรื่อง', sub:'ด้วยข้อมูลที่มีก่อนวันจอง 4–6 ส.ค.'},
     {type:'compare', label:'ผลจริงวันแรกที่เข้าตลาด', from:'2.00', fromNote:'ราคาจอง (บาท)', to:'1.84', toNote:'ราคาเปิด ต่ำจอง 8%', src:'ที่มา: โพสต์ทูเดย์ 20 ส.ค. 2569'},
@@ -485,47 +567,52 @@ const player = {reel:0, scene:0, t:0, paused:false, ended:false, timer:null, io:
 
 /* ---------- น้องฮูก: original mascot, drawn in SVG ---------- */
 function owlSVG(){
-  const eye = cx => `<circle cx="${cx}" cy="92" r="34" fill="#E8EEF3"/><circle cx="${cx}" cy="92" r="20" fill="#fff"/><circle class="pupil" cx="${cx}" cy="94" r="10" fill="#142033"/><circle cx="${cx + 4}" cy="89" r="3" fill="#fff"/><ellipse class="lid" cx="${cx}" cy="92" rx="22" ry="22" fill="#3E5C76"/>`;
-  return `<svg viewBox="0 0 200 224" role="img" aria-label="น้องฮูก นกฮูกผู้ช่วยอ่านข่าว"><g class="owl"><g class="body">
-    <path d="M54 54 L42 16 L82 40 Z" fill="#2F4A61"/><path d="M146 54 L158 16 L118 40 Z" fill="#2F4A61"/>
-    <path d="M26 118 q-8 52 30 80 q-8-42 4-80z" fill="#2F4A61"/><path d="M174 118 q8 52 -30 80 q8-42 -4-80z" fill="#2F4A61"/>
-    <ellipse cx="100" cy="128" rx="76" ry="86" fill="#3E5C76"/>
-    <ellipse cx="100" cy="162" rx="47" ry="48" fill="#A9C3D6"/>
-    <path d="M80 152q6 6 12 0M108 152q6 6 12 0M94 172q6 6 12 0" stroke="#7F9CB3" stroke-width="3" fill="none" stroke-linecap="round"/>
-    ${eye(72)}${eye(128)}
-    <circle cx="72" cy="92" r="26" fill="none" stroke="#5FD0DA" stroke-width="5"/><circle cx="128" cy="92" r="26" fill="none" stroke="#5FD0DA" stroke-width="5"/>
-    <path d="M97 88 q3-5 6 0" stroke="#5FD0DA" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path class="brow brow-l" d="M50 60 Q72 50 94 60" stroke="#1E3346" stroke-width="6" stroke-linecap="round" fill="none"/>
-    <path class="brow brow-r" d="M106 60 Q128 50 150 60" stroke="#1E3346" stroke-width="6" stroke-linecap="round" fill="none"/>
-    <path class="jaw" d="M91 121 L109 121 L100 139 Z" fill="#C9862A"/>
-    <path d="M86 111 L114 111 L100 131 Z" fill="#F0B055"/>
-    <rect x="76" y="186" width="48" height="17" rx="8.5" fill="#5FD0DA"/><text x="100" y="198.5" font-size="10.5" text-anchor="middle" fill="#0B1422" font-weight="700" font-family="Bai Jamjuree, sans-serif">IPO Lens</text>
-    <path d="M80 214h12M108 214h12" stroke="#F0B055" stroke-width="6" stroke-linecap="round"/>
+  const SL = '#4C6F8D', SL2 = '#3D5C78', MIST = '#84A3C0', SNOW = '#F4F9FC', NIGHT = '#141F31', TEAL = '#66D3FA', AMBER = '#F1AA53';
+  const chev = (x, y) => `<path d="M${x - 6} ${y} l6 5 l6 -5" fill="none" stroke="${AMBER}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return `<svg viewBox="0 0 200 224" role="img" aria-label="น้องฮูก นกฮูกผู้ช่วยอ่านข่าวของ Owly"><g class="owl"><g class="body">
+    <path d="M52 62 C38 44 36 26 42 10 C54 26 68 36 84 40 Z" fill="${SL}"/><path d="M148 62 C162 44 164 26 158 10 C146 26 132 36 116 40 Z" fill="${SL}"/>
+    <path d="M26 116 q-10 54 30 84 q-6-44 6-84z" fill="${SL2}"/><path d="M174 116 q10 54 -30 84 q6-44 -6-84z" fill="${SL2}"/>
+    <ellipse cx="100" cy="130" rx="74" ry="84" fill="${SL}"/>
+    <path d="M58 148 Q100 128 142 148 Q148 196 100 212 Q52 196 58 148 Z" fill="${SNOW}"/>
+    ${chev(78, 156)}${chev(100, 150)}${chev(122, 156)}${chev(89, 174)}${chev(111, 174)}${chev(100, 192)}
+    <circle cx="68" cy="94" r="31" fill="${MIST}"/><circle cx="68" cy="94" r="22" fill="${SNOW}"/>
+    <circle class="pupil" cx="70" cy="96" r="10" fill="${NIGHT}"/><circle cx="74" cy="91" r="3.2" fill="#fff"/>
+    <ellipse class="lid" cx="68" cy="94" rx="23" ry="23" fill="${SL}"/>
+    <path d="M154 118 L178 142" stroke="${TEAL}" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="132" cy="92" r="31" fill="${SNOW}" stroke="${TEAL}" stroke-width="7"/>
+    <circle class="pupil" cx="134" cy="95" r="14" fill="${NIGHT}"/><circle cx="140" cy="88" r="4.4" fill="#fff"/>
+    <ellipse class="lid" cx="132" cy="92" rx="27.5" ry="27.5" fill="${SL}"/>
+    <path d="M114 74 Q120 66 128 64" fill="none" stroke="${TEAL}" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+    <path class="brow brow-l" d="M46 60 Q68 50 90 60" stroke="${SL2}" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path class="brow brow-r" d="M110 54 Q134 42 158 54" stroke="${SL2}" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path class="jaw" d="M92 126 L108 126 L100 141 Z" fill="#C98230"/>
+    <path d="M88 116 L112 116 L100 136 Z" fill="${AMBER}"/>
+    <path d="M78 212v8M85 213v8M92 212v8M108 212v8M115 213v8M122 212v8" stroke="${AMBER}" stroke-width="5.5" stroke-linecap="round"/>
   </g></g></svg>`;
 }
 
 function studioSVG(){
-  const bars = [44,62,52,78,70,96,84,110].map((h, i) => `<rect x="${92 + i * 26}" y="${236 - h}" width="14" height="${h}" rx="2" fill="#5FD0DA" opacity="${0.18 + i * 0.05}"/>`).join('');
-  const city = [[0,40],[22,64],[40,48],[58,86],[80,58],[98,104],[120,70],[140,52],[160,92],[184,62],[204,118],[228,74],[250,56],[270,96],[292,66],[312,84],[334,50],[354,72],[372,44]].map(([x, h]) => `<rect x="${x}" y="${470 - h}" width="20" height="${h}" fill="#13253C"/>`).join('');
+  const bars = [44,62,52,78,70,96,84,110].map((h, i) => `<rect x="${92 + i * 26}" y="${236 - h}" width="14" height="${h}" rx="2" fill="#66D3FA" opacity="${0.18 + i * 0.05}"/>`).join('');
+  const city = [[0,40],[22,64],[40,48],[58,86],[80,58],[98,104],[120,70],[140,52],[160,92],[184,62],[204,118],[228,74],[250,56],[270,96],[292,66],[312,84],[334,50],[354,72],[372,44]].map(([x, h]) => `<rect x="${x}" y="${470 - h}" width="20" height="${h}" fill="#0C2D54"/>`).join('');
   return `<svg class="studio" viewBox="0 0 390 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <rect width="390" height="700" fill="#0B1626"/>
-    <g stroke="#13243A" stroke-width="1">${Array.from({length:14}, (_, i) => `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="470"/>`).join('')}</g>
+    <rect width="390" height="700" fill="#082343"/>
+    <g stroke="#0E3058" stroke-width="1">${Array.from({length:14}, (_, i) => `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="470"/>`).join('')}</g>
     ${city}
-    <rect x="62" y="96" width="266" height="166" rx="14" fill="#0F2134" stroke="#1F3A55" stroke-width="2"/>
-    <g stroke="#1A3149">${[130,160,190,220].map(y => `<line x1="76" y1="${y}" x2="314" y2="${y}"/>`).join('')}</g>
+    <rect x="62" y="96" width="266" height="166" rx="14" fill="#0A2B52" stroke="#1D4F86" stroke-width="2"/>
+    <g stroke="#123F6E">${[130,160,190,220].map(y => `<line x1="76" y1="${y}" x2="314" y2="${y}"/>`).join('')}</g>
     ${bars}
-    <polyline points="90,214 118,198 144,206 170,176 196,184 222,152 248,162 274,128 300,136" fill="none" stroke="#5FD0DA" stroke-width="2.5" stroke-linejoin="round" opacity=".55"/>
-    <circle cx="300" cy="136" r="4.5" fill="#5FD0DA" opacity=".7"/>
-    <text x="80" y="120" font-size="11" fill="#5FD0DA" opacity=".7" font-family="Bai Jamjuree, sans-serif" font-weight="600" letter-spacing="1.5">IPO LENS NEWS</text>
-    <circle cx="70" cy="40" r="90" fill="#5FD0DA" opacity=".05"/><circle cx="330" cy="60" r="110" fill="#F0B055" opacity=".04"/>
-    <rect y="470" width="390" height="230" fill="#0A1422"/>
-    <ellipse cx="195" cy="470" rx="220" ry="18" fill="#5FD0DA" opacity=".06"/>
+    <polyline points="90,214 118,198 144,206 170,176 196,184 222,152 248,162 274,128 300,136" fill="none" stroke="#66D3FA" stroke-width="2.5" stroke-linejoin="round" opacity=".55"/>
+    <circle cx="300" cy="136" r="4.5" fill="#66D3FA" opacity=".7"/>
+    <text x="80" y="120" font-size="11" fill="#66D3FA" opacity=".7" font-family="Bai Jamjuree, sans-serif" font-weight="600" letter-spacing="1.5">OWLY</text>
+    <circle cx="70" cy="40" r="90" fill="#66D3FA" opacity=".05"/><circle cx="330" cy="60" r="110" fill="#F1AA53" opacity=".04"/>
+    <rect y="470" width="390" height="230" fill="#061A33"/>
+    <ellipse cx="195" cy="470" rx="220" ry="18" fill="#66D3FA" opacity=".06"/>
   </svg>`;
 }
 function deskSVG(){
-  return `<svg viewBox="0 0 400 96" aria-hidden="true"><path d="M8 18 H392 L372 92 H28 Z" fill="#162B44"/><rect x="0" y="8" width="400" height="16" rx="6" fill="#20405F"/><rect x="0" y="8" width="400" height="3" rx="1.5" fill="#5FD0DA" opacity=".6"/>
-    <rect x="132" y="40" width="136" height="32" rx="8" fill="#0F2134" stroke="#5FD0DA" stroke-opacity=".5"/>
-    <text x="200" y="61" text-anchor="middle" font-size="14" font-weight="700" fill="#5FD0DA" font-family="Bai Jamjuree, sans-serif">IPO Lens ข่าว</text></svg>`;
+  return `<svg viewBox="0 0 400 96" aria-hidden="true"><path d="M8 18 H392 L372 92 H28 Z" fill="#0D3563"/><rect x="0" y="8" width="400" height="16" rx="6" fill="#1A5594"/><rect x="0" y="8" width="400" height="3" rx="1.5" fill="#66D3FA" opacity=".6"/>
+    <rect x="132" y="40" width="136" height="32" rx="8" fill="#0A2B52" stroke="#66D3FA" stroke-opacity=".5"/>
+    <text x="200" y="61" text-anchor="middle" font-size="14" font-weight="700" fill="#66D3FA" font-family="Bai Jamjuree, sans-serif">Owly ข่าว</text></svg>`;
 }
 function tickerHTML(){
   const items = CLAIMS.map(c => { const r = scoreClaim(c), k = r.cls === 'c-good' ? 'ok' : r.cls === 'c-crit' ? 'bad' : 'no'; return `<span><b>PHAT</b> ${esc(c.text)} <span class="${k}">● ${r.verdict}</span></span>`; }).join('');
@@ -606,7 +693,7 @@ async function rewriteWithAI(i, btn){
   btn.disabled = true; note.hidden = false; note.textContent = 'AI กำลังเขียนบทจากการ์ดและผลตรวจข่าว...';
   const claims = CLAIMS.map(c => ({id:c.id, ข่าว:c.text, ผลตรวจ:scoreClaim(c).verdict}));
   try {
-    const v = await sample.json('คุณคือ "น้องฮูก" นกฮูกผู้ช่วยอ่านข่าวของแอป IPO Lens น้ำเสียงเป็นกันเองแต่น่าเชื่อถือ ใช้ครับ เขียนบทคลิปสั้นภาษาไทย 5 ถึง 6 บรรทัด แต่ละบรรทัดไม่เกิน 110 ตัวอักษร พูดเป็นภาษาพูดที่อ่านออกเสียงได้ ใช้เฉพาะข้อมูลที่ให้มา ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ข่าวที่ผลตรวจไม่ใช่ "น่าเชื่อถือ" ต้องพูดชัดว่ายังยืนยันไม่ได้หรือข้อมูลยังขัดกัน บรรทัดสุดท้ายชวนให้เปิดการ์ดอ่านก่อนตัดสินใจ ตอบเป็น JSON เท่านั้น รูปแบบ {"lines":[{"text":"...","mood":"neutral|concerned|happy","claim":"id ของข่าวที่พูดถึง หรือ null"}]}\n\nข้อมูลการ์ด: ' + context(ipo) + '\n\nผลตรวจข่าว: ' + JSON.stringify(claims), {modelTier:'default', cache:false});
+    const v = await sample.json('คุณคือ "น้องฮูก" นกฮูกผู้ช่วยอ่านข่าวของแอป Owly น้ำเสียงเป็นกันเองแต่น่าเชื่อถือ ใช้ครับ เขียนบทคลิปสั้นภาษาไทย 5 ถึง 6 บรรทัด แต่ละบรรทัดไม่เกิน 110 ตัวอักษร พูดเป็นภาษาพูดที่อ่านออกเสียงได้ ใช้เฉพาะข้อมูลที่ให้มา ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ข่าวที่ผลตรวจไม่ใช่ "น่าเชื่อถือ" ต้องพูดชัดว่ายังยืนยันไม่ได้หรือข้อมูลยังขัดกัน บรรทัดสุดท้ายชวนให้เปิดการ์ดอ่านก่อนตัดสินใจ ตอบเป็น JSON เท่านั้น รูปแบบ {"lines":[{"text":"...","mood":"neutral|concerned|happy","claim":"id ของข่าวที่พูดถึง หรือ null"}]}\n\nข้อมูลการ์ด: ' + context(ipo) + '\n\nผลตรวจข่าว: ' + JSON.stringify(claims), {modelTier:'default', cache:false});
     const ok = v && Array.isArray(v.lines) && v.lines.length >= 3 && v.lines.length <= 8 && v.lines.every(l => typeof l.text === 'string' && l.text.length > 0 && l.text.length <= 160);
     if (!ok) throw new Error('bad');
     r.lines = v.lines.map(l => ({text:l.text, mood:['neutral','concerned','happy'].includes(l.mood) ? l.mood : 'neutral', claim:CLAIMS.some(c => c.id === l.claim) ? l.claim : undefined}));
@@ -625,7 +712,7 @@ function sceneHTML(reel, sc){
     case 'split': return `<div class="big red num" data-count="${parseInt(sc.big)}" data-suffix="%">${esc(sc.big)}</div><p class="sub">${esc(sc.label)}</p><div class="split" style="--w:${sc.w}%"><i></i></div><div class="splitlab"><span>${esc(sc.left)}</span><span>${esc(sc.right)}</span></div><p class="src">${esc(sc.src)}</p>`;
     case 'compare': return `<p class="sub" style="font-size:18px;color:#F2F6FA;font-weight:600">${esc(sc.label)}</p><div class="cmp2 num"><span class="from">${esc(sc.from)}<small>${esc(sc.fromNote)}</small></span><span aria-hidden="true" style="font-size:32px;color:#8FA1B5">→</span><span class="to">${esc(sc.to)}<small>${esc(sc.toNote)}</small></span></div><p class="src">${esc(sc.src)}</p>`;
     case 'ring': return `<div>${ring(ipo, 150)}</div><h2 style="font-size:28px">${esc(sc.h)}</h2><p class="sub">${esc(sc.sub)}</p>`;
-    case 'checks': return `<h2 style="font-size:24px">6 เรื่องที่ IPO Lens ตรวจ</h2><ul class="reelchecks">${CHECKS.map((k, i) => `<li style="transition-delay:${0.2 + i * 0.35}s"><i></i>${k.label}</li>`).join('')}</ul>`;
+    case 'checks': return `<h2 style="font-size:24px">6 เรื่องที่ Owly ตรวจ</h2><ul class="reelchecks">${CHECKS.map((k, i) => `<li style="transition-delay:${0.2 + i * 0.35}s"><i></i>${k.label}</li>`).join('')}</ul>`;
     case 'ask': return `<h2 style="font-size:26px">ก่อนจอง ถามเรื่องนี้</h2><ol class="reelqs">${ipo.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol><button class="cta" type="button" data-opencard="${ipo.id}">เปิดการ์ดเต็ม</button>`;
   }
   return '';
@@ -636,7 +723,7 @@ function anchorHTML(r, i){
       ${studioSVG()}
       ${tickerHTML()}
       <div class="ai-label">บทและเสียงสร้างโดย AI</div>
-      <div class="anchor-stage"><div class="owlbox"><div class="owlwrap mood-neutral">${owlSVG()}</div><div class="desk">${deskSVG()}</div></div><div class="anchor-name">น้องฮูก ผู้ช่วยอ่านข่าวของ IPO Lens</div></div>
+      <div class="anchor-stage"><div class="owlbox"><div class="owlwrap mood-neutral">${owlSVG()}</div><div class="desk">${deskSVG()}</div></div><div class="anchor-name">น้องฮูก ผู้ช่วยอ่านข่าวของ Owly</div></div>
       <div class="lower" hidden></div>
       <div class="voicenote" hidden></div>
       <div class="subtitle" aria-live="polite">${esc(r.lines[0].text)}</div>
@@ -657,7 +744,7 @@ function reelsScreen(){
       ${i === 2 ? '<div class="reelhint">แตะซ้ายหรือขวาเพื่อข้ามฉาก แตะกลางจอเพื่อหยุด</div>' : ''}
       ${r.scenes.map((sc, k) => `<div class="scene${k === 0 ? ' on' : ''}" data-scene="${k}">${sceneHTML(r, sc)}</div>`).join('')}
       <div class="pausemark" hidden>หยุดชั่วคราว</div>
-      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>สรุปจากการ์ดของ IPO Lens ไม่ใช่คำแนะนำการลงทุน</small></div>
+      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>สรุปจากการ์ดของ Owly ไม่ใช่คำแนะนำการลงทุน</small></div>
       ${r.ipo ? `<div class="reel-side"><button type="button" data-opencard="${r.ipo}" aria-label="เปิดการ์ดเต็มของ ${IPOS[r.ipo].ticker}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6.5 8h7M6.5 11h7M6.5 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><span>การ์ด</span></div>` : ''}
     </section>`).join('')}</div>`;
 }
@@ -772,7 +859,7 @@ function stepIndex(){
 /* ================= pieces ================= */
 function ring(ipo, size){
   const r = size * 0.38, c = size / 2, C = 2 * Math.PI * r, seg = C / 6, gap = size > 60 ? 6 : 4;
-  const col = {crit:'var(--crit)', warn:'var(--warn)', ok:'var(--good)', na:'var(--na)'};
+  const col = {crit:'var(--crit)', warn:'var(--warn-fill)', ok:'var(--good)', na:'var(--na)'};
   const found = CHECKS.filter(k => ['crit','warn'].includes(ipo.checks[k.key])).length;
   let s = `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="พบสัญญาณเตือน ${found} จาก 6 เรื่อง">`;
   CHECKS.forEach((k, i) => {
@@ -797,7 +884,7 @@ function bars(ipo){
     s += `<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)"/>`;
     vals.forEach((v, i) => {
       const x = 5 + i * colW + colW * 0.2, w = colW * 0.6, bh = Math.max(Math.abs(v) / span * h, 2), y = v >= 0 ? base - bh : base;
-      const fill = i === f.after ? 'url(#hatch)' : i === f.hot ? 'var(--crit)' : v < 0 ? 'var(--na)' : 'var(--lens)';
+      const fill = i === f.after ? 'url(#hatch)' : i === f.hot ? 'var(--crit)' : v < 0 ? 'var(--na)' : 'var(--slate)';
       s += `<rect x="${x}" y="${y}" width="${w}" height="${bh}" rx="3" fill="${fill}"/>`;
       s += `<text class="v num" x="${x + w / 2}" y="${v >= 0 ? y - 5 : y + bh + 13}" font-size="11.5" text-anchor="middle">${fmt(v)}</text>`;
       s += `<text x="${x + w / 2}" y="194" font-size="11" text-anchor="middle">${f.labels[i]}</text>`;
@@ -809,7 +896,7 @@ function bars(ipo){
     let o = `<text x="0" y="${top + h / 2 + 4}" font-size="12" style="fill:var(--ink);font-weight:600">${label}</text><line x1="60" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)"/>`;
     vals.forEach((v, i) => {
       const x = 60 + i * colW + colW * 0.2, w = colW * 0.6, bh = Math.max(Math.abs(v) / span * h, 2), y = v >= 0 ? base - bh : base;
-      const fill = hotOn && i === ipo.fin.hot ? 'var(--crit)' : v < 0 ? 'var(--na)' : 'var(--lens)';
+      const fill = hotOn && i === ipo.fin.hot ? 'var(--crit)' : v < 0 ? 'var(--na)' : 'var(--slate)';
       o += `<rect x="${x}" y="${y}" width="${w}" height="${bh}" rx="3" fill="${fill}"/><text class="v num" x="${x + w / 2}" y="${v >= 0 ? y - 4 : y + bh + 12}" font-size="11" text-anchor="middle">${fmt(v)}</text>`;
     });
     return o;
@@ -824,49 +911,69 @@ function bars(ipo){
 /* ================= screens ================= */
 function home(){
   const ids = ['spack','cmate'];
-  const rowHTML = ipo => `<button class="row" type="button" data-open="${ipo.id}">${ring(ipo, 48)}<span><span class="t">${esc(ipo.name)}</span><span class="m">${ipo.ticker} ${ipo.market} ${ipo.when}</span></span>${levelChip(ipo)}</button>`;
+  const rowHTML = ipo => `<button class="row" type="button" data-open="${ipo.id}">${ring(ipo, 44)}<span><span class="t">${esc(ipo.name)}</span><span class="m">${ipo.ticker} · ${ipo.market}</span><span class="m when">${ipo.when}</span></span>${levelChip(ipo)}<svg class="chev" width="8" height="14" viewBox="0 0 8 14" aria-hidden="true"><path d="M1.5 1.5L6.5 7l-5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+  const tally = Array.from({length:15}, (_, i) => `<i class="${i < 11 ? 'down' : ''}"></i>`).join('');
   return `
-    <div class="appbar"><div><h1>IPO Lens</h1><div class="sub">อ่านหุ้น IPO ก่อนกดจอง</div></div></div>
-    <div class="fact"><b class="num">11 จาก 15</b>หุ้น IPO ปี 2568 ราคาต่ำกว่าราคาจอง<br><small>ตลาดหลักทรัพย์ฯ พ.ย. 2568 <a href="https://www.thairath.co.th/money/investment/capital_market/2893569">ที่มา</a></small></div>
-    <button class="promo" type="button" data-reelof="news-intro"><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span><span><b>ฟังน้องฮูกเล่าข่าว IPO</b><span>คลิปสั้นพร้อมเสียง หุ้นแต่ละตัวใน 30 วินาที</span></span><span aria-hidden="true">›</span></button>
-    <div class="sec-title">เปิดจองเร็วๆ นี้ <em>ข้อมูลสมมติ</em></div>
-    <div class="rows">${ids.map(id => rowHTML(IPOS[id])).join('')}</div>
-    <div class="sec-title">กรณีศึกษาจากหุ้นจริง <em>เข้าตลาดแล้ว</em></div>
-    <div class="rows">${rowHTML(IPOS.phat)}</div>
-    <p class="disclaimer" style="margin-top:18px">วงแหวนแบ่งเป็น 6 ช่อง แต่ละช่องคือเรื่องที่ระบบตรวจ สีแดงและส้มคือพบสัญญาณ สีเขียวคือไม่พบ สีเทาคือยังไม่มีข้อมูล</p>`;
+    <div class="topband">
+    <header class="appbar"><img class="mark" src="${OWL}" alt="" width="38" height="38"><div><div class="wordmark">Owl<i>y</i></div><div class="sub">ส่องหุ้น IPO ก่อนกดจอง</div></div></header>
+    <section class="hero" aria-label="สถิติหุ้น IPO ปี 2568">
+      <span class="label">หุ้น IPO ไทยที่เข้าตลาดปี 2568</span>
+      <div class="big num">11<small>จาก 15 ตัว</small></div>
+      <p>ราคาตอนนี้ต่ำกว่าราคาจอง</p>
+      <div class="tally" role="img" aria-label="11 จาก 15 ตัวราคาต่ำกว่าราคาจอง">${tally}</div>
+      <span class="srcline">ข้อมูลตลาดหลักทรัพย์ฯ พ.ย. 2568 · <a href="https://www.thairath.co.th/money/investment/capital_market/2893569">ที่มา</a></span>
+      <img class="hero-owl" src="${OWL}" alt="" width="120" height="120">
+    </section>
+    </div>
+    <button class="promo" type="button" data-reelof="news-intro"><img src="${OWL}" alt="" width="56" height="56"><span><b>น้องฮูกเล่าข่าว IPO</b><span>คลิปสั้นมีเสียง ตัวละ 30 วินาที</span></span><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span></button>
+    <h2 class="sec-title">เปิดจองเร็วๆ นี้ <em>ข้อมูลสมมติ</em></h2>
+    <div class="group">${ids.map(id => rowHTML(IPOS[id])).join('')}</div>
+    <h2 class="sec-title">กรณีศึกษาจากหุ้นจริง <em>เข้าตลาดแล้ว</em></h2>
+    <div class="group">${rowHTML(IPOS.phat)}</div>
+    <div class="ringkey"><span><i class="i-crit"></i>พบ รุนแรง</span><span><i class="i-warn"></i>พบ</span><span><i class="i-ok"></i>ไม่พบ</span><span><i class="i-na"></i>ยังไม่มีข้อมูล</span></div>
+    <p class="disclaimer" style="margin-top:8px">วงแหวน 6 ช่องคือ 6 เรื่องที่ Owly ตรวจ การ์ดเป็นข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน</p>`;
 }
 
 function ipoScreen(ipo){
   const tabs = [['summary','สรุป'],['fin','งบ'],['news','ข่าว'],['ai','ถาม AI']];
   return `
-    <div class="appbar"><button class="back" type="button" data-back aria-label="กลับหน้าแรก"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="sub">${ipo.real ? 'กรณีศึกษาจากหุ้นจริง' : 'ข้อมูลสมมติ'}</div></div>
+    <div class="topbar"><button class="back" type="button" data-back aria-label="กลับหน้าแรก"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="chip ${ipo.real ? 'c-info' : 'c-mute'}">${ipo.real ? 'กรณีศึกษาจากหุ้นจริง' : 'ข้อมูลสมมติ'}</span></div>
     <div class="ipohead">
-      <h2>${esc(ipo.name)} <span class="muted" style="font-weight:500;font-size:16px">${ipo.ticker}</span></h2>
-      <div class="m">${ipo.market} หมวด${esc(ipo.sector)} ${ipo.when}</div>
+      <div class="m">${ipo.ticker} · ${ipo.market} · หมวด${esc(ipo.sector)}</div>
+      <h2>${esc(ipo.name)}</h2>
+      <div class="m">${ipo.when}</div>
       <div class="kv">
-        <div><span>ราคาจอง</span><b class="num">${ipo.price.toFixed(2)} บาท</b></div>
-        <div><span>ระดมทุน</span><b class="num">${fmt(ipo.raise)} ลบ.</b></div>
-        <div><span>P/E</span><b class="num">${ipo.pe} เท่า</b></div>
+        <div><span>ราคาจอง</span><b class="num">${ipo.price.toFixed(2)} <small>บาท</small></b></div>
+        <div><span>ระดมทุน</span><b class="num">${fmt(ipo.raise)} <small>ลบ.</small></b></div>
+        <div><span>P/E</span><b class="num">${ipo.pe} <small>เท่า</small></b></div>
       </div>
     </div>
-    <div class="seg" role="tablist">${tabs.map(([k, l]) => `<button role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}</button>`).join('')}</div>
+    <div class="seg"><div class="track" role="tablist" aria-label="หัวข้อในการ์ด">${tabs.map(([k, l]) => `<button role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}</button>`).join('')}</div></div>
     <div class="tab">${({summary, fin, news, ai})[state.tab](ipo)}</div>
     <p class="disclaimer">การ์ดนี้ให้ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำให้ซื้อหรือไม่ซื้อ</p>`;
 }
 
+const SIG_ICON = {
+  crit:'<svg class="ico" viewBox="0 0 22 22" aria-hidden="true"><path d="M7.2 2h7.6L20 7.2v7.6L14.8 20H7.2L2 14.8V7.2z" fill="var(--crit-soft)" stroke="var(--crit)" stroke-width="1.6" stroke-linejoin="round"/><path d="M11 6.5v5.5" stroke="var(--crit)" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="15.3" r="1.2" fill="var(--crit)"/></svg>',
+  warn:'<svg class="ico" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 2.8L20.4 19H1.6z" fill="var(--warn-soft)" stroke="var(--warn-fill)" stroke-width="1.6" stroke-linejoin="round"/><path d="M11 8.5v4.6" stroke="var(--warn)" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="16" r="1.2" fill="var(--warn)"/></svg>'
+};
+const SMALL_CHEV = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5L7 5l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 function summary(ipo){
+  const n = foundCount(ipo), v = Object.values(ipo.checks), nc = v.filter(x => x === 'crit').length, na = v.filter(x => x === 'na').length;
   return `
-    <div class="card"><div class="lensbox">${ring(ipo, 120)}
-      <ul class="legend">${CHECKS.map(k => { const s = ipo.checks[k.key]; return `<li class="${s === 'na' ? 's-na' : ''}"><i class="i-${s}"></i>${k.label}${s === 'na' ? ' (ยังไม่มีข้อมูล)' : ''}</li>`; }).join('')}</ul>
-    </div><p style="margin-top:12px">${esc(ipo.summary)}</p></div>
-    ${ipo.after ? `<div class="outcome"><h3>เกิดอะไรขึ้นหลังเข้าตลาด</h3><p class="small muted" style="margin:2px 0 0">การ์ดนี้ใช้เฉพาะข้อมูลที่มีก่อนวันจอง ${ipo.when.replace('จอง ', '')} ส่วนนี้คือผลจริง</p><ul>${ipo.after.map(a => `<li>${esc(a.text)} <a class="small" href="${SRC[a.src].url}">${SRC[a.src].outlet}</a></li>`).join('')}</ul></div>` : ''}
-    <div style="display:grid;gap:8px">
-      <h3 style="font-size:15.5px">สัญญาณที่ต้องระวัง</h3>
-      ${ipo.signals.map((s, i) => `<div class="sig ${s.level}"><b>${esc(s.title)}</b><p>${esc(s.text)}</p><button class="srcbtn" type="button" aria-expanded="false" aria-controls="src-${i}" data-src>ดูที่มาของตัวเลข</button><div class="srcnote" id="src-${i}" hidden>${esc(s.src)}</div></div>`).join('')}
+    <div class="card">
+      <div class="verdict">${ring(ipo, 112)}<div><div class="label">สัญญาณเตือนจาก 6 เรื่องที่ตรวจ</div><div class="count">${n ? `รุนแรง <b class="num">${nc}</b> · ควรระวัง <b class="num">${n - nc}</b>` : 'ยังไม่พบ'}</div><p>${na ? `อีก ${na} เรื่องยังไม่มีข้อมูล` : 'ตรวจครบทั้ง 6 เรื่อง'}</p></div></div>
+      <ul class="legend">${CHECKS.map(k => { const st = ipo.checks[k.key]; return `<li class="${st === 'na' ? 's-na' : ''}"><i class="i-${st}"></i>${k.label}${st === 'na' ? ' (ยังไม่มีข้อมูล)' : ''}</li>`; }).join('')}</ul>
+      <p class="summary-text">${esc(ipo.summary)}</p>
     </div>
-    <div><button class="ghostbtn" type="button" data-reelof="${ipo.id}"><svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="2.5" width="14" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 8l5 3-5 3z" fill="currentColor"/></svg>ดูการ์ดนี้เป็นคลิปสั้น</button></div>
-    <div class="card"><h3>จุดแข็ง</h3><ul class="list">${ipo.strengths.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-    <div class="card"><h3>คำถามที่ควรถามก่อนจอง</h3><ol class="list">${ipo.questions.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`;
+    ${ipo.after ? `<div class="card outcome"><h3>หลังเข้าตลาดจริง</h3><p class="small muted" style="margin:2px 0 0">การ์ดใช้เฉพาะข้อมูลก่อนวันจอง ${ipo.when.replace('จอง ', '')} ส่วนนี้คือสิ่งที่เกิดขึ้นจริง</p><ul class="timeline">${ipo.after.map(a => `<li>${esc(a.text)} <a class="small" href="${SRC[a.src].url}">${SRC[a.src].outlet}</a></li>`).join('')}</ul></div>` : ''}
+    <h3>สัญญาณที่ต้องระวัง</h3>
+    <div class="group">${ipo.signals.map((sg, i) => `<div class="sig ${sg.level}">${SIG_ICON[sg.level] || SIG_ICON.warn}<div><span class="lvl">${sg.level === 'crit' ? 'รุนแรง' : 'ควรระวัง'}</span><b>${esc(sg.title)}</b><p>${esc(sg.text)}</p><button class="textbtn" type="button" aria-expanded="false" aria-controls="src-${i}" data-src>${SMALL_CHEV}ดูที่มาของตัวเลข</button><div class="srcnote" id="src-${i}" hidden>${esc(sg.src)}</div></div></div>`).join('')}</div>
+    <div><button class="ghostbtn" type="button" data-reelof="${ipo.id}"><svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="2.5" width="14" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 8l5 3-5 3z" fill="currentColor"/></svg>ดูการ์ดนี้เป็นคลิปสั้น</button></div>
+    <h3>จุดแข็ง</h3>
+    <div class="card"><ul class="list">${ipo.strengths.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+    <h3>คำถามที่ควรถามก่อนจอง</h3>
+    <div class="card"><ol class="list">${ipo.questions.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`;
 }
 
 function fin(ipo){
@@ -889,17 +996,18 @@ function fin(ipo){
 function news(ipo){
   if (!ipo.real) return `<div class="card"><h3>ยังไม่มีข่าวในเดโม</h3><p>เดโมนี้ตรวจข่าวเฉพาะ PHAT ซึ่งเป็นหุ้นจริง</p></div>`;
   return `
-    <div class="rule"><b>เกณฑ์:</b> นับสื่อที่เป็นอิสระต่อกัน ข่าวประชาสัมพันธ์ฉบับเดียวกันนับเป็น 1 แหล่ง ข่าวจะขึ้นว่า "น่าเชื่อถือ" เมื่อมีอย่างน้อย 2 แหล่ง และตรงกันอย่างน้อย 80%</div>
-    ${CLAIMS.map(c => { const r = scoreClaim(c); const barCol = r.cls === 'c-good' ? 'var(--good)' : r.cls === 'c-crit' ? 'var(--crit)' : 'var(--warn)';
+    <div class="rule"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="var(--slate)" stroke-width="1.6"/><path d="M10 9v5" stroke="var(--slate)" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="6.2" r="1.1" fill="var(--slate)"/></svg><div><b>เกณฑ์</b> นับเฉพาะสื่อที่เป็นอิสระต่อกัน ข่าวประชาสัมพันธ์ฉบับเดียวกันที่ลงหลายเว็บนับเป็น 1 แหล่ง ข่าวจะขึ้นว่า "น่าเชื่อถือ" เมื่อมีอย่างน้อย 2 แหล่งและตรงกันอย่างน้อย 80%</div></div>
+    <h3>ข่าวของ PHAT ที่ตรวจแล้ว</h3>
+    <div class="group">${CLAIMS.map(c => { const r = scoreClaim(c); const barCol = r.cls === 'c-good' ? 'var(--good)' : r.cls === 'c-crit' ? 'var(--crit)' : 'var(--warn)';
       return `<div class="claim">
         <div class="claim-top"><b>${esc(c.text)}</b><span class="chip ${r.cls}">${r.verdict}</span></div>
         <div class="meter" aria-hidden="true"><i style="width:${r.pct}%;background:${barCol}"></i></div>
         <div class="small muted num">ตรงกัน ${r.pct}% จาก ${r.n} แหล่งที่เป็นอิสระ</div>
         ${c.why ? `<div class="why">${esc(c.why)}</div>` : ''}
         <div class="srcs">${c.topicSources.map(id => `<a href="${SRC[id].url}" class="${c.copies.includes(id) ? 'copy' : c.disagree.includes(id) ? 'disagree' : 'agree'}" title="${esc(SRC[id].title)}">${SRC[id].outlet}${c.copies.includes(id) ? ' (สำเนา)' : ''}</a>`).join('')}</div>
-      </div>`; }).join('')}
+      </div>`; }).join('')}</div>
     <div class="card"><h3>ได้ข่าวมาจากที่อื่น ลองวางตรวจ</h3>
-      <p class="small muted" style="margin-bottom:8px">AI จะเทียบกับข่าวที่รวบรวมไว้ด้านบน</p>
+      <p class="small muted" style="margin-bottom:10px">AI จะเทียบกับข่าวที่รวบรวมไว้ด้านบน แล้วบอกว่าตรงกัน ขัดกัน หรือยังยืนยันไม่ได้</p>
       <textarea id="pasted" aria-label="ข้อความข่าวที่ต้องการตรวจ" placeholder="เช่น PHAT ยอดจองทะลุ 10 เท่า"></textarea>
       <div style="display:flex;gap:8px;align-items:center;margin-top:8px"><button class="btn" type="button" id="checknews">ตรวจข่าวนี้</button><span class="offline" id="newsstatus"></span></div>
       <div id="newsresult" class="small" style="margin-top:8px"></div>
@@ -920,10 +1028,10 @@ const CANNED = {
 function ai(ipo){
   const log = chats[ipo.id] || [];
   return `
-    <div class="card"><p class="small">AI ตอบจากข้อมูลในการ์ดนี้เท่านั้น บอกที่มาทุกครั้ง และจะไม่แนะนำให้ซื้อหรือขาย</p></div>
+    <div class="aihead"><img src="${OWL}" alt="" width="34" height="34"><span>น้องฮูก (AI) ตอบจากข้อมูลในการ์ดนี้เท่านั้น บอกที่มาทุกครั้ง และไม่แนะนำให้ซื้อหรือขาย</span></div>
     <div class="chat" id="chatlog">${log.map(m => `<div class="bubble ${m.role === 'user' ? 'me' : 'ai'}">${esc(m.content)}</div>`).join('')}</div>
     <div class="suggest">${(SUGGEST[ipo.id] || []).map(q => `<button type="button" data-ask="${esc(q)}">${esc(q)}</button>`).join('')}</div>
-    <form class="composer" id="askform"><input id="askinput" aria-label="พิมพ์คำถาม" placeholder="ถามเรื่องหุ้นตัวนี้" autocomplete="off"><button class="btn" type="submit">ส่ง</button></form>
+    <form class="composer" id="askform"><input id="askinput" aria-label="พิมพ์คำถาม" placeholder="ถามเรื่องหุ้นตัวนี้" autocomplete="off"><button class="btn" type="submit" aria-label="ส่งคำถาม"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 14.5V3.5M4 8.5l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></form>
     <div class="offline" id="aistatus"></div>`;
 }
 
@@ -931,7 +1039,7 @@ function ai(ipo){
    On claude.ai the page uses Claude through claude.use('sample').
    Anywhere else (GitHub Pages, your laptop) it calls AI_ENDPOINT: your own Cloudflare Worker,
    which holds the free Gemini API key. Never put an API key in this file: the repo is public. */
-const AI_ENDPOINT = ''; // เช่น 'https://ipo-lens-ai.<ชื่อของคุณ>.workers.dev'
+const AI_ENDPOINT = ''; // เช่น 'https://owly-ai.<ชื่อของคุณ>.workers.dev'
 
 function workerSampler(endpoint){
   const call = async (input, opts = {}) => {
@@ -985,7 +1093,7 @@ async function ask(ipo, q){
     bubble.textContent = a; log.push({role:'assistant', content:a});
     status.textContent = 'คำตอบตัวอย่าง (โหมดออฟไลน์)'; return;
   }
-  const sys = 'คุณคือผู้ช่วยในแอป IPO Lens ตอบเป็นภาษาไทย สั้น ไม่เกิน 5 บรรทัด ใช้เฉพาะข้อมูลใน JSON ด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าข้อมูลไม่มีให้บอกตรงๆ ว่าการ์ดไม่มีข้อมูลนี้ และแนะนำให้ถามบริษัทหรือผู้แนะนำการลงทุน ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อแหล่งข้อมูลที่ใช้ ถ้าเป็นข้อมูลสมมติให้บอกว่าเป็นข้อมูลสมมติ ห้ามใช้ markdown\n\nข้อมูลการ์ด:\n' + context(ipo);
+  const sys = 'คุณคือผู้ช่วยในแอป Owly ตอบเป็นภาษาไทย สั้น ไม่เกิน 5 บรรทัด ใช้เฉพาะข้อมูลใน JSON ด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าข้อมูลไม่มีให้บอกตรงๆ ว่าการ์ดไม่มีข้อมูลนี้ และแนะนำให้ถามบริษัทหรือผู้แนะนำการลงทุน ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อแหล่งข้อมูลที่ใช้ ถ้าเป็นข้อมูลสมมติให้บอกว่าเป็นข้อมูลสมมติ ห้ามใช้ markdown\n\nข้อมูลการ์ด:\n' + context(ipo);
   const msgs = [{role:'user', content:sys + '\n\nคำถามแรก: ' + log[0].content}];
   for (let i = 1; i < log.length; i++) msgs.push({role:log[i].role, content:log[i].content});
   try {

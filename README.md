@@ -1,8 +1,8 @@
-# IPO Lens
+# Owly · ส่องหุ้น IPO ก่อนกดจอง
 
 เดโมสำหรับ Future Finance Innovation Hackathon 2026 โจทย์ AI for Insight
 
-IPO Lens อ่านหุ้น IPO ย้อนไปถึงงบก่อนเข้าตลาด ตรวจ 6 สัญญาณที่มักซ่อนอยู่ แล้วสรุปเป็นการ์ดหน้าเดียว มีตัวตรวจข่าว (ผ่านเมื่อตรงกันอย่างน้อย 80% จาก 2 แหล่งอิสระขึ้นไป) ถาม AI ได้ และมีน้องฮูกเล่าข่าวเป็นคลิปสั้นพร้อมเสียง
+Owly ส่องหุ้น IPO ย้อนไปถึงงบก่อนเข้าตลาด ตรวจ 6 สัญญาณที่มักซ่อนอยู่ แล้วสรุปเป็นการ์ดหน้าเดียว มีตัวตรวจข่าว (ผ่านเมื่อตรงกันอย่างน้อย 80% จาก 2 แหล่งอิสระขึ้นไป) ถาม AI ได้ และมีน้องฮูกเล่าข่าวเป็นคลิปสั้นพร้อมเสียง
 
 PHAT ใช้ข้อมูลจริงจากข่าวที่เผยแพร่ บริษัทอื่นเป็นข้อมูลสมมติ ไม่ใช่คำแนะนำการลงทุน
 
@@ -18,16 +18,16 @@ PHAT ใช้ข้อมูลจริงจากข่าวที่เผ
 ห้ามใส่ API key ลงใน `index.html` เพราะ repo นี้เป็น public ใครเปิดหน้าเว็บก็เห็น key ได้
 
 1. ขอ API key ฟรีที่ https://aistudio.google.com/apikey (ใช้บัญชี Google ไม่ต้องผูกบัตร)
-2. สมัคร Cloudflare ฟรีที่ https://dash.cloudflare.com แล้วไปที่ Workers & Pages → Create → Worker ตั้งชื่อ `ipo-lens-ai`
+2. สมัคร Cloudflare ฟรีที่ https://dash.cloudflare.com แล้วไปที่ Workers & Pages → Create → Worker ตั้งชื่อ `owly-ai`
 3. กด Edit code แล้ววางโค้ดจาก `worker/worker.js` ทับทั้งหมด กด Deploy
 4. ไปที่ Settings → Variables and Secrets ของ Worker แล้วเพิ่ม
    - `GEMINI_API_KEY` แบบ Secret ใส่ key จากข้อ 1
    - `ALLOWED_ORIGINS` แบบ Text ใส่ `https://ttub19.github.io` (ถ้าทดสอบในเครื่องเพิ่ม `,http://localhost:5500`)
    - `GEMINI_MODEL` ไม่ต้องใส่ก็ได้ ค่าเริ่มต้นคือ `gemini-flash-latest` ถ้าใช้ไม่ได้ ให้ดูชื่อโมเดลที่ฟรีในหน้า AI Studio
-5. ก๊อป URL ของ Worker เช่น `https://ipo-lens-ai.xxxx.workers.dev` ไปใส่ใน `index.html` ที่บรรทัด
+5. ก๊อป URL ของ Worker เช่น `https://owly-ai.xxxx.workers.dev` ไปใส่ใน `index.html` ที่บรรทัด
 
    ```js
-   const AI_ENDPOINT = 'https://ipo-lens-ai.xxxx.workers.dev';
+   const AI_ENDPOINT = 'https://owly-ai.xxxx.workers.dev';
    ```
 
 6. commit และ push แล้วเปิดเว็บบน GitHub Pages ลองถาม AI ในแท็บ "ถาม AI"
@@ -35,7 +35,7 @@ PHAT ใช้ข้อมูลจริงจากข่าวที่เผ
 ทดสอบ Worker จากเทอร์มินัลได้ด้วย
 
 ```bash
-curl -X POST https://ipo-lens-ai.xxxx.workers.dev \
+curl -X POST https://owly-ai.xxxx.workers.dev \
   -H "Content-Type: application/json" \
   -H "Origin: https://ttub19.github.io" \
   -d '{"messages":[{"role":"user","content":"ทักทายสั้นๆ"}]}'

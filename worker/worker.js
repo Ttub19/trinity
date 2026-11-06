@@ -1,4 +1,4 @@
-// IPO Lens AI proxy: a Cloudflare Worker that keeps the Gemini API key off the public web page.
+// Owly AI proxy: a Cloudflare Worker that keeps the Gemini API key off the public web page.
 // Secrets and settings (set in the Cloudflare dashboard or with wrangler):
 //   GEMINI_API_KEY   (secret)  free key from https://aistudio.google.com/apikey
 //   GEMINI_MODEL     (var)     optional, default "gemini-flash-latest"
