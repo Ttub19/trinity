@@ -1,16 +1,29 @@
 {
-  "name": "Owly · ส่องหุ้น IPO ก่อนกดจอง",
+  "name": "Owly · อ่านหุ้นจากแบรนด์ที่ใช้ทุกวัน",
   "short_name": "Owly",
-  "description": "อ่านหนังสือชี้ชวนและงบก่อนเข้าตลาด แล้วสรุปสัญญาณเตือน 6 เรื่องเป็นการ์ดหน้าเดียว",
+  "description": "เริ่มจากแบรนด์ที่ใช้ทุกวัน แล้วแปลงบหุ้นเป็นภาษาคน ตรวจ 6 เรื่องก่อนตัดสินใจ",
   "lang": "th",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F2FAFE",
-  "theme_color": "#0F5298",
+  "background_color": "#EEF4EC",
+  "theme_color": "#230332",
   "icons": [
-    { "src": "assets/brand/owly-icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "assets/brand/owly-icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "assets/brand/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "assets/brand/owly-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/brand/owly-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/brand/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
