@@ -499,7 +499,7 @@ textarea{min-height:80px;resize:vertical}
 .fund-tag{font-size:13px;color:var(--ink-2)}
 .fund-st{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12.5px;color:var(--muted)}
 .chip.c-off{background:var(--track);color:var(--muted)}
-.fseg .track{grid-template-columns:1fr 1fr}
+.fseg.two .track{grid-template-columns:1fr 1fr}
 .fseg button{font-size:12.5px;padding:0 6px;white-space:nowrap}
 .ftintro{margin:2px 20px 0;font-size:13.5px;line-height:1.55;color:var(--ink-2)}
 .ftintro.warn{color:var(--warn);font-weight:600}
@@ -696,11 +696,16 @@ small.muted{font-size:11.5px}
   .wallet .bal{font-size:34px}
   .profbtn{max-width:190px}
 }
-.kindhint{margin:2px 20px 6px;font-size:12.5px;color:var(--muted)}
 .kinds{padding-bottom:4px;flex-wrap:wrap;overflow:visible}
-.kinds button[aria-pressed="true"]::before{content:'✓';margin-right:6px;font-weight:700}
 .kinds button .num{font-size:12px;opacity:.8}
 section[aria-label] .ftintro{margin-top:0}
+.seg.scroll .track{display:flex;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
+.seg.scroll .track::-webkit-scrollbar{display:none}
+.seg.scroll button{flex:1 0 auto;padding:0 8px;min-width:0;white-space:nowrap;font-size:13px}
+@media (max-width:380px){.seg.scroll button{padding:0 6px;font-size:12.5px}}
+.ftintro + .slist,.ftintro + .cats{margin-top:10px}
+.rank{display:inline-grid;place-items:center;flex:none;min-width:22px;height:22px;border-radius:7px;background:var(--track);color:var(--ink);font-family:var(--body);font-size:12px;font-weight:700}
+.rank.r1{background:var(--sky);color:#1A1527} .rank.r2,.rank.r3{background:var(--lens-soft);color:var(--lens)}
 </style>
 </head>
 <body>
@@ -1569,7 +1574,7 @@ Object.assign(FUNDS, {
 });
 Object.entries(FUNDS).forEach(([k, f]) => { f.id = k; f.srcs = f.srcs || [[f.src, f.srcName]]; });
 
-const TYPES = [['ipo','IPO'],['watch','ที่ติดตาม']];
+const TYPES = [['ipo','กองทุน'],['watch','ที่ติดตาม']];
 const TYPE_NAME = {general:'กองทุนทั่วไป', ipo:'IPO (กองทุนเปิดใหม่)', term:'Term Fund'};
 const TH_M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const fmtD = iso => `${+iso.slice(8, 10)} ${TH_M[+iso.slice(5, 7) - 1]} ${(+iso.slice(0, 4) + 543) % 100}`;
@@ -1591,7 +1596,7 @@ const RISK_TXT = {3:'ต่ำกว่ากองหุ้น กองตร�
 /* watchlist: kept on this device only */
 function loadWatch(){ try { const a = JSON.parse(localStorage.getItem('owly.watch') || '[]'); return Array.isArray(a) ? a.filter(id => FUNDS[id]) : []; } catch(e){ return []; } }
 function saveWatch(){ try { localStorage.setItem('owly.watch', JSON.stringify(state.watch)); } catch(e){} }
-state.watch = loadWatch(); state.ft = 'ipo'; state.fk = ['ipo', 'term', 'general'];
+state.watch = loadWatch(); state.ft = 'ipo'; state.fv = 'all';
 function toggleWatch(id){
   const i = state.watch.indexOf(id);
   if (i < 0) state.watch.push(id); else state.watch.splice(i, 1);
@@ -1661,9 +1666,9 @@ function chgHTML(p){
   return `<span class="chg ${k}" aria-label="${k === 'up' ? 'เพิ่มขึ้น' : k === 'down' ? 'ลดลง' : 'ไม่เปลี่ยน'} ${nf(Math.abs(p))} เปอร์เซ็นต์">${TRI[k]}<span class="num">${nf(Math.abs(p))} %</span></span>`;
 }
 /* one row of the market-style list: ticker + flag/subtitle | change | price | chevron */
-function qrow({sym, mkt, sub, p, last, cur, open, badge}){
+function qrow({sym, mkt, sub, p, last, cur, open, badge, pre}){
   const body = `
-    <span class="sr-id"><b>${esc(sym)}${badge || ''}</b><span class="sub">${flag(mkt)}<em>${esc(sub || mkt)}</em></span></span>
+    <span class="sr-id"><b>${pre || ''}${esc(sym)}${badge || ''}</b><span class="sub">${flag(mkt)}<em>${esc(sub || mkt)}</em></span></span>
     ${chgHTML(p)}
     <span class="sr-px"><b class="num">${nf(last)}</b> <small>${cur}</small></span>
     ${open ? CHEV : '<span></span>'}`;
@@ -1723,8 +1728,9 @@ function toast(msg){
 function getPrefs(){ try { return JSON.parse(localStorage.getItem('owly.prefs')) || {}; } catch(e){ return {}; } }
 
 /* ================= market ================= */
-const MKT_TABS = [['th','ตลาดหุ้น'],['gold','ทอง'],['bond','ตราสารหนี้'],['stock','หุ้นรายตัว']];
+const MKT_TABS = [['rec','แนะนำ'],['th','ตลาดหุ้น'],['gold','ทอง'],['bond','ตราสารหนี้'],['stock','หุ้นรายตัว']];
 const MKT_SRC = {
+  rec:[['https://www.set.or.th/th/market/index/set100/overview','SET (มูลค่าซื้อขาย)'],FINN_TERM],
   th:[['https://www.set.or.th/th/market/index/set/overview','ตลาดหลักทรัพย์แห่งประเทศไทย (SET)']],
   gold:[['https://www.goldtraders.or.th/','สมาคมค้าทองคำ']],
   bond:[['https://www.thaibma.or.th/EN/Market/YieldCurve/Government.aspx','ThaiBMA: Government Bond Yield Curve']],
@@ -1739,12 +1745,37 @@ function idxCard(k, big){
 }
 function moverRow([s, last, p, v]){
   const own = Object.values(IPOS).find(x => x.ticker === s);
-  return qrow({sym:s, mkt:'TH', sub:(v ? 'มูลค่า ' + nf(v, 0) + ' ล้านบาท' : own ? own.brand.split(' · ')[0] : LIVE.names[s] || 'หุ้นใน SET100'), p, last, cur:'THB', open:own ? own.id : null});
+  return qrow({sym:s, mkt:'TH', sub:(v ? 'มูลค่า ' + nf(v, 0) + ' ลบ.' : own ? own.brand.split(' · ')[0] : LIVE.names[s] || 'หุ้นใน SET100'), p, last, cur:'THB', open:own ? own.id : null});
+}
+
+/* popular: ranked by today's traded value on SET (real snapshot), among the stocks Owly covers */
+function popularOwly(){ return Object.values(IPOS).filter(s => LIVE.th[s.ticker]).sort((a, b) => LIVE.th[b.ticker].v - LIVE.th[a.ticker].v); }
+function popRow(s, i){
+  const q = LIVE.th[s.ticker];
+  return qrow({sym:s.ticker, mkt:'TH', sub:s.brand.split(' · ')[0] + ' · ' + nf(q.v, 0) + ' ลบ.', p:q.p, last:q.l, cur:'THB', open:s.id, pre:`<span class="rank r${i + 1}">${i + 1}</span>`});
+}
+function recTab(){
+  const pops = popularOwly().slice(0, 5);
+  const closing = Object.keys(FUNDS).filter(id => { const s = fundStatus(FUNDS[id]); return s && s.s === 'open' && s.left <= 3; }).sort((a, b) => FUNDS[a].to.localeCompare(FUNDS[b].to)).slice(0, 4);
+  const play = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3.5" y="3" width="13" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 7.5l4 2.5-4 2.5z" fill="currentColor"/></svg>';
+  return `<div class="sec-title" style="margin-top:6px"><h2>หุ้นยอดนิยมวันนี้</h2><em>แบรนด์ที่ Owly อ่านให้</em></div>
+    <div class="slist">${pops.map(popRow).join('')}</div>
+    <p class="asof" style="margin-top:8px">จัดอันดับจากมูลค่าซื้อขายล่าสุด (ลบ. = ล้านบาท) ณ ${LIVE.asof} ไม่ใช่จำนวนคนเปิดดูในแอป เดโมนี้ยังไม่มีข้อมูลจากผู้ใช้จริง</p>
+    <div class="sec-title"><h2>ตลาดคึกคักสุดวันนี้</h2><em>มูลค่าซื้อขายสูงสุดใน SET100</em></div><div class="slist">${LIVE.val.map(moverRow).join('')}</div>
+    ${closing.length ? `<div class="sec-title"><h2>กองทุนใกล้ปิดขาย</h2><em>ภายใน 3 วัน</em></div><div class="slist">${closing.map(fundRow).join('')}</div>
+    <button class="textbtn" type="button" data-gofunds="all" style="margin:8px 20px 0">ดูกองทุนทั้งหมด</button>` : ''}
+    <div class="sec-title"><h2>น้องฮูกพาเรียนรู้</h2><em>ความรู้ ไม่ใช่คำแนะนำซื้อขาย</em></div>
+    <div class="mgroup" style="margin:0 16px">
+      <button type="button" class="mrow" data-reelof="news-intro"><span class="mic">${play}</span><span class="mtx"><b>รู้จักหุ้นใน 1 นาที</b><small>คลิปสั้นมีเสียง ปัดคลิปเพื่อซื้อจำลอง</small></span>${CHEV}</button>
+      <button type="button" class="mrow" data-askai><span class="mic">${IC.chat}</span><span class="mtx"><b>ถามน้องฮูก (AI)</b><small>ศัพท์หุ้น กองทุน หรือบริษัทที่สนใจ</small></span>${CHEV}</button>
+      <button type="button" class="mrow" data-goto="home"><span class="mic">${IC.info}</span><span class="mtx"><b>อ่านการ์ดหุ้นแบรนด์ดัง</b><small>ตรวจ 6 เรื่องก่อนซื้อ จากงบและข่าว</small></span>${CHEV}</button>
+    </div>`;
 }
 function marketScreen(){
-  const mt = state.mt || 'th';
+  const mt = state.mt || 'rec';
   let body = '';
-  if (mt === 'th'){
+  if (mt === 'rec') body = recTab();
+  else if (mt === 'th'){
     body = `${idxCard('SET', true)}
       <div class="idxgrid">${['SET50','SET100','SETHD','SETESG','mai'].map(k => idxCard(k)).join('')}</div>
       <div class="sec-title"><h2>ขึ้นแรงสุดวันนี้</h2><em>ในกลุ่ม SET100</em></div><div class="slist">${LIVE.gain.map(moverRow).join('')}</div>
@@ -1792,7 +1823,7 @@ function marketScreen(){
     <div class="topband">${appbar()}
       <section class="hero mhero" aria-label="ตลาดวันนี้"><h1>ตลาดวันนี้<br>ดูครบ<span class="hl">ในที่เดียว</span></h1><img class="hero-owl" src="${OWL}" alt="" width="120" height="120"></section>
     </div>
-    <div class="seg fseg"><div class="track" role="tablist" aria-label="ประเภทตลาด">${MKT_TABS.map(([k, l]) => `<button role="tab" type="button" data-mt="${k}" aria-selected="${mt === k}">${l}</button>`).join('')}</div></div>
+    <div class="seg fseg scroll"><div class="track" role="tablist" aria-label="ประเภทตลาด">${MKT_TABS.map(([k, l]) => `<button role="tab" type="button" data-mt="${k}" aria-selected="${mt === k}">${l}</button>`).join('')}</div></div>
     <div class="mbody">${body}</div>
     <div class="card" style="margin:16px 16px 0"><p class="small" style="margin:0 0 6px"><b>ที่มาของข้อมูล</b></p><ul class="fsrc">${MKT_SRC[mt].map(([u, n]) => `<li><a href="${u}">${esc(n)}</a></li>`).join('')}</ul></div>
     <p class="disclaimer">ข้อมูลนี้ Owly ดึงมาเก็บไว้ ณ ${LIVE.asof} ไม่ใช่ราคาเรียลไทม์ ใช้ประกอบความเข้าใจเท่านั้น ไม่ใช่คำแนะนำการลงทุน</p>`;
@@ -1893,6 +1924,8 @@ function home(){
     </section>
     </div>
     <button class="promo" type="button" data-reelof="news-intro"><img src="${OWL}" alt="" width="56" height="56"><span><b>น้องฮูกพารู้จักหุ้น</b><span>คลิปสั้นมีเสียง ปัดคลิปเพื่อซื้อจำลอง</span></span><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span></button>
+    <div class="sec-title"><h2>หุ้นยอดนิยมวันนี้</h2><button class="textbtn" type="button" data-mkt-rec>ดูทั้งหมด</button></div>
+    <div class="slist">${popularOwly().slice(0, 3).map(popRow).join('')}</div>
     <div class="sec-title"><h2>หุ้นของแบรนด์ดัง</h2><em>${ids.length} ตัว · งบจริงปี 2568</em></div>
     <div class="cats" role="group" aria-label="กรองตามหมวด">${CATS.map(([k, l], i) => `<button type="button" data-cat-btn="${k}" aria-pressed="${i === 0}">${l}</button>`).join('')}</div>
     <p class="asof">ราคา ณ ${LIVE.asof} · สแนปช็อตจาก SET ไม่ใช่เรียลไทม์</p>
@@ -1933,17 +1966,19 @@ const TYPE_INTRO = {
   ipo:'IPO กองทุน คือกองทุนใหม่ที่เปิดขายหน่วยลงทุนครั้งแรกในช่วงสั้นๆ ซื้อได้เฉพาะช่วงที่ บลจ. กำหนด หลังปิดขายกองถึงเริ่มลงทุนจริง',
   term:'Term Fund คือกองทุนที่มีอายุกำหนด เช่น 3 หรือ 6 เดือน ซื้อได้เฉพาะช่วงเสนอขายแล้วถือจนครบกำหนด ขายคืนก่อนอาจทำไม่ได้หรือได้เงินไม่เต็ม ส่วนมากลงทุนตราสารหนี้ ไม่ได้รับประกันผลตอบแทน'
 };
-const KINDS = [['ipo','IPO ใหม่'],['term','Term Fund'],['general','กองทุนทั่วไป']];
-const KIND_HEAD = {ipo:'กองทุนเปิดใหม่ (IPO)', term:'Term Fund', general:'กองทุนดัชนีหุ้นไทย'};
+const KINDS = [['all','ทั้งหมด'],['term','Term Fund'],['general','กองทุนทั่วไป']];
 function fundsOfKind(k, filt){
-  const all = Object.keys(FUNDS).filter(id => FUNDS[id].type === k);
-  if (k === 'general') return all.filter(id => filt === 'all' || FUNDS[id].index === filt);
-  return all.sort((a, b) => { const sa = fundStatus(FUNDS[a]), sb = fundStatus(FUNDS[b]); return (sa.s === 'closed') - (sb.s === 'closed') || FUNDS[a].to.localeCompare(FUNDS[b].to); });
+  const all = Object.keys(FUNDS);
+  const rank = id => { const f = FUNDS[id], st = fundStatus(f); return !st ? 1 : st.s === 'closed' ? 2 : 0; };
+  const byClose = (a, b) => rank(a) - rank(b) || (FUNDS[a].to || '9999').localeCompare(FUNDS[b].to || '9999');
+  if (k === 'term') return all.filter(id => FUNDS[id].type === 'term').sort(byClose);
+  if (k === 'general') return all.filter(id => FUNDS[id].type === 'general' && (filt === 'all' || FUNDS[id].index === filt));
+  return all.sort(byClose);
 }
-const openCount = k => fundsOfKind(k, 'all').filter(i => FUNDS[i].type === 'general' || fundStatus(FUNDS[i]).s !== 'closed').length;
+const kindCount = k => fundsOfKind(k, 'all').filter(i => { const st = fundStatus(FUNDS[i]); return !st || st.s !== 'closed'; }).length;
 function fundsScreen(){
   const ft = state.ft === 'watch' ? 'watch' : 'ipo', filt = state.ff || 'all';
-  const fk = (state.fk && state.fk.length ? state.fk : ['ipo', 'term', 'general']);
+  const fv = state.fv || 'all';
   const soon = state.watch.filter(id => { const s = fundStatus(FUNDS[id]); return s && s.s === 'open' && s.left <= 2; });
   const watchEmpty = `<div class="card watch-empty"><img src="${OWL}" alt="" width="56" height="56"><p><b>ยังไม่ได้ติดตามกองทุนไหน</b><br>กดดาวที่มุมการ์ดกองทุนเพื่อเก็บไว้ที่นี่ จะเห็นวันปิดขายของกองที่สนใจในที่เดียว</p><button class="btn" type="button" data-ft="ipo">ดูกองทุน IPO</button></div>`;
   let body;
@@ -1953,20 +1988,15 @@ function fundsScreen(){
     ${state.watch.length ? `<div class="slist">${state.watch.map(fundRow).join('')}</div>` : watchEmpty}
     <p class="disclaimer">รายการที่ติดตามเก็บไว้ในเครื่องนี้เท่านั้น ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
   } else {
-    const order = KINDS.map(k => k[0]).filter(k => fk.includes(k));
-    body = `<p class="kindhint" id="kindhint">เลือกได้หลายประเภทพร้อมกัน</p>
-    <div class="cats kinds" role="group" aria-labelledby="kindhint">${KINDS.map(([k, l]) => `<button type="button" data-fk="${k}" aria-pressed="${fk.includes(k)}">${l} <span class="num">${openCount(k)}</span></button>`).join('')}</div>
-    ${order.map(k => {
-      const ids = fundsOfKind(k, filt);
-      return `<section aria-label="${KIND_HEAD[k]}">
-      <div class="sec-title"><h2>${KIND_HEAD[k]}</h2><em>${k === 'general' ? ids.length + ' กอง' : 'เปิดขายอยู่ ' + openCount(k) + ' กอง'}</em></div>
-      <p class="ftintro">${TYPE_INTRO[k]}</p>
-      ${k === 'general' ? `<div class="cats" role="group" aria-label="กรองตามดัชนี">${FUND_FILTERS.map(([f, l]) => `<button type="button" data-ff="${f}" aria-pressed="${filt === f}">${l}</button>`).join('')}</div>` : ''}
-      <div class="slist">${ids.map(fundRow).join('')}</div></section>`;
-    }).join('')}
-    ${fk.includes('general') ? `<div class="sec-title"><h2>ดัชนีคืออะไร</h2><em>ตะกร้าหุ้นที่ตลาดคัดให้</em></div>
+    const ids = fundsOfKind(fv, filt);
+    body = `<div class="cats kinds" role="group" aria-label="ประเภทกองทุน">${KINDS.map(([k, l]) => `<button type="button" data-fv="${k}" aria-pressed="${fv === k}">${l} <span class="num">${kindCount(k)}</span></button>`).join('')}</div>
+    ${fv === 'general' ? `<div class="cats" role="group" aria-label="กรองตามดัชนี">${FUND_FILTERS.map(([f, l]) => `<button type="button" data-ff="${f}" aria-pressed="${filt === f}">${l}</button>`).join('')}</div>` : ''}
+    <div class="sec-title"><h2>${fv === 'all' ? 'กองทุนทั้งหมด' : fv === 'term' ? 'Term Fund' : 'กองทุนดัชนีหุ้นไทย'}</h2><em>${ids.length} กอง${fv !== 'general' ? ' · เรียงตามวันปิดขาย' : ''}</em></div>
+    <p class="ftintro">${fv === 'all' ? 'รวมกองที่เปิดขายอยู่ก่อน เรียงตามวันปิดขายใกล้สุด แล้วตามด้วยกองทุนทั่วไปที่ซื้อได้ต่อเนื่อง' : TYPE_INTRO[fv]}</p>
+    <div class="slist">${ids.map(fundRow).join('')}</div>
+    ${fv !== 'term' ? `<div class="sec-title"><h2>ดัชนีคืออะไร</h2><em>ตะกร้าหุ้นที่ตลาดคัดให้</em></div>
     <div class="group gloss">${Object.values(INDEXES).map(ix => `<details><summary>${ix.name} <span>${esc(ix.plain)}</span></summary><p>ตลาดหลักทรัพย์ฯ ทบทวนรายชื่อทุก 6 เดือน หุ้นในแอป Owly ที่อยู่ในดัชนีนี้ตอนนี้: ${ix.stocks.map(s => IPOS[s].ticker).join(', ')} <a href="${ix.url}">ดูรายชื่อทั้งหมดที่ SET</a></p></details>`).join('')}</div>` : ''}
-    <p class="disclaimer">${fk.includes('general') ? INDEX_ASOF + ' กองทุนดัชนีถือหุ้นตามรายชื่อในดัชนี สัดส่วนแต่ละตัวดูได้ใน Factsheet ของกองทุน ' : ''}${fk.includes('ipo') || fk.includes('term') ? 'ช่วงเสนอขายอ่านจากรายชื่อกองทุนเปิดใหม่ ณ 10 พ.ย. 2569 ดูเงื่อนไขล่าสุดที่หนังสือชี้ชวนก่อนซื้อ ' : ''}ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
+    <p class="disclaimer">${fv !== 'term' ? INDEX_ASOF + ' กองทุนดัชนีถือหุ้นตามรายชื่อในดัชนี สัดส่วนแต่ละตัวดูได้ใน Factsheet ของกองทุน ' : ''}${fv !== 'general' ? 'ช่วงเสนอขายอ่านจากรายชื่อกองทุนเปิดใหม่ ณ 10 พ.ย. 2569 ดูเงื่อนไขล่าสุดที่หนังสือชี้ชวนก่อนซื้อ ' : ''}ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
   }
   return `
     <div class="topband">
@@ -1977,7 +2007,7 @@ function fundsScreen(){
       <img class="hero-owl" src="${OWL}" alt="" width="120" height="120">
     </section>
     </div>
-    <div class="seg fseg"><div class="track" role="tablist" aria-label="หมวดกองทุน">${TYPES.map(([k, l]) => `<button role="tab" type="button" data-ft="${k}" aria-selected="${ft === k}">${l}${k === 'watch' && state.watch.length ? ` <span class="num">${state.watch.length}</span>` : ''}</button>`).join('')}</div></div>
+    <div class="seg fseg two"><div class="track" role="tablist" aria-label="หมวดกองทุน">${TYPES.map(([k, l]) => `<button role="tab" type="button" data-ft="${k}" aria-selected="${ft === k}">${l}${k === 'watch' && state.watch.length ? ` <span class="num">${state.watch.length}</span>` : ''}</button>`).join('')}</div></div>
     ${body}`;
 }
 function fundScreen(f){
@@ -2411,11 +2441,7 @@ function bind(){
   app.querySelectorAll('[data-backfunds]').forEach(b => b.addEventListener('click', () => go({screen:'funds'})));
   app.querySelectorAll('[data-watch]').forEach(b => b.addEventListener('click', () => toggleWatch(b.dataset.watch)));
   app.querySelectorAll('[data-ft]').forEach(b => b.addEventListener('click', () => { const y = app.scrollTop; state.ft = b.dataset.ft; rerender(); const hd = app.querySelector('.fseg'); if (hd && y > hd.offsetTop) app.scrollTop = hd.offsetTop; }));
-  app.querySelectorAll('[data-fk]').forEach(b => b.addEventListener('click', () => {
-    const k = b.dataset.fk, cur = (state.fk || ['ipo', 'term', 'general']).slice(), i = cur.indexOf(k);
-    if (i >= 0){ if (cur.length === 1){ toast('ต้องเลือกอย่างน้อย 1 ประเภท'); return; } cur.splice(i, 1); } else cur.push(k);
-    state.fk = cur; rerender(true); const nb = app.querySelector(`[data-fk="${k}"]`); if (nb) nb.focus();
-  }));
+  app.querySelectorAll('[data-fv]').forEach(b => b.addEventListener('click', () => { state.fv = b.dataset.fv; rerender(true); const nb = app.querySelector(`[data-fv="${b.dataset.fv}"]`); if (nb) nb.focus(); }));
   app.querySelectorAll('[data-ff]').forEach(b => b.addEventListener('click', () => { state.ff = b.dataset.ff; rerender(true); }));
   app.querySelectorAll('[data-buycard]').forEach(b => b.addEventListener('click', () => openBuy(b.dataset.buycard, 'card', state.reel, 'l')));
   app.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { state.tab = b.dataset.tab; const y = document.getElementById('app').scrollTop; rerender(); const hd = document.querySelector('.seg'); if (hd && y > hd.offsetTop) document.getElementById('app').scrollTop = hd.offsetTop; }));
@@ -2431,13 +2457,16 @@ function bind(){
 }
 function bindMore(app){
   const on = (sel, fn) => app.querySelectorAll(sel).forEach(b => b.addEventListener('click', () => fn(b)));
+  on('[data-mkt-rec]', () => go({screen:'market', mt:'rec'}));
+  on('[data-goto]', b => go({screen:b.dataset.goto}));
+  const mtt = app.querySelector('.seg.scroll [aria-selected="true"]'); if (mtt){ const tr = mtt.parentElement; tr.scrollLeft = mtt.offsetLeft - (tr.clientWidth - mtt.offsetWidth) / 2; }
   on('[data-profile]', () => go({screen:'profile', pf:'main', pfDirect:false, from:state.screen}));
   on('[data-topup]', () => go({screen:'profile', pf:'topup', pfDirect:true, from:state.screen}));
   on('[data-pfback]', () => { if ((state.pf || 'main') !== 'main' && !state.pfDirect) go({pf:'main'}); else go({screen:state.from && state.from !== 'profile' ? state.from : 'home'}); });
   on('[data-pfgo]', b => go({pf:b.dataset.pfgo}));
   on('[data-mt]', b => { state.mt = b.dataset.mt; rerender(); const hd = app.querySelector('.fseg'); if (hd && app.scrollTop > hd.offsetTop) app.scrollTop = hd.offsetTop; });
   on('[data-sf]', b => { state.sf = b.dataset.sf; rerender(true); });
-  on('[data-gofunds]', b => { const v = b.dataset.gofunds; go(v === 'watch' ? {screen:'funds', ft:'watch'} : {screen:'funds', ft:'ipo', fk:[v]}); });
+  on('[data-gofunds]', b => { const v = b.dataset.gofunds; go(v === 'watch' ? {screen:'funds', ft:'watch'} : {screen:'funds', ft:'ipo', fv:v}); });
   on('[data-todo]', b => toast(b.dataset.todo + ' ยังไม่เปิดใช้ในเดโมนี้'));
   on('[data-askai]', () => openSheet());
   on('[data-about]', () => { const n = document.getElementById('aboutbox'); n.hidden = !n.hidden; });
