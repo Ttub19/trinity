@@ -10,12 +10,14 @@ Owly เริ่มจากแบรนด์ที่คนใช้ทุก
 
 | ไฟล์ | หน้าที่ |
 | --- | --- |
-| `index.html` | หน้าเว็บทั้งหมด (HTML, CSS, JavaScript) |
+| `index.html` | โครง HTML หลัก (แอปในกรอบมือถือ) และลิงก์ไปไฟล์ CSS/JS |
+| `css/` | สไตล์แยกตามส่วน: tokens (สี), stage, shared, home, ipo (การ์ดหุ้น), reels, market-profile, polish |
+| `js/` | โค้ดแยกตามหน้า เรียงตามเลขลำดับ: 02 ข้อมูลหุ้น, 04 มาสคอต+เสียง, 05 คลิปสั้น, 06 ซื้อจำลอง, 11 ตลาด, 12 โปรไฟล์, 13 หน้าแรก, 14 กองทุน, 15 บทวิเคราะห์, 16 การ์ดหุ้น, 17 AI, 18 แชต, 19 ตัวสลับหน้า/เหตุการณ์ |
 | `worker/worker.js` | ตัวกลางบน Cloudflare Workers ที่เก็บ API key ของ Gemini |
 
 ## เชื่อม AI ฟรี (Gemini ผ่าน Cloudflare Worker)
 
-ห้ามใส่ API key ลงใน `index.html` เพราะ repo นี้เป็น public ใครเปิดหน้าเว็บก็เห็น key ได้
+ห้ามใส่ API key ลงในไฟล์ใดๆ ของ repo เพราะ repo นี้เป็น public ใครเปิดหน้าเว็บก็เห็น key ได้
 
 1. ขอ API key ฟรีที่ https://aistudio.google.com/apikey (ใช้บัญชี Google ไม่ต้องผูกบัตร)
 2. สมัคร Cloudflare ฟรีที่ https://dash.cloudflare.com แล้วไปที่ Workers & Pages → Create → Worker ตั้งชื่อ `owly-ai`
@@ -24,7 +26,7 @@ Owly เริ่มจากแบรนด์ที่คนใช้ทุก
    - `GEMINI_API_KEY` แบบ Secret ใส่ key จากข้อ 1
    - `ALLOWED_ORIGINS` แบบ Text ใส่ `https://ttub19.github.io` (ถ้าทดสอบในเครื่องเพิ่ม `,http://localhost:5500`)
    - `GEMINI_MODEL` ไม่ต้องใส่ก็ได้ ค่าเริ่มต้นคือ `gemini-flash-latest` ถ้าใช้ไม่ได้ ให้ดูชื่อโมเดลที่ฟรีในหน้า AI Studio
-5. ก๊อป URL ของ Worker เช่น `https://owly-ai.xxxx.workers.dev` ไปใส่ใน `index.html` ที่บรรทัด
+5. ก๊อป URL ของ Worker เช่น `https://owly-ai.xxxx.workers.dev` ไปใส่ใน `js/17-ai.js` ที่บรรทัด
 
    ```js
    const AI_ENDPOINT = 'https://owly-ai.xxxx.workers.dev';

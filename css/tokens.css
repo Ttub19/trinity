@@ -1,0 +1,51 @@
+/* Owly — "quiet ledger" look.
+   Colours come straight from the logo: night navy (ink), owl slate, lens teal, beak amber.
+   Rules: one focal number per screen, teal only for interactive things, amber/red only for warnings,
+   grouped lists instead of stacks of identical cards, tight spacing inside a group and wide between groups. */
+:root{
+  /* palette: Ink & Gold · night #1A1527 · navy #313D57 · brick #A63D3C · grey #666666 · paper #F7F4EE · gold #ECCB88 */
+  --stage:#ECE8DF; --paper:#F7F4EE; --surface:#FFFFFF; --track:#EFEBE3;
+  --ink:#1A1527; --ink-2:#313D57; --muted:#666666; --line:#E6E1D7; --line-2:#CFC8BA;
+  --night:#1A1527; --night-2:#313D57; --indigo:#313D57; --sky:#ECCB88; --sky-2:#F7F4EE;
+  --brand:#A63D3C; --lens:#313D57; --lens-soft:#E6E9F0; --slate:#313D57; --slate-soft:#E6E9F0;
+  --warn:#94570A; --warn-fill:#D08A22; --warn-soft:#FCF0DC;
+  --crit:#A63D3C; --crit-soft:#F7E3E2; --good:#2B7651; --good-soft:#E0F1E7; --na:#B8B4C2;
+  --btn:#1A1527; --btn-ink:#FFFFFF; --mark-y:#313D57;
+  --frame:#1A1527;
+  --r-lg:18px; --r-md:14px; --r-sm:10px;
+  --display:'Bai Jamjuree','IBM Plex Sans Thai','Noto Sans Thai',sans-serif;
+  --body:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --stage:#0E0B16; --paper:#15101F; --surface:#1A1527; --track:#2A2440;
+    --ink:#F7F4EE; --ink-2:#DDD8E8; --muted:#B9B4C6; --line:#332D49; --line-2:#453E60;
+    --night:#1A1527; --night-2:#1A1527; --indigo:#313D57; --sky:#ECCB88; --sky-2:#332D49;
+    --brand:#ECCB88; --lens:#ECCB88; --lens-soft:#2A2440; --slate:#9AA8C9; --slate-soft:#2A2440;
+    --warn:#EDB062; --warn-fill:#E59F43; --warn-soft:#3A2A12; --crit:#F08178; --crit-soft:#3D1D1B; --good:#6CCB96; --good-soft:#15321F; --na:#5A5470;
+    --btn:#ECCB88; --btn-ink:#1A1527; --mark-y:#ECCB88; --frame:#000; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --stage:#0E0B16; --paper:#15101F; --surface:#1A1527; --track:#2A2440;
+    --ink:#F7F4EE; --ink-2:#DDD8E8; --muted:#B9B4C6; --line:#332D49; --line-2:#453E60;
+    --night:#1A1527; --night-2:#1A1527; --indigo:#313D57; --sky:#ECCB88; --sky-2:#332D49;
+    --brand:#ECCB88; --lens:#ECCB88; --lens-soft:#2A2440; --slate:#9AA8C9; --slate-soft:#2A2440;
+    --warn:#EDB062; --warn-fill:#E59F43; --warn-soft:#3A2A12; --crit:#F08178; --crit-soft:#3D1D1B; --good:#6CCB96; --good-soft:#15321F; --na:#5A5470;
+    --btn:#ECCB88; --btn-ink:#1A1527; --mark-y:#ECCB88; --frame:#000; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--stage);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{font-family:var(--display);line-height:1.3;margin:0;text-wrap:balance;font-weight:600}
+p{text-wrap:pretty}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--lens);text-underline-offset:3px}
+button,input,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--lens);outline-offset:2px;border-radius:8px}
+[hidden]{display:none !important}
+.wordmark{font-family:var(--display);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.wordmark i{font-style:normal;color:var(--mark-y)}
+
