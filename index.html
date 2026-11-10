@@ -530,6 +530,136 @@ textarea{min-height:80px;resize:vertical}
 .sheet .composer{position:static;padding:0;background:transparent}
 .sheet .offline{flex:none;min-height:16px}
 
+/* ===== market-style rows, header, market, profile ===== */
+.appbar{justify-content:space-between}
+.appbar .brand{display:flex;align-items:center;gap:6px;flex:none}
+.appbar .brand .mark{width:30px;height:30px;padding:2px}
+.appbar .brand .wordmark{font-size:20px}
+.profbtn{display:flex;align-items:center;gap:10px;min-width:0;min-height:48px;padding:5px 12px 5px 5px;border-radius:999px;border:1px solid rgba(238,244,236,.24);background:rgba(238,244,236,.1);color:#FFFFFF;font:inherit;text-align:left;cursor:pointer}
+.profbtn:hover{background:rgba(238,244,236,.18)}
+.profbtn .chev{flex:none;color:#E7DDF0}
+.av{flex:none;width:38px;height:38px;border-radius:50%;background:#B3E254;color:#230332;display:grid;place-items:center}
+.av.big{width:64px;height:64px;background:var(--lens-soft);color:var(--lens)}
+.who{display:grid;min-width:0;line-height:1.25}
+.who small{font-size:11px;color:#E7DDF0;white-space:nowrap}
+.who b{font-family:var(--display);font-size:14.5px;font-weight:600;white-space:nowrap}
+.who em{font-style:normal;font-family:var(--body);font-weight:400;font-size:11.5px;color:#E7DDF0}
+.slist{margin:0 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) 78px 92px 14px;gap:8px;align-items:center;width:100%;min-height:62px;padding:10px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+button.srow:hover{background:var(--track)}
+button.srow:active{background:var(--track)}
+.srow.static{cursor:default}
+.srow[hidden]{display:none}
+.slist>.srow:last-child,.slist>.srow-wrap:last-child .srow{border-bottom:0}
+.sr-id{display:grid;gap:3px;min-width:0}
+.sr-id b{display:flex;align-items:center;gap:7px;font-family:var(--display);font-size:15.5px;font-weight:600;line-height:1.25;min-width:0}
+.sr-id .sub{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);min-width:0}
+.sr-id .sub em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.flag{flex:none;width:16px;height:11px;border-radius:2px;box-shadow:0 0 0 1px var(--line)}
+.flag.th{background:linear-gradient(#A51931 0 16.6%,#F4F5F8 0 33.3%,#2D2A4A 0 66.6%,#F4F5F8 0 83.3%,#A51931 0)}
+.flag.us{background:linear-gradient(#3C3B6E,#3C3B6E) 0 0/45% 55% no-repeat,repeating-linear-gradient(#B22234 0 1.6px,#FFFFFF 0 3.2px)}
+.sgn{flex:none;font-family:var(--body);font-size:10.5px;font-weight:600;line-height:1.5;padding:0 6px;border-radius:6px;white-space:nowrap}
+.sgn.ok{background:var(--good-soft);color:var(--good)} .sgn.warn{background:var(--warn-soft);color:var(--warn)} .sgn.crit{background:var(--crit-soft);color:var(--crit)}
+.chg{display:inline-flex;align-items:center;justify-content:flex-end;gap:4px;font-size:13.5px;font-weight:600;white-space:nowrap}
+.chg.up,.num.up{color:var(--good)} .chg.down,.num.down{color:var(--crit)} .chg.flat{color:var(--muted)}
+.sr-px{text-align:right;white-space:nowrap;font-size:14px}
+.sr-px b{font-weight:600}
+.sr-px small{font-size:11px;color:var(--muted)}
+.srow .chev{color:var(--muted);justify-self:end}
+.srow-wrap{position:relative}
+.srow-wrap .star{top:50%;right:4px;transform:translateY(-50%)}
+.srow.fr{grid-template-columns:minmax(0,1fr) 38px minmax(88px,auto);padding-right:52px}
+.rk{display:grid;justify-items:center;line-height:1.2}
+.rk small{font-size:10.5px;color:var(--muted)}
+.rk b{font-family:var(--display);font-size:15px}
+.fr-r{display:grid;justify-items:end;gap:2px;line-height:1.3}
+.fr-r small{font-size:11.5px;color:var(--muted)}
+.fr-r b{font-size:13.5px}
+.asof{margin:0 20px 10px;font-size:12.5px;color:var(--muted)}
+.idxbig{margin:0 16px;padding:16px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
+.idxbig .m,.goldcard .m{font-size:12.5px;color:var(--muted)}
+.idxbig .v{font-family:var(--display);font-size:40px;font-weight:700;line-height:1.1;margin:4px 0 2px}
+.vc{display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:600}
+.hl2{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.hl2 b{color:var(--ink);font-weight:600}
+.idxgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 16px 0}
+.idxmini{display:grid;gap:2px;padding:10px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.idxmini .m{font-size:12px;color:var(--muted);font-weight:600}
+.idxmini b{font-family:var(--display);font-size:15px}
+.idxmini .chg{justify-content:flex-start;font-size:12px}
+.goldcard{margin:0 16px 12px;padding:16px;border-radius:var(--r-lg);background:var(--night);color:#FFFFFF;--muted:#E7DDF0}
+.goldcard .chg.down{color:#FF9F95}
+.gprice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 8px}
+.gprice span{display:block;font-size:12px;color:#E7DDF0}
+.gprice b{font-family:var(--display);font-size:27px;font-weight:700;line-height:1.2}
+.gprice div:last-child b{color:#B3E254}
+.ycard{margin:0 16px}
+.ycard .m{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.mhero h1{min-height:0}
+.pfwrap{padding:4px 16px 24px;display:grid;gap:12px}
+.pftitle{font-family:var(--display);font-size:17px;font-weight:600}
+.pfhead{display:flex;align-items:center;gap:14px}
+.pfhead h2{margin:0;font-size:20px}
+.pfhead .m{font-size:13px;color:var(--muted)}
+.wallet{padding:18px;border-radius:var(--r-lg);background:var(--night);color:#FFFFFF}
+.wallet .m{font-size:13px;color:#E7DDF0}
+.wallet .bal{font-family:var(--display);font-size:38px;font-weight:700;line-height:1.15;margin:2px 0 14px}
+.wbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wbtns button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 6px;border-radius:12px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.wbtns .btn{background:#B3E254;color:#230332;border:0}
+.wbtns .ghost{background:transparent;color:#FFFFFF;border:1px solid rgba(238,244,236,.35)}
+.wbtns .ghost:hover{background:rgba(238,244,236,.12)}
+.pfstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pfstats>*{display:grid;gap:2px;justify-items:center;padding:12px 6px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font:inherit;color:var(--ink)}
+.pfstats button{cursor:pointer} .pfstats button:hover{border-color:var(--brand)}
+.pfstats b{font-family:var(--display);font-size:18px}
+.pfstats span{font-size:11.5px;color:var(--muted)}
+.mgroup{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.mgroup h3{margin:0;padding:12px 14px 6px;font-size:12.5px;font-weight:600;color:var(--muted);font-family:var(--body)}
+.mrow{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;min-height:58px;padding:10px 14px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.mgroup h3+.mrow{border-top:0}
+button.mrow:hover{background:var(--track)}
+.mrow.static{cursor:default}
+.mic{width:36px;height:36px;border-radius:50%;background:var(--lens-soft);color:var(--lens);display:grid;place-items:center}
+.mtx{display:grid;gap:1px;min-width:0}
+.mtx b{font-size:14.5px;font-weight:600}
+.mtx small{font-size:12.5px;color:var(--muted);line-height:1.4}
+.mrow .chev{color:var(--muted)}
+.mval{font-weight:600;font-size:14px}
+.themeseg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:0 14px 12px;padding:3px;background:var(--track);border-radius:12px}
+.themeseg button{min-height:40px;border:0;border-radius:10px;background:transparent;color:var(--ink-2);font:inherit;font-size:13.5px;cursor:pointer}
+.themeseg button[aria-checked="true"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(35,3,50,.18)}
+.switch{position:relative;width:46px;height:28px;border-radius:999px;border:0;background:var(--na);cursor:pointer;transition:background .15s ease}
+.switch::before{content:'';position:absolute;inset:-8px -4px}
+.switch i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#FFFFFF;transition:transform .15s ease}
+.switch[aria-checked="true"]{background:var(--lens)}
+.switch[aria-checked="true"] i{transform:translateX(18px)}
+.about-box{padding:0 14px 12px 62px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.about-box p{margin:0}
+.amtinput{display:flex;align-items:center;gap:8px;margin-top:8px;padding:0 14px;border:1.5px solid var(--line-2);border-radius:12px;background:var(--paper)}
+.amtinput:focus-within{border-color:var(--lens);box-shadow:0 0 0 3px var(--lens-soft)}
+.amtinput span{font-family:var(--display);font-size:24px;color:var(--muted)}
+.amtinput input{flex:1;min-width:0;min-height:56px;border:0;outline:0;background:transparent;color:var(--ink);font-family:var(--display);font-size:28px;font-weight:700}
+.quick button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:600}
+.ways{display:grid;gap:8px;margin-top:10px}
+.way{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:10px 14px;border:1.5px solid var(--line-2);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.way span{display:grid;gap:1px} .way small{font-size:12.5px;color:var(--muted)}
+.way i{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--na)}
+.way[aria-checked="true"]{border-color:var(--lens);background:var(--lens-soft)}
+.way[aria-checked="true"] i{border-color:var(--lens);background:radial-gradient(circle,var(--lens) 0 4px,transparent 5px)}
+.btn.confirm{width:100%;min-height:50px;font-size:15px}
+.btn.confirm:disabled{opacity:.45;cursor:not-allowed}
+.toast{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);z-index:40;max-width:88%;padding:10px 16px;border-radius:12px;background:var(--ink);color:var(--paper);font-size:13.5px;text-align:center;box-shadow:0 6px 20px rgba(35,3,50,.3)}
+.toast[hidden]{display:none}
+.tabbar{grid-template-columns:repeat(4,1fr)}
+.kvlist .srow,.txrow{grid-template-columns:minmax(0,1fr) auto}
+.kvlist .srow>span:empty,.txrow>span:empty{display:none}
+.srow.txrow{min-height:56px}
+.hintline{margin-top:12px}
+@media (prefers-reduced-motion:reduce){.switch,.switch i{transition:none}}
+.promo .fundico{width:56px;height:56px;border-radius:50%;background:#EEF4EC;color:#7216B9;display:grid;place-items:center}
+.promo .chev{color:#B3E254}
+
 </style>
 </head>
 <body>
@@ -554,9 +684,11 @@ textarea{min-height:80px;resize:vertical}
       <button type="button" class="aibar" id="aibar" aria-label="คุยกับน้องฮูก AI"><img data-owl alt="" width="26" height="26"><span>ถามน้องฮูก เช่น กองทุนไหนกำลังเปิดขาย</span><i aria-hidden="true"><svg width="16" height="16" viewBox="0 0 18 18"><path d="M9 14.5V3.5M4 8.5l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></button>
       <nav class="tabbar" aria-label="เมนูหลัก">
         <button type="button" data-nav="home"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>หุ้น</button>
+        <button type="button" data-nav="market"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M3.5 17.5V4M3.5 17.5h15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.5 13.5l3.6-3.8 2.8 2.4 4.6-5.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>ตลาด</span></button>
         <button type="button" data-nav="funds"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 9.5L11 4l7 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v6.5M9.3 10v6.5M12.7 10v6.5M16 10v6.5M3.5 18.5h15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>กองทุน</button>
         <button type="button" data-nav="reels"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="2.5" width="14" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 8l5 3-5 3z" fill="currentColor"/></svg>คลิปสั้น</button>
       </nav>
+      <div class="toast" id="toast" role="status" hidden></div>
       <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="คุยกับน้องฮูก">
         <div class="sheet-head"><img data-owl alt="" width="34" height="34"><div><b>คุยกับน้องฮูก (AI)</b><small id="sheetctx"></small></div><button type="button" id="sheetclose" aria-label="ปิดแชท"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
         <div class="chat sheet-log" id="gchatlog" aria-live="polite"></div>
@@ -1004,7 +1136,7 @@ function anchorPlay(i, k){
     setTimeout(() => { if (token === player.token && !started){ talking(i, true); setTimeout(done, est); } }, 1500);
   } else {
     note.hidden = false;
-    note.textContent = voice.muted ? 'ปิดเสียงอยู่ แสดงซับแทน' : 'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน';
+    note.textContent = voice.muted ? 'ปิดเสียง แสดงซับแทน' : 'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน';
     talking(i, true);
     setTimeout(done, est);
   }
@@ -1285,9 +1417,43 @@ function stepIndex(){
   if (state.screen === 'home') return 0;
   if (state.screen === 'reels') return 5;
   if (state.screen === 'buy') return 6;
-  if (state.screen === 'funds' || state.screen === 'fund') return 0;
+  if (['funds', 'fund', 'market', 'profile'].includes(state.screen)) return 0;
   return {summary:1, fin:2, news:3, ai:4}[state.tab] ?? 1;
 }
+
+
+/* ================= market snapshot =================
+   Read on 10 Nov 2569 (CE 2026-11-10): Thai stocks and indices from SET's own API (16:14), gold from the Gold Traders Association
+   (announcement no. 13, 16:02), the government bond yield curve from ThaiBMA, US stocks from Yahoo Finance (close of 9 Nov, US time).
+   This is a snapshot, not a live feed: the app says so on every market page. */
+const LIVE = {
+  asof:'10 พ.ย. 69 16:14',
+  idx:{SET:{l:1495.69,c:22.62,p:1.54,h:1498.09,lo:1484.71,v:62427}, SET50:{l:1014.42,c:11.38,p:1.13,h:1016.66,lo:1007.79,v:45467}, SET100:{l:2188.04,c:27.24,p:1.26,h:2192.23,lo:2172.49,v:55658},
+       SETHD:{l:1481.66,c:5.6,p:0.38,h:1485.56,lo:1470.81,v:16060}, SETESG:{l:989.18,c:9.62,p:0.98,h:990.7,lo:981.73,v:45655}, mai:{l:213.18,c:1.54,p:0.73,h:213.62,lo:212.52,v:201}},
+  th:{
+    ADVANC:{l:338,c:-1,p:-0.29,v:1828,dy:10.12,pe:18.33,sec:'ICT'}, BDMS:{l:19.9,c:-0.2,p:-1,v:1008,dy:4.98,pe:20.85,sec:'HELTH'}, CBG:{l:56.75,c:2,p:3.65,v:250,dy:2.37,pe:26,sec:'FOOD'},
+    COM7:{l:32.75,c:0.5,p:1.55,v:187,dy:3.41,pe:16.5,sec:'COMM'}, CPALL:{l:47.25,c:1,p:2.16,v:3233,dy:3.57,pe:13.52,sec:'COMM'}, CRC:{l:31,c:0.5,p:1.64,v:401,dy:5.93,pe:20.99,sec:'COMM'},
+    GULF:{l:63.75,c:2.5,p:4.08,v:5047,dy:5.31,pe:15.91,sec:'ENERG'}, KBANK:{l:243,c:2,p:0.83,v:1102,dy:5.82,pe:11.07,sec:'BANK'}, M:{l:19.9,c:0.1,p:0.51,v:6,dy:5.05,pe:25.08,sec:'FOOD'},
+    MINT:{l:21.8,c:0.4,p:1.87,v:776,dy:3.28,pe:12.72,sec:'TOURISM'}, OR:{l:12.5,c:0.1,p:0.81,v:318,dy:4.84,pe:18.94,sec:'ENERG'}, OSP:{l:19.7,c:0.6,p:3.14,v:252,dy:4.19,pe:15.73,sec:'FOOD'},
+    PTT:{l:37.75,c:-0.75,p:-1.95,v:3957,dy:5.97,pe:8.82,sec:'ENERG'}, SCB:{l:151,c:1,p:0.67,v:1043,dy:7.52,pe:11.61,sec:'BANK'}, TISCO:{l:125,c:0,p:0,v:393,dy:6.2,pe:14.57,sec:'BANK'},
+    TRUE:{l:13,c:-0.1,p:-0.76,v:1024,dy:2.37,pe:19.01,sec:'ICT'}, MAJOR:{l:8.3,c:0.2,p:2.47,v:40,dy:3.19,pe:8.84,sec:'MEDIA'}
+  },
+  names:{SCB:'SCBX · ธนาคารไทยพาณิชย์', TISCO:'ทิสโก้ไฟแนนเชียล', GULF:'กัลฟ์ ดีเวลลอปเมนท์', PTT:'ปตท.', BDMS:'กรุงเทพดุสิตเวชการ', AMATA:'อมตะ คอร์ปอเรชั่น', WHA:'ดับบลิวเอชเอ คอร์ปอเรชั่น', BA:'บางกอกแอร์เวย์ส', WHAUP:'ดับบลิวเอชเอ ยูทิลิตี้ส์', DELTA:'เดลต้า อีเลคโทรนิคส์', RCL:'รีเจียนอล คอนเทนเนอร์ ไลน์ส', TLI:'ไทยประกันชีวิต', QH:'ควอลิตี้เฮ้าส์', PTTEP:'ปตท.สผ.', KCE:'เคซีอี อีเลคโทรนิคส์'},
+  gain:[['AMATA',28.25,9.71],['WHA',5.2,7.44],['BA',19.8,7.03],['WHAUP',7.3,6.57],['DELTA',193,6.04]],
+  lose:[['RCL',38.5,-4.94],['PTT',37.75,-1.95],['TLI',11.3,-1.74],['QH',1.37,-1.44],['PTTEP',141.5,-1.05]],
+  val:[['DELTA',193,6.04,7301],['GULF',63.75,4.08,5047],['PTT',37.75,-1.95,3957],['CPALL',47.25,2.16,3233],['KCE',57.5,2.22,2504]],
+  gold:{t:'10 พ.ย. 69 16:02', no:13, barBuy:64650, barSell:64850, barChgDay:-250, barChgLast:-200, ornSell:65650, ornTax:63353.64},
+  bondAsof:'10 พ.ย. 69',
+  curve:[['3 เดือน',0.877585],['1 ปี',0.944447],['2 ปี',1.171305],['3 ปี',1.308744],['5 ปี',1.56125],['10 ปี',1.994815],['15 ปี',2.433581],['20 ปี',2.904355],['30 ปี',3.17481]],
+  bonds:[['T-BILL3M','ตั๋วเงินคลัง 3 เดือน','0.25',0.877585,-0.80],['T-BILL1Y','ตั๋วเงินคลัง 1 ปี','1.0',0.944447,-0.33],['LB28DA','พันธบัตร ธ.ค. 2571','2.1',1.190262,-3.42],['LB303A','พันธบัตร มี.ค. 2573','3.4',1.341134,-3.73],['LB31DA','พันธบัตร ธ.ค. 2574','5.1',1.575658,-4.66],['LB365A','พันธบัตร พ.ค. 2579','9.5',1.908889,-7.28]],
+  us:{NVDA:{n:'NVIDIA',p:178.67,prev:186.64}, AAPL:{n:'Apple',p:350.69,prev:342.37}, MSFT:{n:'Microsoft',p:545.18,prev:530.61}, TSLA:{n:'Tesla',p:378.05,prev:358.22}, GOOGL:{n:'Alphabet (Google)',p:288.15,prev:284.78}, AMZN:{n:'Amazon',p:266.93,prev:259.3}, META:{n:'Meta (Facebook · Instagram)',p:641.37,prev:610.15}},
+  usIdx:{'S&P 500':{p:7549.94,prev:7376.86}, 'Nasdaq':{p:25253.14,prev:24579.43}, 'Dow Jones':{p:52389.75,prev:51285.73}},
+  usAsof:'ปิดวันที่ 9 พ.ย. (เวลาสหรัฐฯ)'
+};
+Object.values(LIVE.us).concat(Object.values(LIVE.usIdx)).forEach(u => { u.c = u.p - u.prev; u.pc = (u.p / u.prev - 1) * 100; });
+/* the simulated buy page now uses the market price from the snapshot (the order itself is still simulated) */
+Object.values(IPOS).forEach(s => { const q = LIVE.th[s.ticker]; if (q) s.simPrice = q.l; });
+const nf = (n, d = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d});
 
 
 /* ================= funds =================
@@ -1445,6 +1611,222 @@ function bars(ipo){
 }
 
 /* ================= screens ================= */
+/* ================= shared pieces: rows, header, wallet ================= */
+const TRI = {up:'<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.5L9 8H1z" fill="currentColor"/></svg>', down:'<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 8.5L1 2h8z" fill="currentColor"/></svg>', flat:'<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 5h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'};
+const CHEV = '<svg class="chev" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2.5L9.5 7 5 11.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const flag = k => `<i class="flag ${k.toLowerCase()}" role="img" aria-label="${k === 'TH' ? 'ไทย' : 'สหรัฐฯ'}"></i>`;
+function chgHTML(p){
+  const k = p > 0.004 ? 'up' : p < -0.004 ? 'down' : 'flat';
+  return `<span class="chg ${k}" aria-label="${k === 'up' ? 'เพิ่มขึ้น' : k === 'down' ? 'ลดลง' : 'ไม่เปลี่ยน'} ${nf(Math.abs(p))} เปอร์เซ็นต์">${TRI[k]}<span class="num">${nf(Math.abs(p))} %</span></span>`;
+}
+/* one row of the market-style list: ticker + flag/subtitle | change | price | chevron */
+function qrow({sym, mkt, sub, p, last, cur, open, badge}){
+  const body = `
+    <span class="sr-id"><b>${esc(sym)}${badge || ''}</b><span class="sub">${flag(mkt)}<em>${esc(sub || mkt)}</em></span></span>
+    ${chgHTML(p)}
+    <span class="sr-px"><b class="num">${nf(last)}</b> <small>${cur}</small></span>
+    ${open ? CHEV : '<span></span>'}`;
+  return open ? `<button type="button" class="srow" data-open="${open}" data-find="${esc((sym + ' ' + (sub || '')).toLowerCase())}">${body}</button>` : `<div class="srow static">${body}</div>`;
+}
+function stockRow(id){
+  const s = IPOS[id], q = LIVE.th[s.ticker], n = foundCount(s), crit = Object.values(s.checks).includes('crit');
+  const badge = `<span class="sgn ${n === 0 ? 'ok' : crit ? 'crit' : 'warn'}">${n ? 'ควรรู้ ' + n : 'ไม่พบ'}</span>`;
+  const sub = s.brand.split(' · ')[0];
+  const html = q ? qrow({sym:s.ticker, mkt:'TH', sub, p:q.p, last:q.l, cur:'THB', open:id, badge}) : qrow({sym:s.ticker, mkt:'TH', sub, p:0, last:s.simPrice, cur:'THB', open:id, badge});
+  return html.replace('class="srow"', `class="srow" data-cat="${s.cat}"`);
+}
+function fundShort(f){
+  const st = fundStatus(f); if (!st) return '';
+  return st.s === 'closed' ? 'ปิดขายแล้ว' : st.s === 'soon' ? 'เปิด ' + fmtD(f.from) : st.left === 0 ? 'ปิดขายวันนี้' : 'ปิดใน ' + st.left + ' วัน';
+}
+function fundRow(id){
+  const f = FUNDS[id], st = fundStatus(f);
+  const right = f.type === 'general' ? `<b>${f.kind === 'ETF' ? 'ETF' : 'กองดัชนี'}</b><small>ตาม ${f.index}</small>` : `<span class="chip ${st.cls}">${fundShort(f)}</span><small>${f.min ? 'ขั้นต่ำ ' + f.min.toLocaleString('en-US') : f.term || ''}</small>`;
+  return `<div class="srow-wrap"><button type="button" class="srow fr" data-fund="${id}" data-find="${esc((f.code + ' ' + f.name).toLowerCase())}">
+    <span class="sr-id"><b>${f.code}</b><span class="sub"><em>${esc(f.type === 'general' ? f.amc.replace('บลจ.', '') + ' · ' + f.name.replace(/^กองทุนเปิด\s*/, '') : f.tag)}</em></span></span>
+    <span class="rk"><small>เสี่ยง</small><b class="num">${f.risk || '–'}</b></span>
+    <span class="fr-r">${right}</span>
+  </button>${starBtn(id)}</div>`;
+}
+function appbar(){
+  const w = walletState();
+  return `<header class="appbar">
+    <button class="profbtn" type="button" data-profile aria-label="เปิดโปรไฟล์ เติมเงิน และตั้งค่า เงินพร้อมลงทุน ${nf(w.bal)} บาท">
+      <span class="av" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span>
+      <span class="who"><small>ผู้ใช้เดโม · โปรไฟล์</small><b class="num">฿ ${nf(w.bal)} <em>พร้อมลงทุน</em></b></span>${CHEV}
+    </button>
+    <span class="brand"><img class="mark" src="${OWL}" alt="" width="30" height="30"><span class="wordmark">Owl<i>y</i></span></span>
+  </header>`;
+}
+
+/* wallet, theme and toast: demo only, kept in this browser */
+function walletState(){
+  if (!state.wallet){
+    try { const w = JSON.parse(localStorage.getItem('owly.wallet')); if (w && typeof w.bal === 'number' && Array.isArray(w.tx)) state.wallet = w; } catch(e){}
+    if (!state.wallet) state.wallet = {bal:2000, tx:[{d:'2026-11-10', k:'in', a:2000, m:'เงินตั้งต้นของบัญชีทดลอง'}]};
+  }
+  return state.wallet;
+}
+function saveWallet(){ try { localStorage.setItem('owly.wallet', JSON.stringify(state.wallet)); } catch(e){} }
+function setTheme(v){
+  const r = document.documentElement; if (v === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', v);
+  try { localStorage.setItem('owly.theme', v); } catch(e){}
+}
+function getTheme(){ try { return localStorage.getItem('owly.theme') || 'auto'; } catch(e){ return 'auto'; } }
+setTheme(getTheme());
+let toastT = 0;
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2600);
+}
+function getPrefs(){ try { return JSON.parse(localStorage.getItem('owly.prefs')) || {}; } catch(e){ return {}; } }
+
+/* ================= market ================= */
+const MKT_TABS = [['th','ตลาดหุ้น'],['gold','ทอง'],['bond','ตราสารหนี้'],['stock','หุ้นรายตัว']];
+const MKT_SRC = {
+  th:[['https://www.set.or.th/th/market/index/set/overview','ตลาดหลักทรัพย์แห่งประเทศไทย (SET)']],
+  gold:[['https://www.goldtraders.or.th/','สมาคมค้าทองคำ']],
+  bond:[['https://www.thaibma.or.th/EN/Market/YieldCurve/Government.aspx','ThaiBMA: Government Bond Yield Curve']],
+  stock:[['https://www.set.or.th/th/market/index/set100/overview','SET (หุ้นไทย)'],['https://finance.yahoo.com/','Yahoo Finance (หุ้นสหรัฐฯ)']]
+};
+function idxCard(k, big){
+  const i = LIVE.idx[k], up = i.p > 0 ? 'up' : i.p < 0 ? 'down' : 'flat';
+  return big ? `<div class="idxbig"><div class="m">ดัชนี ${k} · ${LIVE.asof}</div><div class="v num">${nf(i.l)}</div>
+      <div class="vc">${chgHTML(i.p)}<span class="num ${up}">${i.c > 0 ? '+' : ''}${nf(i.c)} จุด</span></div>
+      <div class="hl2"><span>สูงสุด <b class="num">${nf(i.h)}</b></span><span>ต่ำสุด <b class="num">${nf(i.lo)}</b></span><span>มูลค่า <b class="num">${nf(i.v / 1000, 1)}</b> พันล้านบาท</span></div></div>`
+    : `<div class="idxmini"><span class="m">${k}</span><b class="num">${nf(i.l)}</b>${chgHTML(i.p)}</div>`;
+}
+function moverRow([s, last, p, v]){
+  const own = Object.values(IPOS).find(x => x.ticker === s);
+  return qrow({sym:s, mkt:'TH', sub:(v ? 'มูลค่า ' + nf(v, 0) + ' ล้านบาท' : own ? own.brand.split(' · ')[0] : LIVE.names[s] || 'หุ้นใน SET100'), p, last, cur:'THB', open:own ? own.id : null});
+}
+function marketScreen(){
+  const mt = state.mt || 'th';
+  let body = '';
+  if (mt === 'th'){
+    body = `${idxCard('SET', true)}
+      <div class="idxgrid">${['SET50','SET100','SETHD','SETESG','mai'].map(k => idxCard(k)).join('')}</div>
+      <div class="sec-title"><h2>ขึ้นแรงสุดวันนี้</h2><em>ในกลุ่ม SET100</em></div><div class="slist">${LIVE.gain.map(moverRow).join('')}</div>
+      <div class="sec-title"><h2>ลงแรงสุดวันนี้</h2><em>ในกลุ่ม SET100</em></div><div class="slist">${LIVE.lose.map(moverRow).join('')}</div>
+      <div class="sec-title"><h2>ซื้อขายมูลค่าสูงสุด</h2><em>ล้านบาท</em></div><div class="slist">${LIVE.val.map(moverRow).join('')}</div>`;
+  } else if (mt === 'gold'){
+    const g = LIVE.gold, spread = g.barSell - g.barBuy;
+    body = `<div class="goldcard"><div class="m">ทองคำแท่ง 96.5% · ราคาต่อ 1 บาททองคำ</div>
+        <div class="gprice"><div><span>สมาคมรับซื้อ</span><b class="num">${nf(g.barBuy)}</b></div><div><span>สมาคมขายออก</span><b class="num">${nf(g.barSell)}</b></div></div>
+        <div class="vc">${chgHTML(g.barChgDay / g.barSell * 100)}<span class="num down">${g.barChgDay} บาท เทียบกับวันก่อนหน้า</span></div>
+        <div class="m" style="margin-top:8px">ประกาศครั้งที่ ${g.no} · ${g.t}</div></div>
+      <div class="slist kvlist">
+        <div class="srow static"><span class="sr-id"><b>ทองรูปพรรณ 96.5%</b><span class="sub"><em>ราคาขายออก</em></span></span><span></span><span class="sr-px"><b class="num">${nf(g.ornSell)}</b> <small>THB</small></span><span></span></div>
+        <div class="srow static"><span class="sr-id"><b>ฐานภาษีทองรูปพรรณ</b><span class="sub"><em>ใช้คิดภาษีมูลค่าเพิ่ม</em></span></span><span></span><span class="sr-px"><b class="num">${nf(g.ornTax)}</b> <small>THB</small></span><span></span></div>
+      </div>
+      <div class="card about" style="margin:14px 16px 0"><span class="chip c-info brandtag">อ่านราคาทองยังไง</span>
+        <p>ราคารับซื้อกับขายออกต่างกัน ${nf(spread, 0)} บาท คิดเป็นราว ${nf(spread / g.barSell * 100)}% ของราคาขายออก ถ้าซื้อวันนี้แล้วขายคืนทันทีจะขาดทุนเท่าส่วนต่างนี้ ราคาทองต้องขึ้นเกินส่วนต่างก่อนถึงจะเริ่มกำไร</p></div>`;
+  } else if (mt === 'bond'){
+    const pts = LIVE.curve, W = 340, H = 150, px = i => 14 + i * (W - 28) / (pts.length - 1), mn = 0.6, mx = 3.4, py = v => 12 + (H - 34) * (1 - (v - mn) / (mx - mn));
+    const path = pts.map(([, v], i) => (i ? 'L' : 'M') + px(i).toFixed(1) + ' ' + py(v).toFixed(1)).join(' ');
+    body = `<div class="card ycard"><div class="m">เส้นผลตอบแทนพันธบัตรรัฐบาลไทย (% ต่อปี) · ${LIVE.bondAsof}</div>
+        <svg viewBox="0 0 ${W} ${H + 6}" width="100%" role="img" aria-label="ผลตอบแทนพันธบัตรไทย ตั้งแต่ ${nf(pts[0][1])} เปอร์เซ็นต์ที่อายุ 3 เดือน ถึง ${nf(pts[pts.length - 1][1])} เปอร์เซ็นต์ที่อายุ 30 ปี">
+          ${[1, 2, 3].map(v => `<line x1="10" x2="${W - 8}" y1="${py(v)}" y2="${py(v)}" stroke="var(--line)"/><text x="12" y="${py(v) - 3}" font-size="10" text-anchor="start" style="fill:var(--muted)">${v}%</text>`).join('')}
+          <path d="${path} L${px(pts.length - 1)} ${H - 22} L${px(0)} ${H - 22}Z" fill="var(--lens-soft)" opacity=".7"/><path d="${path}" fill="none" stroke="var(--lens)" stroke-width="2.4" stroke-linejoin="round"/>
+          ${pts.map(([l, v], i) => `<circle cx="${px(i)}" cy="${py(v)}" r="3.2" fill="var(--lens)"/><text x="${px(i)}" y="${H - 6}" font-size="10" text-anchor="middle" style="fill:var(--muted)">${l}</text>`).join('')}
+        </svg>
+        <p class="small muted" style="margin:6px 0 0">ถือนานขึ้น ผลตอบแทนต่อปีสูงขึ้น: 1 ปี <b class="num">${nf(pts[1][1])}%</b> · 5 ปี <b class="num">${nf(pts[4][1])}%</b> · 10 ปี <b class="num">${nf(pts[5][1])}%</b></p></div>
+      <div class="sec-title"><h2>รุ่นอ้างอิง</h2><em>yield % · เปลี่ยนจากเมื่อวาน (bps)</em></div>
+      <div class="slist">${LIVE.bonds.map(([c, n, ttm, y, bp]) => `<div class="srow static"><span class="sr-id"><b>${c}</b><span class="sub"><em>${n} · เหลือ ${ttm} ปี</em></span></span><span class="chg ${bp > 0 ? 'up' : bp < 0 ? 'down' : 'flat'}">${TRI[bp > 0 ? 'up' : bp < 0 ? 'down' : 'flat']}<span class="num">${nf(Math.abs(bp))} bps</span></span><span class="sr-px"><b class="num">${nf(y)}</b> <small>%</small></span><span></span></div>`).join('')}</div>
+      <p class="small muted" style="margin:8px 20px 0">1 bps = 0.01 จุดเปอร์เซ็นต์ ▼ คือ yield ลดลงจากเมื่อวาน</p>
+      <button class="promo" type="button" data-gofunds="term" style="margin-top:14px"><span class="fundico">${FUND_ICON}</span><span><b>อยากถือตราสารหนี้แบบง่ายๆ</b><span>ดู Term Fund ที่เปิดขายอยู่ในแอป</span></span>${CHEV}</button>`;
+  } else {
+    const f = state.sf || 'all';
+    const us = Object.entries(LIVE.us).map(([s, u]) => ({sym:s, mkt:'US', sub:u.n, p:u.pc, last:u.p, cur:'USD'}));
+    const thOrder = ['SCB', 'TISCO', 'CPALL', 'GULF', 'PTT', 'BDMS', 'ADVANC', 'KBANK', 'CRC', 'MINT'];
+    const th = thOrder.map(t => { const own = Object.values(IPOS).find(x => x.ticker === t), q = LIVE.th[t]; return {sym:t, mkt:'TH', sub:own ? own.brand.split(' · ')[0] : LIVE.names[t], p:q.p, last:q.l, cur:'THB', open:own ? own.id : null}; });
+    const mixed = [th[0], th[1], us[0], th[2], th[3], th[4], th[5], th[6]].concat(us.slice(1), th.slice(7));
+    const rows = (f === 'TH' ? th : f === 'US' ? us : f === 'own' ? th.filter(r => r.open) : mixed);
+    body = `<div class="cats" role="group" aria-label="กรองตามตลาด">${[['all','ทั้งหมด'],['TH','หุ้นไทย'],['US','หุ้นสหรัฐฯ'],['own','มีการ์ด Owly']].map(([k, l]) => `<button type="button" data-sf="${k}" aria-pressed="${f === k}">${l}</button>`).join('')}</div>
+      <div class="slist">${rows.map(qrow).join('')}</div>
+      <div class="idxgrid" style="margin-top:14px">${Object.entries(LIVE.usIdx).map(([k, u]) => `<div class="idxmini"><span class="m">${k}</span><b class="num">${nf(u.p)}</b>${chgHTML(u.pc)}</div>`).join('')}</div>
+      <p class="small muted" style="margin:10px 20px 0">หุ้นไทย ณ ${LIVE.asof} · หุ้นสหรัฐฯ ${LIVE.usAsof} · แถวที่มีลูกศรกดดูการ์ด Owly ได้</p>`;
+  }
+  return `
+    <div class="topband">${appbar()}
+      <section class="hero mhero" aria-label="ตลาดวันนี้"><h1>ตลาดวันนี้<br>ดูครบ<span class="hl">ในที่เดียว</span></h1><img class="hero-owl" src="${OWL}" alt="" width="120" height="120"></section>
+    </div>
+    <div class="seg fseg"><div class="track" role="tablist" aria-label="ประเภทตลาด">${MKT_TABS.map(([k, l]) => `<button role="tab" type="button" data-mt="${k}" aria-selected="${mt === k}">${l}</button>`).join('')}</div></div>
+    <div class="mbody">${body}</div>
+    <div class="card" style="margin:16px 16px 0"><p class="small" style="margin:0 0 6px"><b>ที่มาของข้อมูล</b></p><ul class="fsrc">${MKT_SRC[mt].map(([u, n]) => `<li><a href="${u}">${esc(n)}</a></li>`).join('')}</ul></div>
+    <p class="disclaimer">ข้อมูลนี้ Owly ดึงมาเก็บไว้ ณ ${LIVE.asof} ไม่ใช่ราคาเรียลไทม์ ใช้ประกอบความเข้าใจเท่านั้น ไม่ใช่คำแนะนำการลงทุน</p>`;
+}
+
+/* ================= profile ================= */
+const IC = {
+  plus:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  out:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 16V4M5 9l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  clock:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 6v4.4l3 1.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  bank:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8l7-4.5L17 8M5 9v6M8.3 9v6M11.7 9v6M15 9v6M2.5 17h15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  star:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.6l2.2 4.7 5.1.7-3.7 3.6.9 5.1L10 14.2l-4.5 2.4.9-5.1L2.7 8l5.1-.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+  target:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+  moon:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 11.5A6.5 6.5 0 018.5 3.5a6.5 6.5 0 108 8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  bell:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 14V9a5 5 0 0110 0v5l1.5 2h-13zM8 18h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  lock:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 9V6.5a3 3 0 016 0V9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+  chat:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5A2.5 2.5 0 015.5 3h9A2.5 2.5 0 0117 5.5v6a2.5 2.5 0 01-2.5 2.5H9l-4 3v-3a2.5 2.5 0 01-2-2.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  info:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9v5M10 6.2v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  reset:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10a6 6 0 101.8-4.3M4 3.5v3.2h3.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+const TOPUP_AMTS = [100, 500, 1000, 2000, 5000];
+const TOPUP_WAYS = [['พร้อมเพย์', 'โอนผ่านแอปธนาคาร'], ['บัตรเดบิต', 'ตัดผ่านบัตร'], ['โอนเข้าบัญชีโบรกเกอร์', 'โอนเงินด้วยตัวเอง']];
+function mrow(ic, title, sub, right, attr){ return `<button type="button" class="mrow" ${attr}><span class="mic">${IC[ic]}</span><span class="mtx"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>${right || CHEV}</button>`; }
+function profileScreen(){
+  const w = walletState(), pf = state.pf || 'main', prefs = getPrefs();
+  const back = `<div class="topbar"><button class="back" type="button" data-pfback aria-label="${pf === 'main' ? 'ปิดโปรไฟล์' : 'กลับไปโปรไฟล์'}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><b class="pftitle">${{main:'โปรไฟล์', topup:'เติมเงิน', done:'เติมเงินแล้ว', history:'ประวัติธุรกรรม'}[pf]}</b><span class="chip sim">บัญชีทดลอง</span></div>`;
+  if (pf === 'topup'){
+    const amt = state.amt || 1000, way = state.way ?? 0, bad = !(amt >= 20 && amt <= 50000);
+    return back + `<div class="pfwrap">
+      <div class="card"><label for="amt"><b>จำนวนเงินที่เติม</b></label>
+        <div class="amtinput"><span>฿</span><input id="amt" type="number" inputmode="numeric" min="20" max="50000" step="1" value="${amt}" aria-describedby="amthint"></div>
+        <div class="quick">${TOPUP_AMTS.map(a => `<button type="button" data-amt="${a}" aria-pressed="${amt === a}">${a.toLocaleString('en-US')}</button>`).join('')}</div>
+        <p class="hintline" id="amthint" ${bad ? 'style="color:var(--crit)"' : ''}>${bad ? 'เติมได้ครั้งละ 20 ถึง 50,000 บาท' : 'เติมได้ครั้งละ 20 ถึง 50,000 บาท'}</p></div>
+      <div class="card"><b>ช่องทางเติมเงิน</b><div class="ways" role="radiogroup" aria-label="ช่องทางเติมเงิน">${TOPUP_WAYS.map(([t, s], i) => `<button type="button" class="way" role="radio" aria-checked="${way === i}" data-way="${i}"><span><b>${t}</b><small>${s}</small></span><i></i></button>`).join('')}</div></div>
+      <div class="card"><div class="metric"><span>ยอดหลังเติม</span><b class="num" id="afterbal">฿ ${nf(w.bal + (bad ? 0 : amt))}</b></div><div class="metric"><span>ค่าธรรมเนียม</span><b class="num">฿ 0.00</b></div></div>
+      <button class="btn confirm" type="button" id="dotopup" ${bad ? 'disabled' : ''}>เติมเงินจำลอง</button>
+      <p class="disclaimer" style="padding:0;margin:0">เติมเงินในเดโมเป็นการจำลอง ไม่มีเงินจริงเข้าหรือออกจากบัญชีใดๆ ในเวอร์ชันจริงขั้นตอนนี้จะเชื่อมกับพร้อมเพย์หรือบัญชีโบรกเกอร์</p></div>`;
+  }
+  if (pf === 'done'){
+    const t = w.tx[0];
+    return back + `<div class="pfwrap"><div class="card done"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="var(--good-soft)"/><path d="M17 29l7.5 7.5L39 21" fill="none" stroke="var(--good)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3>เติมเงินจำลองสำเร็จ</h3><p class="num">+ ฿ ${nf(t.a)} · ${esc(t.m)}</p><p class="num" style="margin:0">เงินพร้อมลงทุนตอนนี้ ฿ ${nf(w.bal)}</p>
+      <button class="btn" type="button" data-pfgo="main">กลับไปโปรไฟล์</button><button class="textbtn" type="button" data-pfgo="topup">เติมอีกครั้ง</button></div></div>`;
+  }
+  if (pf === 'history'){
+    return back + `<div class="pfwrap">${w.tx.length ? `<div class="slist">${w.tx.map(t => `<div class="srow static txrow"><span class="sr-id"><b>${esc(t.m)}</b><span class="sub"><em>${fmtD(t.d)}</em></span></span><span></span><span class="sr-px"><b class="num ${t.k === 'in' ? 'up' : 'down'}">${t.k === 'in' ? '+' : '−'}${nf(t.a)}</b> <small>THB</small></span><span></span></div>`).join('')}</div>` : '<div class="card"><p class="small" style="margin:0">ยังไม่มีธุรกรรม</p></div>'}
+      <p class="disclaimer" style="padding:0;margin:0">รายการทั้งหมดเป็นการจำลอง เก็บไว้ในเครื่องนี้เท่านั้น</p></div>`;
+  }
+  const th = getTheme(), thN = {auto:'ตามเครื่อง', light:'สว่าง', dark:'มืด'}[th];
+  return back + `<div class="pfwrap">
+    <div class="pfhead"><span class="av big" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span><div><h2>ผู้ใช้เดโม</h2><div class="m">บัญชีทดลองสำหรับนำเสนอ Owly</div></div></div>
+    <div class="wallet"><div class="m">เงินพร้อมลงทุน</div><div class="bal num">฿ ${nf(w.bal)}</div>
+      <div class="wbtns"><button type="button" class="btn" data-pfgo="topup">${IC.plus}เติมเงิน</button><button type="button" class="ghost" data-todo="ถอนเงิน">${IC.out}ถอนเงิน</button><button type="button" class="ghost" data-pfgo="history">${IC.clock}ประวัติ</button></div></div>
+    <div class="pfstats"><button type="button" data-gofunds="watch"><b class="num">${state.watch.length}</b><span>กองที่ติดตาม</span></button><div><b class="num">${nf(BUDGET, 0)}</b><span>งบลงทุน/เดือน</span></div><div><b class="num">${Object.keys(IPOS).length}</b><span>หุ้นในแอป</span></div></div>
+    <div class="mgroup"><h3>การเงิน</h3>
+      ${mrow('plus', 'เติมเงิน', 'พร้อมเพย์ บัตรเดบิต โอนเงิน', '', 'data-pfgo="topup"')}
+      ${mrow('clock', 'ประวัติธุรกรรม', w.tx.length + ' รายการ', '', 'data-pfgo="history"')}
+      ${mrow('bank', 'บัญชีธนาคารที่ผูกไว้', 'ใช้ถอนเงินและรับปันผล', '', 'data-todo="การผูกบัญชีธนาคาร"')}
+      ${mrow('target', 'งบลงทุนต่อเดือน', 'เตือนเมื่อซื้อเกินงบ', `<span class="mval num">฿ ${nf(BUDGET, 0)}</span>`, 'data-todo="การแก้งบลงทุน"')}</div>
+    <div class="mgroup"><h3>การลงทุน</h3>
+      ${mrow('star', 'กองทุนที่ติดตาม', state.watch.length ? state.watch.map(i => FUNDS[i].code).slice(0, 3).join(', ') + (state.watch.length > 3 ? ' +' + (state.watch.length - 3) : '') : 'ยังไม่ได้ติดตามกองไหน', '', 'data-gofunds="watch"')}</div>
+    <div class="mgroup"><h3>ตั้งค่า</h3>
+      <div class="mrow static"><span class="mic">${IC.moon}</span><span class="mtx"><b>ธีมหน้าจอ</b><small>ตอนนี้: ${thN}</small></span></div>
+      <div class="themeseg" role="radiogroup" aria-label="ธีมหน้าจอ">${[['auto', 'ตามเครื่อง'], ['light', 'สว่าง'], ['dark', 'มืด']].map(([k, l]) => `<button type="button" role="radio" aria-checked="${th === k}" data-theme-set="${k}">${l}</button>`).join('')}</div>
+      <div class="mrow static"><span class="mic">${IC.bell}</span><span class="mtx"><b>เตือนกองทุนที่ใกล้ปิดขาย</b><small>เฉพาะกองที่กดดาวไว้ (เดโมยังไม่ส่งแจ้งเตือนจริง)</small></span><button type="button" class="switch" role="switch" aria-checked="${!!prefs.notify}" data-pref="notify" aria-label="เตือนกองทุนที่ใกล้ปิดขาย"><i></i></button></div>
+      ${mrow('lock', 'ความปลอดภัยและ PIN', 'ล็อกแอปด้วย PIN หรือสแกนนิ้ว', '', 'data-todo="การตั้ง PIN"')}</div>
+    <div class="mgroup"><h3>ช่วยเหลือ</h3>
+      ${mrow('chat', 'ถามน้องฮูก (AI)', 'ถามเรื่องหุ้น กองทุน และศัพท์การเงิน', '', 'data-askai')}
+      ${mrow('info', 'เกี่ยวกับ Owly และข้อจำกัด', '', '', 'data-about')}
+      <div class="about-box" id="aboutbox" hidden><p>Owly เป็นต้นแบบสำหรับ Trinity Securities Future Finance Innovation Hackathon 2026 การซื้อ การเติมเงิน และยอดเงินทั้งหมดเป็นการจำลอง ข้อมูลตลาดเป็น snapshot ที่ดึงมาตามเวลาที่ระบุในแต่ละหน้า และไม่ใช่คำแนะนำการลงทุน</p></div>
+      ${mrow('reset', 'รีเซ็ตข้อมูลเดโม', 'ล้างยอดเงิน ประวัติ และกองทุนที่ติดตาม', '', 'data-reset')}</div>
+    <p class="disclaimer" style="padding:0;margin:14px 0 0">ข้อมูลโปรไฟล์ทั้งหมดเก็บในเบราว์เซอร์เครื่องนี้ ไม่ได้ส่งไปที่ใด</p></div>`;
+}
+
+
 const CATS = [['all','ทั้งหมด'],['food','กินดื่ม'],['shop','ช้อป'],['tech','มือถือ เน็ต'],['life','ไลฟ์สไตล์']];
 function tileHTML(ipo){
   const n = foundCount(ipo), crit = Object.values(ipo.checks).includes('crit');
@@ -1460,7 +1842,7 @@ function home(){
   const ids = Object.keys(IPOS), pick = ['cpall','advanc','or','cbg'];
   return `
     <div class="topband">
-    <header class="appbar"><img class="mark" src="${OWL}" alt="" width="38" height="38"><div><div class="wordmark">Owl<i>y</i></div><div class="sub">อ่านหุ้นให้เข้าใจใน 1 นาที</div></div></header>
+    ${appbar()}
     <section class="hero" aria-label="ค้นหาหุ้นจากแบรนด์">
       <h1>หุ้นของแบรนด์ที่คุณใช้<span class="hl">ทุกวัน</span></h1>
       <div class="search"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="8" cy="8" r="5.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12.3 12.3L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="find" type="search" aria-label="ค้นหาด้วยชื่อแบรนด์หรือชื่อหุ้น" placeholder="ลองพิมพ์ เซเว่น, AIS, คาเฟ่อเมซอน" autocomplete="off"></div>
@@ -1471,9 +1853,9 @@ function home(){
     <button class="promo" type="button" data-reelof="news-intro"><img src="${OWL}" alt="" width="56" height="56"><span><b>น้องฮูกพารู้จักหุ้น</b><span>คลิปสั้นมีเสียง ปัดคลิปเพื่อซื้อจำลอง</span></span><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span></button>
     <div class="sec-title"><h2>หุ้นของแบรนด์ดัง</h2><em>${ids.length} ตัว · งบจริงปี 2568</em></div>
     <div class="cats" role="group" aria-label="กรองตามหมวด">${CATS.map(([k, l], i) => `<button type="button" data-cat-btn="${k}" aria-pressed="${i === 0}">${l}</button>`).join('')}</div>
-    <div class="tiles" id="stocklist">${ids.map(id => tileHTML(IPOS[id])).join('')}</div>
+    <p class="asof">ราคา ณ ${LIVE.asof} · สแนปช็อตจาก SET ไม่ใช่เรียลไทม์</p>
+    <div class="slist" id="stocklist">${ids.map(stockRow).join('')}</div>
     <div class="noresult" id="noresult" hidden>ยังไม่มีหุ้นนี้ในเดโม ลองพิมพ์ชื่อแบรนด์อื่น</div>
-    <div class="ringkey"><span><i class="i-crit"></i>พบ รุนแรง</span><span><i class="i-warn"></i>พบ</span><span><i class="i-ok"></i>ไม่พบ</span><span><i class="i-na"></i>ยังไม่มีข้อมูล</span></div>
     <div class="sec-title"><h2>ศัพท์หุ้นใน 10 วิ</h2><em>แตะเพื่ออ่าน</em></div>
     <div class="group gloss">${GLOSS.map(([t, hint, body]) => `<details><summary>${esc(t)} <span>${esc(hint)}</span></summary><p>${esc(body)}</p></details>`).join('')}</div>
     <p class="disclaimer">วงแหวน 6 ช่องคือ 6 เรื่องที่ Owly ตรวจจากงบและข่าวที่เผยแพร่ การ์ดเป็นข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน</p>`;
@@ -1521,7 +1903,7 @@ function fundsScreen(){
   const watchEmpty = `<div class="card watch-empty"><img src="${OWL}" alt="" width="56" height="56"><p><b>ยังไม่ได้ติดตามกองทุนไหน</b><br>กดดาวที่มุมการ์ดกองทุนเพื่อเก็บไว้ที่นี่ จะเห็นวันปิดขายของกองที่สนใจในที่เดียว</p><button class="btn" type="button" data-ft="ipo">ดูกองทุน IPO</button></div>`;
   return `
     <div class="topband">
-    <header class="appbar"><img class="mark" src="${OWL}" alt="" width="38" height="38"><div><div class="wordmark">Owl<i>y</i></div><div class="sub">กองทุน</div></div></header>
+    ${appbar()}
     <section class="hero fundhero" aria-label="กองทุนคืออะไร">
       <h1>ไม่อยากเลือกหุ้นเอง<br>ซื้อทั้ง<span class="hl">ตะกร้า</span>ได้</h1>
       <p>กองทุนเอาเงินของหลายคนมารวมกัน แล้วให้ผู้จัดการกองทุนลงทุนแทน ซื้อกองเดียวก็ได้หลายสิบตัว</p>
@@ -1532,7 +1914,7 @@ function fundsScreen(){
     ${ft !== 'watch' ? `<p class="ftintro">${TYPE_INTRO[ft]}</p>` : soon.length ? `<p class="ftintro warn">มี ${soon.length} กองที่ติดตามปิดขายภายใน 2 วัน: ${soon.map(id => FUNDS[id].code).join(', ')}</p>` : ''}
     <div class="sec-title"><h2>${heads[ft][0]}</h2><em>${heads[ft][1]}</em></div>
     ${ft === 'general' ? `<div class="cats" role="group" aria-label="กรองตามดัชนี">${FUND_FILTERS.map(([k, l]) => `<button type="button" data-ff="${k}" aria-pressed="${filt === k}">${l}</button>`).join('')}</div>` : ''}
-    ${ft === 'watch' && !ids.length ? watchEmpty : `<div class="funds">${ids.map(fundCard).join('')}</div>`}
+    ${ft === 'watch' && !ids.length ? watchEmpty : `<div class="slist">${ids.map(fundRow).join('')}</div>`}
     ${ft === 'general' ? `<div class="sec-title"><h2>ดัชนีคืออะไร</h2><em>ตะกร้าหุ้นที่ตลาดคัดให้</em></div>
     <div class="group gloss">${Object.values(INDEXES).map(ix => `<details><summary>${ix.name} <span>${esc(ix.plain)}</span></summary><p>ตลาดหลักทรัพย์ฯ ทบทวนรายชื่อทุก 6 เดือน หุ้นในแอป Owly ที่อยู่ในดัชนีนี้ตอนนี้: ${ix.stocks.map(s => IPOS[s].ticker).join(', ')} <a href="${ix.url}">ดูรายชื่อทั้งหมดที่ SET</a></p></details>`).join('')}</div>` : ''}
     <p class="disclaimer">${ft === 'general' ? INDEX_ASOF + ' กองทุนดัชนีถือหุ้นตามรายชื่อในดัชนี สัดส่วนแต่ละตัวดูได้ใน Factsheet ของกองทุน' : ft === 'watch' ? 'รายการที่ติดตามเก็บไว้ในเครื่องนี้เท่านั้น' : 'ช่วงเสนอขายอ่านจากรายชื่อกองทุนเปิดใหม่ ณ 10 พ.ย. 2569 ดูเงื่อนไขล่าสุดที่หนังสือชี้ชวนก่อนซื้อ'} ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
@@ -1933,12 +2315,12 @@ function rerender(keepScroll){
   stopPlayer();
   const app = document.getElementById('app'), y = app.scrollTop;
   app.classList.remove('slide-l', 'slide-r');
-  app.innerHTML = state.screen === 'home' ? home() : state.screen === 'reels' ? reelsScreen() : state.screen === 'buy' ? buyScreen(IPOS[state.ipo]) : state.screen === 'funds' ? fundsScreen() : state.screen === 'fund' ? fundScreen(FUNDS[state.fund]) : ipoScreen(IPOS[state.ipo]);
+  app.innerHTML = state.screen === 'home' ? home() : state.screen === 'reels' ? reelsScreen() : state.screen === 'buy' ? buyScreen(IPOS[state.ipo]) : state.screen === 'funds' ? fundsScreen() : state.screen === 'fund' ? fundScreen(FUNDS[state.fund]) : state.screen === 'market' ? marketScreen() : state.screen === 'profile' ? profileScreen() : ipoScreen(IPOS[state.ipo]);
   app.scrollTop = keepScroll ? y : 0;
   document.querySelector('.screen').classList.toggle('dark', state.screen === 'reels');
-  const navOf = {reels:'reels', funds:'funds', fund:'funds'}[state.screen] || 'home';
+  const navOf = {reels:'reels', funds:'funds', fund:'funds', market:'market', profile:'none'}[state.screen] || 'home';
   document.querySelectorAll('[data-nav]').forEach(b => b.setAttribute('aria-current', b.dataset.nav === navOf ? 'page' : 'false'));
-  const dock = document.getElementById('aibar'); dock.hidden = state.screen === 'reels' || state.screen === 'buy';
+  const dock = document.getElementById('aibar'); dock.hidden = state.screen === 'reels' || state.screen === 'buy' || state.screen === 'profile';
   bind(); notes();
   if (state.screen === 'reels') bindReels();
   if (state.screen === 'buy') bindBuy();
@@ -1953,7 +2335,7 @@ function bind(){
     const filter = () => {
       const q = find.value.trim().toLowerCase().replace('เซเว่น', '7-eleven').replace('เอไอเอส', 'ais').replace('คาเฟ่อเมซอน', 'café amazon').replace('อเมซอน', 'amazon').replace('กสิกร', 'k plus').replace('เอ็มเค', 'mk').replace('เซ็นทรัล', 'central').replace('ทรู', 'true').replace('ดีแทค', 'dtac').replace('พิซซ่า', 'pizza').replace('บานาน่า', 'banana').replace('เมเจอร์', 'major');
       let shown = 0;
-      app.querySelectorAll('#stocklist .tile').forEach(t => { const hit = (!q || t.dataset.find.includes(q)) && (cat === 'all' || t.dataset.cat === cat); t.hidden = !hit; if (hit) shown++; });
+      app.querySelectorAll('#stocklist .srow').forEach(t => { const hit = (!q || t.dataset.find.includes(q)) && (cat === 'all' || t.dataset.cat === cat); t.hidden = !hit; if (hit) shown++; });
       document.getElementById('noresult').hidden = shown > 0;
     };
     find.addEventListener('input', filter);
@@ -1978,10 +2360,46 @@ function bind(){
   if (f) f.addEventListener('submit', e => { e.preventDefault(); const v = document.getElementById('askinput').value.trim(); if (v) ask(ipo, v); });
   const cn = document.getElementById('checknews');
   if (cn) cn.addEventListener('click', checkPasted);
+  bindMore(app);
   app.querySelectorAll('[data-reelof]').forEach(b => b.addEventListener('click', () => go({screen:'reels', reel:REELS.findIndex(r => r.id === b.dataset.reelof)})));
 }
+function bindMore(app){
+  const on = (sel, fn) => app.querySelectorAll(sel).forEach(b => b.addEventListener('click', () => fn(b)));
+  on('[data-profile]', () => go({screen:'profile', pf:'main', from:state.screen}));
+  on('[data-pfback]', () => { if ((state.pf || 'main') !== 'main') go({pf:'main'}); else go({screen:state.from && state.from !== 'profile' ? state.from : 'home'}); });
+  on('[data-pfgo]', b => go({pf:b.dataset.pfgo}));
+  on('[data-mt]', b => { state.mt = b.dataset.mt; rerender(); const hd = app.querySelector('.fseg'); if (hd && app.scrollTop > hd.offsetTop) app.scrollTop = hd.offsetTop; });
+  on('[data-sf]', b => { state.sf = b.dataset.sf; rerender(true); });
+  on('[data-gofunds]', b => go({screen:'funds', ft:b.dataset.gofunds}));
+  on('[data-todo]', b => toast(b.dataset.todo + ' ยังไม่เปิดใช้ในเดโมนี้'));
+  on('[data-askai]', () => openSheet());
+  on('[data-about]', () => { const n = document.getElementById('aboutbox'); n.hidden = !n.hidden; });
+  on('[data-theme-set]', b => { setTheme(b.dataset.themeSet); rerender(true); });
+  on('[data-pref]', b => { const p = getPrefs(); p[b.dataset.pref] = !p[b.dataset.pref]; try { localStorage.setItem('owly.prefs', JSON.stringify(p)); } catch(e){} rerender(true); toast(p[b.dataset.pref] ? 'เปิดการเตือนแล้ว (เดโมยังไม่ส่งแจ้งเตือนจริง)' : 'ปิดการเตือนแล้ว'); });
+  on('[data-amt]', b => { state.amt = +b.dataset.amt; rerender(true); });
+  on('[data-way]', b => { state.way = +b.dataset.way; rerender(true); });
+  const amt = document.getElementById('amt');
+  if (amt) amt.addEventListener('input', () => {
+    const v = Math.round(Number(amt.value)), ok = v >= 20 && v <= 50000; state.amt = v;
+    document.getElementById('dotopup').disabled = !ok;
+    document.getElementById('amthint').style.color = ok ? '' : 'var(--crit)';
+    document.getElementById('afterbal').textContent = '฿ ' + nf(walletState().bal + (ok ? v : 0));
+    app.querySelectorAll('[data-amt]').forEach(q => q.setAttribute('aria-pressed', String(+q.dataset.amt === v)));
+  });
+  const go2 = document.getElementById('dotopup');
+  if (go2) go2.addEventListener('click', () => {
+    const v = Math.round(state.amt || 0); if (!(v >= 20 && v <= 50000)) return;
+    const w = walletState(); w.bal += v; w.tx.unshift({d:todayISO(), k:'in', a:v, m:'เติมเงินผ่าน' + TOPUP_WAYS[state.way ?? 0][0] + ' (จำลอง)'}); w.tx = w.tx.slice(0, 50); saveWallet();
+    go({pf:'done'});
+  });
+  on('[data-reset]', () => {
+    if (!state.resetAt || Date.now() - state.resetAt > 5000){ state.resetAt = Date.now(); toast('แตะอีกครั้งภายใน 5 วินาทีเพื่อยืนยันรีเซ็ต'); return; }
+    state.resetAt = 0; ['owly.wallet', 'owly.watch', 'owly.prefs', 'owly.theme'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
+    state.wallet = null; state.watch = []; setTheme('auto'); rerender(); toast('รีเซ็ตข้อมูลเดโมแล้ว');
+  });
+}
 bindDock();
-document.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => go(b.dataset.nav === 'reels' ? {screen:'reels', reel:0} : b.dataset.nav === 'funds' ? {screen:'funds'} : {screen:'home'})));
+document.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => go(b.dataset.nav === 'reels' ? {screen:'reels', reel:0} : b.dataset.nav === 'funds' ? {screen:'funds'} : b.dataset.nav === 'market' ? {screen:'market'} : {screen:'home'})));
 function notes(){
   const i = stepIndex();
   document.getElementById('steps').innerHTML = STEPS.map((s, k) => `<li><button type="button" data-step="${k}" ${k === i ? 'aria-current="step"' : ''}><span class="n">${k + 1}</span><span>${s.label}</span></button></li>`).join('');
