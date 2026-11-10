@@ -51,6 +51,19 @@
     --warn:#EDB062; --warn-fill:#E59F43; --warn-soft:#3A2A12; --crit:#F08178; --crit-soft:#3D1D1B; --good:#6CCB96; --good-soft:#15321F; --na:#5A5470;
     --btn:#ECCB88; --btn-ink:#1A1527; --mark-y:#ECCB88; --frame:#000; color-scheme:dark;
 }
+.ana{margin-top:14px}
+.anahd{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.anahd small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+.anaowl{width:52px;height:52px;flex:none;border-radius:50%;background:var(--night);overflow:hidden;display:grid;place-items:center}
+.anaowl svg{width:100%;height:auto;display:block;overflow:hidden}
+.anaplay{width:100%;justify-content:center;gap:8px;min-height:46px}
+.anan{margin:8px 0 0;font-size:12.5px;color:var(--warn)}
+.analines{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px;counter-reset:al}
+.analines li{counter-increment:al;position:relative;padding:8px 10px 8px 34px;border-radius:10px;font-size:14px;line-height:1.65;color:var(--ink-2);transition:background .2s,color .2s}
+.analines li::before{content:counter(al);position:absolute;left:8px;top:9px;width:20px;height:20px;border-radius:50%;background:var(--track);color:var(--muted);font-size:11px;font-weight:700;display:grid;place-items:center}
+.analines li.done{color:var(--muted)}
+.analines li.on{background:var(--lens-soft);color:var(--ink)}
+.analines li.on::before{background:var(--btn);color:var(--btn-ink)}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--stage);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -1162,32 +1175,72 @@ function anchorShow(i, k, ms){
   });
 }
 function talking(i, on){ const w = anchorEl(i) && anchorEl(i).querySelector('.owlwrap'); if (w) w.classList.toggle('talking', on); }
+/* ---------- speech engine: Gemini Thai voice (via your Worker) -> device Thai voice -> subtitles ---------- */
+const tts = {el:null, failUntil:0, cache:new Map()};
+const TTS_URL = () => AI_ENDPOINT ? AI_ENDPOINT.replace(/\/+$/, '') + '/tts' : '';
+const ttsOK = () => !!TTS_URL() && !voice.muted && Date.now() > tts.failUntil;
+const SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
+function unlockAudio(){ if (!TTS_URL()) return; try { tts.el = tts.el || new Audio(); tts.el.src = SILENT_WAV; const p = tts.el.play(); if (p && p.catch) p.catch(() => {}); } catch(e){} }
+function ttsFetch(text){
+  if (!tts.cache.has(text)){
+    tts.cache.set(text, fetch(TTS_URL(), {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text})})
+      .then(r => { if (!r.ok) throw new Error('tts ' + r.status); return r.blob(); })
+      .then(blob => URL.createObjectURL(blob))
+      .catch(e => { tts.cache.delete(text); throw e; }));
+  }
+  return tts.cache.get(text);
+}
+function stopSpeech(){
+  if (tts.el){ tts.el.onended = tts.el.onerror = null; try { tts.el.pause(); } catch(e){} }
+  if (voice.supported) speechSynthesis.cancel();
+}
+/* speak one line. alive() says whether this line is still wanted; cb = {start, end, mode(name)} */
+function speakLine(text, est, alive, cb){
+  let ended = false;
+  const end = () => { if (ended || !alive()) return; ended = true; cb.end(); };
+  const timed = () => { cb.start(); setTimeout(end, est); };
+  const device = () => {
+    if (!alive()) return;
+    if (canSpeakThai()){
+      cb.mode('device'); speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'th-TH'; if (voice.th) u.voice = voice.th; u.rate = 0.98; u.pitch = voice.male ? 0.95 : 0.7;
+      let started = false;
+      u.onstart = () => { started = true; cb.start(); };
+      u.onend = end;
+      u.onerror = () => { if (alive() && !ended) timed(); };
+      speechSynthesis.speak(u);
+      setTimeout(() => { if (alive() && !started && !ended) timed(); }, 1500);
+    } else { cb.mode(voice.muted ? 'muted' : 'nothai'); timed(); }
+  };
+  if (ttsOK()){
+    ttsFetch(text).then(url => {
+      if (!alive()) return;
+      const a = tts.el = tts.el || new Audio();
+      a.onended = a.onerror = null; a.src = url;
+      a.onended = end;
+      a.onerror = () => { tts.failUntil = Date.now() + 60000; device(); };
+      a.play().then(() => { if (!alive()){ a.pause(); return; } cb.mode('gemini'); cb.start(); })
+        .catch(() => { tts.failUntil = Date.now() + 60000; device(); });
+    }).catch(() => { tts.failUntil = Date.now() + 60000; device(); });
+  } else device();
+}
+const MODE_NOTE = {gemini:'', device:'', muted:'ปิดเสียงอยู่ แสดงซับแทน', nothai:'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน'};
 function anchorPlay(i, k){
   const r = REELS[i]; if (!r || k >= r.lines.length){ player.running = false; talking(i, false); const el = anchorEl(i); if (el){ el.querySelector('.tapstart').hidden = false; el.querySelector('.tapstart span').textContent = 'ฟังอีกครั้ง'; } return; }
+  anaStop();
   const token = ++player.token; player.line = k; player.running = true;
   const text = r.lines[k].text, est = Math.max(2200, text.length * 85);
   anchorShow(i, k, est);
-  const done = () => { if (token !== player.token) return; talking(i, false); setTimeout(() => { if (token === player.token) anchorPlay(i, k + 1); }, 380); };
   const el = anchorEl(i), note = el.querySelector('.voicenote');
-  if (canSpeakThai()){
-    note.hidden = true;
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'th-TH'; if (voice.th) u.voice = voice.th; u.rate = 0.98; u.pitch = voice.male ? 0.95 : 0.7;
-    let started = false;
-    u.onstart = () => { started = true; talking(i, true); };
-    u.onend = done;
-    u.onerror = () => { if (token !== player.token) return; talking(i, true); setTimeout(done, est); };
-    speechSynthesis.speak(u);
-    setTimeout(() => { if (token === player.token && !started){ talking(i, true); setTimeout(done, est); } }, 1500);
-  } else {
-    note.hidden = false;
-    note.textContent = voice.muted ? 'ปิดเสียงอยู่ แสดงซับแทน' : 'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน';
-    talking(i, true);
-    setTimeout(done, est);
-  }
+  if (r.lines[k + 1] && ttsOK()) ttsFetch(r.lines[k + 1].text).catch(() => {});
+  speakLine(text, est, () => token === player.token, {
+    start: () => talking(i, true),
+    end: () => { talking(i, false); setTimeout(() => { if (token === player.token) anchorPlay(i, k + 1); }, 380); },
+    mode: m => { const t = MODE_NOTE[m]; note.hidden = !t; note.textContent = t || ''; }
+  });
 }
-function anchorStop(){ player.token++; player.running = false; if (voice.supported) speechSynthesis.cancel(); talking(player.reel, false); }
+function anchorStop(){ player.token++; player.running = false; stopSpeech(); talking(player.reel, false); }
 function anchorReset(i){
   const el = anchorEl(i); if (!el) return;
   anchorShow(i, 0, 0);
@@ -1309,7 +1362,7 @@ function bindReels(){
   player.io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) startReel(+e.target.dataset.reel); }), {root:box, threshold:0.6});
   box.querySelectorAll('.reel').forEach(r => player.io.observe(r));
   box.querySelectorAll('[data-tapstart]').forEach(b => b.addEventListener('click', () => {
-    const i = +b.dataset.tapstart; voice.unlocked = true; b.hidden = true;
+    const i = +b.dataset.tapstart; voice.unlocked = true; unlockAudio(); b.hidden = true;
     if (voice.supported){ try { speechSynthesis.cancel(); speechSynthesis.resume(); } catch(e){} }
     const from = b.dataset.resume ? +b.dataset.resume : 0; delete b.dataset.resume;
     player.reel = i; anchorPlay(i, from);
@@ -2053,6 +2106,130 @@ function fundsOfStockHTML(ipo){
 }
 
 
+/* ---------- stock analysis: written by Claude from each card's data; read aloud by Owly ---------- */
+const ANALYSIS = {
+ "cpall": [
+  "CPALL เจ้าของ 7-Eleven ปี 2568 มีรายได้รวมทะลุหนึ่งล้านล้านบาทเป็นครั้งแรก กำไร 28,206 ล้านบาท โต 11.3 เปอร์เซ็นต์ครับ",
+  "ปี 2567 กำไรโต 37.1 เปอร์เซ็นต์ ปีนี้โตต่อ แปลว่าโตมาสองปีติด ปันผลเพิ่มจาก 1.35 เป็น 1.65 บาท คิดเป็น 53 เปอร์เซ็นต์ของกำไร",
+  "สิ่งที่การ์ดยังไม่ได้ตรวจคือเรื่องหนี้และความผันผวนของราคา บริษัทถือหุ้นใหญ่ใน CPAXT ที่ทำแม็คโครกับโลตัสด้วย จึงควรดูงบเรื่องหนี้ประกอบครับ",
+  "ลองถามตัวเองว่า กำไรที่โตมาจากร้านเดิมหรือจากการขยายธุรกิจ และรับความผันผวนของราคาได้แค่ไหนครับ"
+ ],
+ "advanc": [
+  "ADVANC เจ้าของ AIS ปี 2568 กำไรสุทธิ 47,886 ล้านบาท โต 37 เปอร์เซ็นต์ รายได้รวม 226,264 ล้านบาท โต 5.9 เปอร์เซ็นต์ครับ",
+  "รายได้บริการหลักโต 6.7 เปอร์เซ็นต์ สูงกว่าเป้าที่บริษัทปรับขึ้นไว้ 4 ถึง 6 เปอร์เซ็นต์",
+  "ข้อควรระวังคือปันผล 34.30 บาท มาจากปันผลปกติ 15.30 บาท บวกปันผลพิเศษ 19 บาท ปีต่อไปอาจได้แค่ระดับปกติ",
+  "ถ้าจะดูผลตอบแทนจากปันผล ให้ใช้ปันผลปกติเป็นฐานเปรียบเทียบ ไม่ใช่ตัวเลขรวมครับ"
+ ],
+ "cbg": [
+  "CBG ผู้ผลิตคาราบาวแดง ปี 2568 ยอดขาย 22,042 ล้านบาท โต 5 เปอร์เซ็นต์ แต่กำไรประมาณ 2,320 ล้านบาท ลดลง 18.4 เปอร์เซ็นต์ครับ",
+  "ยอดขายแบรนด์ตัวเองลดลง 3 เปอร์เซ็นต์ เพราะส่งออกน้อยลง โดยเฉพาะกัมพูชา และไตรมาสสุดท้ายบันทึกขาดทุนจากการด้อยค่าเงินลงทุนต่างประเทศ เหลือกำไร 142 ล้านบาท",
+  "ด้านดี ส่วนแบ่งตลาดเครื่องดื่มชูกำลังในประเทศเพิ่มเป็น 28.2 เปอร์เซ็นต์ หนี้สินต่อทุนแค่ 0.35 เท่า และปันผลรวม 1.30 บาท",
+  "แต่ราคาเหวี่ยงแรง ช่วงหนึ่งปีถึงสิงหาคม 2568 สูงสุด 82 บาท ต่ำสุด 46.50 บาท จุดต่ำสุดห่างจากจุดสูงสุดราว 43 เปอร์เซ็นต์ครับ"
+ ],
+ "or": [
+  "OR เจ้าของปั๊ม PTT Station และ Café Amazon ปี 2568 รายได้ 658,723 ล้านบาท ลดลง 9 เปอร์เซ็นต์ ตามราคาน้ำมันครับ",
+  "แต่กำไรโตเกือบ 48 เปอร์เซ็นต์ เป็น 11,304 ล้านบาท จากการคุมต้นทุน EBITDA โต 15.2 เปอร์เซ็นต์ เป็น 20,357 ล้านบาท",
+  "Café Amazon ขายรวม 429 ล้านแก้ว และปันผลงวดหลัง 0.30 บาท",
+  "รายได้ผันตามราคาน้ำมัน จึงควรดูกำไรควบคู่กันไป และการ์ดนี้ยังไม่ได้ตรวจเรื่องหนี้ ราคา และความผันผวนครับ"
+ ],
+ "kbank": [
+  "KBANK เจ้าของแอป K PLUS ปี 2568 กำไร 49,565 ล้านบาท ลดลงเล็กน้อย 0.8 เปอร์เซ็นต์ จากดอกเบี้ยขาลงและสินเชื่อโตช้าครับ",
+  "ค่าธรรมเนียมและประกันช่วยพยุงรายได้ไว้ หนี้เสีย 3.20 เปอร์เซ็นต์ กันสำรองไว้ 162.75 เปอร์เซ็นต์ของหนี้เสีย เงินกองทุนตามเกณฑ์ Basel III อยู่ที่ 20.35 เปอร์เซ็นต์",
+  "ปันผล 14 บาท เป็นปันผลปกติ 12 บาท บวกปันผลพิเศษ 2 บาทแบบครั้งเดียว ปีหน้าอาจได้น้อยกว่าตัวเลขรวม",
+  "ถ้าคิดผลตอบแทนจากปันผล ควรใช้ 12 บาทเป็นฐาน และติดตามว่ากำไรจะกลับมาโตเมื่อสินเชื่อฟื้นหรือไม่ครับ"
+ ],
+ "true": [
+  "TRUE หลังควบรวมกับ dtac ปี 2568 กลับมามีกำไร 9,200 ล้านบาท และจ่ายปันผลครั้งแรกหลังควบรวม EBITDA 105,026 ล้านบาท โต 7 เปอร์เซ็นต์ครับ",
+  "ผู้ใช้เน็ตบ้านโต 2 เปอร์เซ็นต์ และมีผู้ใช้ 5G ราว 15.5 ล้านราย",
+  "แต่ปันผลรวม 10,700 ล้านบาท คิดเป็น 116 เปอร์เซ็นต์ของกำไรตามงบ คือจ่ายเกินกำไร ถ้าเป็นแบบนี้ต่อเนื่อง ต้องดูว่าเงินมาจากไหน",
+  "กำไรตามงบยังต่ำกว่ากำไรปกติมาก เพราะมีรายการพิเศษก้อนใหญ่ กำไรปกติราว 19,000 ล้านบาท เป็นการคำนวณของ Owly เอง ไม่ใช่ตัวเลขที่บริษัทประกาศครับ"
+ ],
+ "crc": [
+  "CRC เจ้าของเซ็นทรัล โรบินสัน และ Tops ปี 2568 รายได้ 253,165 ล้านบาท โต 4 เปอร์เซ็นต์ แต่กำไร 7,432 ล้านบาท ลดลง 6 เปอร์เซ็นต์ครับ",
+  "สาเหตุมาจากกำลังซื้อในประเทศที่ชะลอ แต่ไตรมาส 4 กำไร 2,729 ล้านบาท กลับมาโต 17 เปอร์เซ็นต์",
+  "บริษัทขยาย GO! และแพลตฟอร์ม The 1 ในเวียดนามต่อเนื่อง และเสนอปันผล 1.11 บาท เพิ่มจาก 0.60 บาทปีก่อน",
+  "ควรดูงบไตรมาสถัดไปประกอบ ว่ากำไรที่กลับมาโตในไตรมาสล่าสุดเป็นแนวโน้มต่อเนื่องหรือไม่ครับ"
+ ],
+ "mint": [
+  "MINT เจ้าของ The Pizza Company และโรงแรมไมเนอร์ ปี 2568 กำไรจากการดำเนินงานโต 16 เปอร์เซ็นต์ เป็น 9,700 ล้านบาทครับ",
+  "ไตรมาส 4 กำไรจากการดำเนินงานโต 21 เปอร์เซ็นต์ เป็น 3,472 ล้านบาท และหนี้สินสุทธิต่อทุนลดลงจาก 0.90 เป็น 0.86 เท่า",
+  "แต่หนี้ยังค่อนข้างสูง หนี้สินสุทธิต่อ EBITDA อยู่ที่ 4.6 เท่า คือถ้าเอา EBITDA ทั้งหมดมาใช้หนี้ ต้องใช้ราว 4.6 ปี",
+  "จึงควรดูว่าหนี้จะลดลงต่อเนื่องหรือไม่ ควบคู่กับกำไรที่โตขึ้นครับ"
+ ],
+ "m": [
+  "M เจ้าของร้าน MK สุกี้ และยาโยอิ ปี 2568 รายได้ 15,421 ล้านบาท ลดลง 2.5 เปอร์เซ็นต์ กำไรสุทธิ 838 ล้านบาท ลดลงจากปีก่อนครับ",
+  "เหตุผลคือกำลังซื้อชะลอ การแข่งขันรุนแรง และต้นทุนสูงขึ้น",
+  "แต่ไตรมาส 4 ยอดขายโต 5.6 เปอร์เซ็นต์ ยอดขายสาขาเดิมโต 1.3 เปอร์เซ็นต์ และยังจ่ายปันผลทั้งปี 1 บาท",
+  "ควรติดตามว่ายอดขายที่กลับมาโตในไตรมาสล่าสุดจะต่อเนื่องหรือไม่ ข่าวที่เรามีไม่ได้บอกกำไรปี 2567 เราจึงไม่ได้เทียบเป็นเปอร์เซ็นต์ครับ"
+ ],
+ "osp": [
+  "OSP เจ้าของ M-150 และ C-vitt ปี 2568 กำไรตามงบ 3,667 ล้านบาท โต 124 เปอร์เซ็นต์ ฟังดูแรงมากครับ",
+  "แต่กำไรปกติ 3,503 ล้านบาท โตแค่ 15.3 เปอร์เซ็นต์ ส่วนต่างมาจากรายการพิเศษ เช่น การปรับโครงสร้างธุรกิจในเมียนมา",
+  "อย่าเอาตัวเลข 124 เปอร์เซ็นต์ไปคาดการณ์ปีหน้า ด้านดี อัตรากำไรขั้นต้นเพิ่มเป็น 40.1 เปอร์เซ็นต์ และปันผลครึ่งปีแรก 0.40 บาท",
+  "ราคาช่วงหนึ่งปีถึงกรกฎาคม 2568 สูงสุด 24.30 บาท ต่ำสุด 12.90 บาท จุดต่ำห่างจากจุดสูงราว 47 เปอร์เซ็นต์ เหวี่ยงแรงครับ"
+ ],
+ "com7": [
+  "COM7 เจ้าของร้าน BaNANA และ Studio7 ปี 2568 กำไร 4,060 ล้านบาท โต 23 เปอร์เซ็นต์ สูงสุดตั้งแต่ก่อตั้งครับ",
+  "รายได้ขายและบริการโต 10 เปอร์เซ็นต์ และบริษัทกำลังขยายไปธุรกิจอื่นเพื่อลดการพึ่งร้านไอที",
+  "เป้าปี 2569 คือรายได้โต 10 เปอร์เซ็นต์ กำไรโต 10 ถึง 15 เปอร์เซ็นต์ เป็นเป้าของบริษัท ไม่ใช่คำรับประกัน",
+  "การ์ดนี้ยังไม่พบเรื่องที่ต้องระวังจากข้อมูลที่มี ควรอ่านการ์ดเต็มประกอบก่อนตัดสินใจครับ"
+ ],
+ "major": [
+  "MAJOR เจ้าของโรงหนัง Major Cineplex ปี 2568 กำไร 631 ล้านบาท ลดลง 15 เปอร์เซ็นต์ จาก 744 ล้านบาทครับ",
+  "ส่วนหนึ่งเพราะปีก่อนมีสินทรัพย์ทางภาษี 147 ล้านบาทช่วยดันกำไร และรายได้โฆษณาลดลงกว่า 19 เปอร์เซ็นต์",
+  "ด้านดี ไตรมาส 4 กำไร 347 ล้านบาท โต 8 เปอร์เซ็นต์ ไตรมาส 3 กำไรโต 151 เปอร์เซ็นต์ จากหนังฟอร์มยักษ์ และปันผลงวดหลัง 0.25 บาท",
+  "แต่หนี้สินต่อทุน 1.59 เท่า คือมีหนี้มากกว่าเงินทุนผู้ถือหุ้น และรายได้ขึ้นกับว่าปีนั้นมีหนังดังแค่ไหนครับ"
+ ]
+};
+const ANA_END = 'ทั้งหมดนี้เป็นข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำให้ซื้อหรือขาย ลองอ่านการ์ดเต็มก่อนตัดสินใจนะครับ';
+function anaLines(ipo){
+  const A = ANALYSIS[ipo.id]; if (!A) return [];
+  const L = A.slice(), q = LIVE.th[ipo.ticker];
+  if (q) L.push(`ราคาในข้อมูลของเรา ณ ${LIVE.asof} อยู่ที่ ${q.l} บาท ${q.p < 0 ? 'ลดลง' : q.p > 0 ? 'เพิ่มขึ้น' : 'ทรงตัว'}${q.p ? ' ' + Math.abs(q.p) + ' เปอร์เซ็นต์' : ''} พีอี ${q.pe} เท่า อัตราปันผลย้อนหลัง ${q.dy} เปอร์เซ็นต์ครับ`);
+  L.push(ANA_END);
+  return L;
+}
+const ana = {id:null, token:0, running:false};
+const anaEl = id => document.getElementById('ana-' + id);
+function anaUI(id, on, k){
+  const el = anaEl(id); if (!el) return;
+  const btn = el.querySelector('[data-ana]');
+  btn.setAttribute('aria-pressed', String(on));
+  btn.querySelector('span').textContent = on ? 'หยุดฟัง' : (k === 'end' ? 'ฟังอีกครั้ง' : 'ฟังบทวิเคราะห์');
+  btn.querySelector('.pl').hidden = on; btn.querySelector('.ps').hidden = !on;
+  el.querySelectorAll('.analines li').forEach((li, n) => { li.classList.toggle('on', on && n === k); li.classList.toggle('done', on && n < k); if (!on) li.classList.remove('on', 'done'); });
+  const w = el.querySelector('.anaowl'); if (w && !on) w.classList.remove('talking');
+}
+function anaStop(){
+  if (!ana.running && !ana.id) return;
+  const id = ana.id; ana.token++; ana.running = false; stopSpeech(); if (id) anaUI(id, false);
+}
+function anaPlay(id, k){
+  const el = anaEl(id), ipo = IPOS[id], L = ipo ? anaLines(ipo) : [];
+  if (!el || k >= L.length){ ana.running = false; anaUI(id, false, 'end'); return; }
+  if (player.running) anchorStop();
+  const token = ++ana.token; ana.id = id; ana.running = true;
+  anaUI(id, true, k);
+  const li = el.querySelectorAll('.analines li')[k];
+  if (li) li.scrollIntoView({block:'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  const text = L[k], est = Math.max(2200, text.length * 85), note = el.querySelector('.anan'), w = el.querySelector('.anaowl');
+  if (L[k + 1] && ttsOK()) ttsFetch(L[k + 1]).catch(() => {});
+  speakLine(text, est, () => token === ana.token, {
+    start: () => w.classList.add('talking'),
+    end: () => { w.classList.remove('talking'); setTimeout(() => { if (token === ana.token) anaPlay(id, k + 1); }, 300); },
+    mode: m => { const t = MODE_NOTE[m]; note.hidden = !t; note.textContent = t || ''; }
+  });
+}
+function anaCard(ipo){
+  const L = anaLines(ipo); if (!L.length) return '';
+  return `<div class="card ana" id="ana-${ipo.id}">
+    <div class="anahd"><div class="anaowl mood-neutral" aria-hidden="true">${owlSVG()}</div><div><b>บทวิเคราะห์โดยน้องฮูก</b><small>เขียนโดย AI จากข้อมูลในการ์ดนี้ ไม่ใช่คำแนะนำการลงทุน</small></div></div>
+    <button class="btn anaplay" type="button" data-ana="${ipo.id}" aria-pressed="false"><svg class="pl" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v12l11-6z" fill="currentColor"/></svg><svg class="ps" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" hidden><path d="M3 2h4v12H3zM9 2h4v12H9z" fill="currentColor"/></svg><span>ฟังบทวิเคราะห์</span></button>
+    <p class="anan" role="status" hidden></p>
+    <ol class="analines">${L.map(t => `<li>${esc(t)}</li>`).join('')}</ol>
+  </div>`;
+}
+
 function ipoScreen(ipo){
   const tabs = [['summary','สรุป'],['fin','งบ'],['news','ข่าว'],['ai','ถาม AI']];
   return `
@@ -2076,6 +2253,7 @@ const SMALL_CHEV = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden=
 function summary(ipo){
   const n = foundCount(ipo), v = Object.values(ipo.checks), nc = v.filter(x => x === 'crit').length, na = v.filter(x => x === 'na').length;
   return `
+    ${anaCard(ipo)}
     <div class="card about"><span class="chip c-info brandtag">บริษัทนี้ทำอะไร</span><p>${esc(ipo.what)}</p>
       <ul class="money">${ipo.how.map(([a, b]) => `<li><i></i><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join('')}</ul></div>
     <div class="card">
@@ -2403,7 +2581,7 @@ function bindDock(){
 /* ================= render ================= */
 function scrollBottom(){ const a = document.getElementById('app'); a.scrollTop = a.scrollHeight; }
 function rerender(keepScroll){
-  stopPlayer();
+  stopPlayer(); anaStop();
   const app = document.getElementById('app'), y = app.scrollTop;
   app.classList.remove('slide-l', 'slide-r');
   app.innerHTML = state.screen === 'home' ? home() : state.screen === 'reels' ? reelsScreen() : state.screen === 'buy' ? buyScreen(IPOS[state.ipo]) : state.screen === 'funds' ? fundsScreen() : state.screen === 'fund' ? fundScreen(FUNDS[state.fund]) : state.screen === 'market' ? marketScreen() : state.screen === 'profile' ? profileScreen() : ipoScreen(IPOS[state.ipo]);
@@ -2416,7 +2594,7 @@ function rerender(keepScroll){
   if (state.screen === 'reels') bindReels();
   if (state.screen === 'buy') bindBuy();
 }
-function go(next){ Object.assign(state, next); rerender(); }
+function go(next){ anaStop(); Object.assign(state, next); rerender(); }
 function bind(){
   const app = document.getElementById('app');
   app.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => go({screen:'ipo', ipo:b.dataset.open, tab:'summary'})));
@@ -2469,6 +2647,7 @@ function bindMore(app){
   on('[data-gofunds]', b => { const v = b.dataset.gofunds; go(v === 'watch' ? {screen:'funds', ft:'watch'} : {screen:'funds', ft:'ipo', fv:v}); });
   on('[data-todo]', b => toast(b.dataset.todo + ' ยังไม่เปิดใช้ในเดโมนี้'));
   on('[data-askai]', () => openSheet());
+  app.querySelectorAll('[data-ana]').forEach(b => b.addEventListener('click', () => { if (ana.running && ana.id === b.dataset.ana){ anaStop(); return; } anaStop(); voice.unlocked = true; unlockAudio(); anaPlay(b.dataset.ana, 0); }));
   on('[data-about]', () => { const n = document.getElementById('aboutbox'); n.hidden = !n.hidden; });
   on('[data-theme-set]', b => { setTheme(b.dataset.themeSet); rerender(true); });
   on('[data-pref]', b => { const p = getPrefs(); p[b.dataset.pref] = !p[b.dataset.pref]; try { localStorage.setItem('owly.prefs', JSON.stringify(p)); } catch(e){} rerender(true); toast(p[b.dataset.pref] ? 'เปิดการเตือนแล้ว (เดโมยังไม่ส่งแจ้งเตือนจริง)' : 'ปิดการเตือนแล้ว'); });
