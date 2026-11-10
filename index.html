@@ -499,7 +499,7 @@ textarea{min-height:80px;resize:vertical}
 .fund-tag{font-size:13px;color:var(--ink-2)}
 .fund-st{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12.5px;color:var(--muted)}
 .chip.c-off{background:var(--track);color:var(--muted)}
-.fseg .track{grid-template-columns:1.3fr 1fr 1fr 1.1fr}
+.fseg .track{grid-template-columns:1fr 1fr}
 .fseg button{font-size:12.5px;padding:0 6px;white-space:nowrap}
 .ftintro{margin:2px 20px 0;font-size:13.5px;line-height:1.55;color:var(--ink-2)}
 .ftintro.warn{color:var(--warn);font-weight:600}
@@ -532,10 +532,12 @@ textarea{min-height:80px;resize:vertical}
 
 /* ===== market-style rows, header, market, profile ===== */
 .appbar{justify-content:space-between}
-.appbar .brand{display:flex;align-items:center;gap:6px;flex:none}
+.topupbtn{flex:none;display:flex;align-items:center;gap:6px;min-height:48px;padding:0 16px 0 12px;border:0;border-radius:999px;background:#ECCB88;color:#1A1527;font:inherit;font-weight:700;font-size:14.5px;cursor:pointer}
+.topupbtn:hover{background:#F4DDAE}
+.appbar .brand{display:none}
 .appbar .brand .mark{width:30px;height:30px;padding:2px}
 .appbar .brand .wordmark{font-size:20px}
-.profbtn{display:flex;align-items:center;gap:10px;min-width:0;min-height:48px;padding:5px 12px 5px 5px;border-radius:999px;border:1px solid rgba(247,244,238,.24);background:rgba(247,244,238,.1);color:#FFFFFF;font:inherit;text-align:left;cursor:pointer}
+.profbtn{flex:1 1 auto;max-width:230px;display:flex;align-items:center;gap:10px;min-width:0;min-height:48px;padding:5px 12px 5px 5px;border-radius:999px;border:1px solid rgba(247,244,238,.24);background:rgba(247,244,238,.1);color:#FFFFFF;font:inherit;text-align:left;cursor:pointer}
 .profbtn:hover{background:rgba(247,244,238,.18)}
 .profbtn .chev{flex:none;color:#D8D3E3}
 .av{flex:none;width:38px;height:38px;border-radius:50%;background:#ECCB88;color:#1A1527;display:grid;place-items:center}
@@ -660,6 +662,45 @@ button.mrow:hover{background:var(--track)}
 .promo .fundico{width:56px;height:56px;border-radius:50%;background:#F7F4EE;color:#313D57;display:grid;place-items:center}
 .promo .chev{color:#ECCB88}
 
+
+/* ===== UX pass 2 ===== */
+.profbtn{max-width:218px;padding-right:10px}
+.who b,.who small{overflow:hidden;text-overflow:ellipsis}
+.who small{font-size:11.5px}
+.who b{font-size:16px;line-height:1.3}
+.seg button{min-height:44px;font-size:13.5px}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--paper);box-shadow:none}
+.cats button,.brands button{min-height:40px}
+.sgn{font-size:11.5px}
+.rk small{font-size:11.5px}
+small.muted{font-size:11.5px}
+.fsrc a,.fnote a{display:inline-block;padding:7px 0}
+.srcs a{min-height:32px;padding:4px 10px}
+.fchip{min-height:40px;align-items:center}
+.suggest button{min-height:40px}
+.quick button{min-height:40px}
+.textbtn{min-height:32px}
+.sr-id .sub{align-items:flex-start}
+.sr-id .sub .flag{margin-top:3px}
+.sr-id .sub em{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.35}
+.srow:focus-visible,.mrow:focus-visible{outline-offset:-3px}
+.amtinput input::-webkit-outer-spin-button,.amtinput input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.amtinput input{-moz-appearance:textfield;appearance:textfield}
+.goldcard .num.down{color:#FF9F95}
+@media (max-width:380px){
+  .srow{grid-template-columns:minmax(0,1fr) 68px 82px 12px;gap:6px;padding-left:12px;padding-right:12px}
+  .srow.fr{grid-template-columns:minmax(0,1fr) 34px minmax(80px,auto);padding-right:48px}
+  .hero h1{font-size:24px;max-width:calc(100% - 96px)}
+  .idxbig .v{font-size:34px}
+  .gprice b{font-size:23px}
+  .wallet .bal{font-size:34px}
+  .profbtn{max-width:190px}
+}
+.kindhint{margin:2px 20px 6px;font-size:12.5px;color:var(--muted)}
+.kinds{padding-bottom:4px;flex-wrap:wrap;overflow:visible}
+.kinds button[aria-pressed="true"]::before{content:'✓';margin-right:6px;font-weight:700}
+.kinds button .num{font-size:12px;opacity:.8}
+section[aria-label] .ftintro{margin-top:0}
 </style>
 </head>
 <body>
@@ -1136,7 +1177,7 @@ function anchorPlay(i, k){
     setTimeout(() => { if (token === player.token && !started){ talking(i, true); setTimeout(done, est); } }, 1500);
   } else {
     note.hidden = false;
-    note.textContent = voice.muted ? 'ปิดเสียง แสดงซับแทน' : 'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน';
+    note.textContent = voice.muted ? 'ปิดเสียงอยู่ แสดงซับแทน' : 'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน';
     talking(i, true);
     setTimeout(done, est);
   }
@@ -1528,7 +1569,7 @@ Object.assign(FUNDS, {
 });
 Object.entries(FUNDS).forEach(([k, f]) => { f.id = k; f.srcs = f.srcs || [[f.src, f.srcName]]; });
 
-const TYPES = [['general','กองทุนทั่วไป'],['ipo','IPO ใหม่'],['term','Term Fund'],['watch','ที่ติดตาม']];
+const TYPES = [['ipo','IPO'],['watch','ที่ติดตาม']];
 const TYPE_NAME = {general:'กองทุนทั่วไป', ipo:'IPO (กองทุนเปิดใหม่)', term:'Term Fund'};
 const TH_M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const fmtD = iso => `${+iso.slice(8, 10)} ${TH_M[+iso.slice(5, 7) - 1]} ${(+iso.slice(0, 4) + 543) % 100}`;
@@ -1550,7 +1591,7 @@ const RISK_TXT = {3:'ต่ำกว่ากองหุ้น กองตร�
 /* watchlist: kept on this device only */
 function loadWatch(){ try { const a = JSON.parse(localStorage.getItem('owly.watch') || '[]'); return Array.isArray(a) ? a.filter(id => FUNDS[id]) : []; } catch(e){ return []; } }
 function saveWatch(){ try { localStorage.setItem('owly.watch', JSON.stringify(state.watch)); } catch(e){} }
-state.watch = loadWatch(); state.ft = 'general';
+state.watch = loadWatch(); state.ft = 'ipo'; state.fk = ['ipo', 'term', 'general'];
 function toggleWatch(id){
   const i = state.watch.indexOf(id);
   if (i < 0) state.watch.push(id); else state.watch.splice(i, 1);
@@ -1653,9 +1694,9 @@ function appbar(){
   return `<header class="appbar">
     <button class="profbtn" type="button" data-profile aria-label="เปิดโปรไฟล์ เติมเงิน และตั้งค่า เงินพร้อมลงทุน ${nf(w.bal)} บาท">
       <span class="av" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span>
-      <span class="who"><small>ผู้ใช้เดโม · โปรไฟล์</small><b class="num">฿ ${nf(w.bal)} <em>พร้อมลงทุน</em></b></span>${CHEV}
+      <span class="who"><small>เงินพร้อมลงทุน</small><b class="num">฿ ${nf(w.bal)}</b></span>${CHEV}
     </button>
-    <span class="brand"><img class="mark" src="${OWL}" alt="" width="30" height="30"><span class="wordmark">Owl<i>y</i></span></span>
+    <button class="topupbtn" type="button" data-topup aria-label="เติมเงิน"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>เติมเงิน</button>
   </header>`;
 }
 
@@ -1724,11 +1765,11 @@ function marketScreen(){
   } else if (mt === 'bond'){
     const pts = LIVE.curve, W = 340, H = 150, px = i => 14 + i * (W - 28) / (pts.length - 1), mn = 0.6, mx = 3.4, py = v => 12 + (H - 34) * (1 - (v - mn) / (mx - mn));
     const path = pts.map(([, v], i) => (i ? 'L' : 'M') + px(i).toFixed(1) + ' ' + py(v).toFixed(1)).join(' ');
-    body = `<div class="card ycard"><div class="m">เส้นผลตอบแทนพันธบัตรรัฐบาลไทย (% ต่อปี) · ${LIVE.bondAsof}</div>
+    body = `<div class="card ycard"><div class="m">ผลตอบแทนพันธบัตรไทย (% ต่อปี) · ${LIVE.bondAsof}</div>
         <svg viewBox="0 0 ${W} ${H + 6}" width="100%" role="img" aria-label="ผลตอบแทนพันธบัตรไทย ตั้งแต่ ${nf(pts[0][1])} เปอร์เซ็นต์ที่อายุ 3 เดือน ถึง ${nf(pts[pts.length - 1][1])} เปอร์เซ็นต์ที่อายุ 30 ปี">
-          ${[1, 2, 3].map(v => `<line x1="10" x2="${W - 8}" y1="${py(v)}" y2="${py(v)}" stroke="var(--line)"/><text x="12" y="${py(v) - 3}" font-size="10" text-anchor="start" style="fill:var(--muted)">${v}%</text>`).join('')}
+          ${[1, 2, 3].map(v => `<line x1="10" x2="${W - 8}" y1="${py(v)}" y2="${py(v)}" stroke="var(--line)"/><text x="12" y="${py(v) - 3}" font-size="11" text-anchor="start" style="fill:var(--muted)">${v}%</text>`).join('')}
           <path d="${path} L${px(pts.length - 1)} ${H - 22} L${px(0)} ${H - 22}Z" fill="var(--lens-soft)" opacity=".7"/><path d="${path}" fill="none" stroke="var(--lens)" stroke-width="2.4" stroke-linejoin="round"/>
-          ${pts.map(([l, v], i) => `<circle cx="${px(i)}" cy="${py(v)}" r="3.2" fill="var(--lens)"/><text x="${px(i)}" y="${H - 6}" font-size="10" text-anchor="middle" style="fill:var(--muted)">${l}</text>`).join('')}
+          ${pts.map(([l, v], i) => `<circle cx="${px(i)}" cy="${py(v)}" r="3.2" fill="var(--lens)"/><text x="${px(i)}" y="${H - 6}" font-size="11" text-anchor="middle" style="fill:var(--muted)">${l}</text>`).join('')}
         </svg>
         <p class="small muted" style="margin:6px 0 0">ถือนานขึ้น ผลตอบแทนต่อปีสูงขึ้น: 1 ปี <b class="num">${nf(pts[1][1])}%</b> · 5 ปี <b class="num">${nf(pts[4][1])}%</b> · 10 ปี <b class="num">${nf(pts[5][1])}%</b></p></div>
       <div class="sec-title"><h2>รุ่นอ้างอิง</h2><em>yield % · เปลี่ยนจากเมื่อวาน (bps)</em></div>
@@ -1772,9 +1813,10 @@ const IC = {
   info:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9v5M10 6.2v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   reset:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10a6 6 0 101.8-4.3M4 3.5v3.2h3.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
-const TOPUP_AMTS = [100, 500, 1000, 2000, 5000];
+const TOPUP_AMTS = [500, 1000, 2000, 5000];
 const TOPUP_WAYS = [['พร้อมเพย์', 'โอนผ่านแอปธนาคาร'], ['บัตรเดบิต', 'ตัดผ่านบัตร'], ['โอนเข้าบัญชีโบรกเกอร์', 'โอนเงินด้วยตัวเอง']];
 function mrow(ic, title, sub, right, attr){ return `<button type="button" class="mrow" ${attr}><span class="mic">${IC[ic]}</span><span class="mtx"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>${right || CHEV}</button>`; }
+const amtMsg = v => !(v >= 20) ? 'เติมอย่างน้อย 20 บาท' : v > 50000 ? 'เติมได้ไม่เกิน 50,000 บาทต่อครั้ง' : 'เติมได้ครั้งละ 20 ถึง 50,000 บาท';
 function profileScreen(){
   const w = walletState(), pf = state.pf || 'main', prefs = getPrefs();
   const back = `<div class="topbar"><button class="back" type="button" data-pfback aria-label="${pf === 'main' ? 'ปิดโปรไฟล์' : 'กลับไปโปรไฟล์'}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><b class="pftitle">${{main:'โปรไฟล์', topup:'เติมเงิน', done:'เติมเงินแล้ว', history:'ประวัติธุรกรรม'}[pf]}</b><span class="chip sim">บัญชีทดลอง</span></div>`;
@@ -1782,9 +1824,9 @@ function profileScreen(){
     const amt = state.amt || 1000, way = state.way ?? 0, bad = !(amt >= 20 && amt <= 50000);
     return back + `<div class="pfwrap">
       <div class="card"><label for="amt"><b>จำนวนเงินที่เติม</b></label>
-        <div class="amtinput"><span>฿</span><input id="amt" type="number" inputmode="numeric" min="20" max="50000" step="1" value="${amt}" aria-describedby="amthint"></div>
+        <div class="amtinput"><span>฿</span><input id="amt" type="number" inputmode="numeric" enterkeyhint="done" min="20" max="50000" step="1" value="${amt}" aria-describedby="amthint"></div>
         <div class="quick">${TOPUP_AMTS.map(a => `<button type="button" data-amt="${a}" aria-pressed="${amt === a}">${a.toLocaleString('en-US')}</button>`).join('')}</div>
-        <p class="hintline" id="amthint" ${bad ? 'style="color:var(--crit)"' : ''}>${bad ? 'เติมได้ครั้งละ 20 ถึง 50,000 บาท' : 'เติมได้ครั้งละ 20 ถึง 50,000 บาท'}</p></div>
+        <p class="hintline" id="amthint" ${bad ? 'style="color:var(--crit)" role="alert"' : ''}>${amtMsg(amt)}</p></div>
       <div class="card"><b>ช่องทางเติมเงิน</b><div class="ways" role="radiogroup" aria-label="ช่องทางเติมเงิน">${TOPUP_WAYS.map(([t, s], i) => `<button type="button" class="way" role="radio" aria-checked="${way === i}" data-way="${i}"><span><b>${t}</b><small>${s}</small></span><i></i></button>`).join('')}</div></div>
       <div class="card"><div class="metric"><span>ยอดหลังเติม</span><b class="num" id="afterbal">฿ ${nf(w.bal + (bad ? 0 : amt))}</b></div><div class="metric"><span>ค่าธรรมเนียม</span><b class="num">฿ 0.00</b></div></div>
       <button class="btn confirm" type="button" id="dotopup" ${bad ? 'disabled' : ''}>เติมเงินจำลอง</button>
@@ -1891,16 +1933,41 @@ const TYPE_INTRO = {
   ipo:'IPO กองทุน คือกองทุนใหม่ที่เปิดขายหน่วยลงทุนครั้งแรกในช่วงสั้นๆ ซื้อได้เฉพาะช่วงที่ บลจ. กำหนด หลังปิดขายกองถึงเริ่มลงทุนจริง',
   term:'Term Fund คือกองทุนที่มีอายุกำหนด เช่น 3 หรือ 6 เดือน ซื้อได้เฉพาะช่วงเสนอขายแล้วถือจนครบกำหนด ขายคืนก่อนอาจทำไม่ได้หรือได้เงินไม่เต็ม ส่วนมากลงทุนตราสารหนี้ ไม่ได้รับประกันผลตอบแทน'
 };
+const KINDS = [['ipo','IPO ใหม่'],['term','Term Fund'],['general','กองทุนทั่วไป']];
+const KIND_HEAD = {ipo:'กองทุนเปิดใหม่ (IPO)', term:'Term Fund', general:'กองทุนดัชนีหุ้นไทย'};
+function fundsOfKind(k, filt){
+  const all = Object.keys(FUNDS).filter(id => FUNDS[id].type === k);
+  if (k === 'general') return all.filter(id => filt === 'all' || FUNDS[id].index === filt);
+  return all.sort((a, b) => { const sa = fundStatus(FUNDS[a]), sb = fundStatus(FUNDS[b]); return (sa.s === 'closed') - (sb.s === 'closed') || FUNDS[a].to.localeCompare(FUNDS[b].to); });
+}
+const openCount = k => fundsOfKind(k, 'all').filter(i => FUNDS[i].type === 'general' || fundStatus(FUNDS[i]).s !== 'closed').length;
 function fundsScreen(){
-  const ft = state.ft || 'general', filt = state.ff || 'all', all = Object.keys(FUNDS);
-  let ids;
-  if (ft === 'watch') ids = state.watch.slice();
-  else if (ft === 'general') ids = all.filter(id => FUNDS[id].type === 'general' && (filt === 'all' || FUNDS[id].index === filt));
-  else ids = all.filter(id => FUNDS[id].type === ft).sort((a, b) => { const sa = fundStatus(FUNDS[a]), sb = fundStatus(FUNDS[b]); return (sa.s === 'closed') - (sb.s === 'closed') || FUNDS[a].to.localeCompare(FUNDS[b].to); });
-  const n = id => all.filter(i => FUNDS[i].type === id && fundStatus(FUNDS[i])?.s !== 'closed').length;
+  const ft = state.ft === 'watch' ? 'watch' : 'ipo', filt = state.ff || 'all';
+  const fk = (state.fk && state.fk.length ? state.fk : ['ipo', 'term', 'general']);
   const soon = state.watch.filter(id => { const s = fundStatus(FUNDS[id]); return s && s.s === 'open' && s.left <= 2; });
-  const heads = {general:['กองทุนดัชนีหุ้นไทย', ids.length + ' กองทุน'], ipo:['กองทุนเปิดใหม่ (IPO)', 'เปิดขายอยู่ ' + n('ipo') + ' กอง'], term:['Term Fund', 'เปิดขายอยู่ ' + n('term') + ' กอง'], watch:['กองทุนที่ติดตาม', ids.length + ' กอง']};
   const watchEmpty = `<div class="card watch-empty"><img src="${OWL}" alt="" width="56" height="56"><p><b>ยังไม่ได้ติดตามกองทุนไหน</b><br>กดดาวที่มุมการ์ดกองทุนเพื่อเก็บไว้ที่นี่ จะเห็นวันปิดขายของกองที่สนใจในที่เดียว</p><button class="btn" type="button" data-ft="ipo">ดูกองทุน IPO</button></div>`;
+  let body;
+  if (ft === 'watch'){
+    body = `${soon.length ? `<p class="ftintro warn">มี ${soon.length} กองที่ติดตามปิดขายภายใน 2 วัน: ${soon.map(id => FUNDS[id].code).join(', ')}</p>` : ''}
+    <div class="sec-title"><h2>กองทุนที่ติดตาม</h2><em>${state.watch.length} กอง</em></div>
+    ${state.watch.length ? `<div class="slist">${state.watch.map(fundRow).join('')}</div>` : watchEmpty}
+    <p class="disclaimer">รายการที่ติดตามเก็บไว้ในเครื่องนี้เท่านั้น ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
+  } else {
+    const order = KINDS.map(k => k[0]).filter(k => fk.includes(k));
+    body = `<p class="kindhint" id="kindhint">เลือกได้หลายประเภทพร้อมกัน</p>
+    <div class="cats kinds" role="group" aria-labelledby="kindhint">${KINDS.map(([k, l]) => `<button type="button" data-fk="${k}" aria-pressed="${fk.includes(k)}">${l} <span class="num">${openCount(k)}</span></button>`).join('')}</div>
+    ${order.map(k => {
+      const ids = fundsOfKind(k, filt);
+      return `<section aria-label="${KIND_HEAD[k]}">
+      <div class="sec-title"><h2>${KIND_HEAD[k]}</h2><em>${k === 'general' ? ids.length + ' กอง' : 'เปิดขายอยู่ ' + openCount(k) + ' กอง'}</em></div>
+      <p class="ftintro">${TYPE_INTRO[k]}</p>
+      ${k === 'general' ? `<div class="cats" role="group" aria-label="กรองตามดัชนี">${FUND_FILTERS.map(([f, l]) => `<button type="button" data-ff="${f}" aria-pressed="${filt === f}">${l}</button>`).join('')}</div>` : ''}
+      <div class="slist">${ids.map(fundRow).join('')}</div></section>`;
+    }).join('')}
+    ${fk.includes('general') ? `<div class="sec-title"><h2>ดัชนีคืออะไร</h2><em>ตะกร้าหุ้นที่ตลาดคัดให้</em></div>
+    <div class="group gloss">${Object.values(INDEXES).map(ix => `<details><summary>${ix.name} <span>${esc(ix.plain)}</span></summary><p>ตลาดหลักทรัพย์ฯ ทบทวนรายชื่อทุก 6 เดือน หุ้นในแอป Owly ที่อยู่ในดัชนีนี้ตอนนี้: ${ix.stocks.map(s => IPOS[s].ticker).join(', ')} <a href="${ix.url}">ดูรายชื่อทั้งหมดที่ SET</a></p></details>`).join('')}</div>` : ''}
+    <p class="disclaimer">${fk.includes('general') ? INDEX_ASOF + ' กองทุนดัชนีถือหุ้นตามรายชื่อในดัชนี สัดส่วนแต่ละตัวดูได้ใน Factsheet ของกองทุน ' : ''}${fk.includes('ipo') || fk.includes('term') ? 'ช่วงเสนอขายอ่านจากรายชื่อกองทุนเปิดใหม่ ณ 10 พ.ย. 2569 ดูเงื่อนไขล่าสุดที่หนังสือชี้ชวนก่อนซื้อ ' : ''}ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
+  }
   return `
     <div class="topband">
     ${appbar()}
@@ -1910,14 +1977,8 @@ function fundsScreen(){
       <img class="hero-owl" src="${OWL}" alt="" width="120" height="120">
     </section>
     </div>
-    <div class="seg fseg"><div class="track" role="tablist" aria-label="ประเภทกองทุน">${TYPES.map(([k, l]) => `<button role="tab" type="button" data-ft="${k}" aria-selected="${ft === k}">${l}${k === 'watch' && state.watch.length ? ` <span class="num">${state.watch.length}</span>` : ''}</button>`).join('')}</div></div>
-    ${ft !== 'watch' ? `<p class="ftintro">${TYPE_INTRO[ft]}</p>` : soon.length ? `<p class="ftintro warn">มี ${soon.length} กองที่ติดตามปิดขายภายใน 2 วัน: ${soon.map(id => FUNDS[id].code).join(', ')}</p>` : ''}
-    <div class="sec-title"><h2>${heads[ft][0]}</h2><em>${heads[ft][1]}</em></div>
-    ${ft === 'general' ? `<div class="cats" role="group" aria-label="กรองตามดัชนี">${FUND_FILTERS.map(([k, l]) => `<button type="button" data-ff="${k}" aria-pressed="${filt === k}">${l}</button>`).join('')}</div>` : ''}
-    ${ft === 'watch' && !ids.length ? watchEmpty : `<div class="slist">${ids.map(fundRow).join('')}</div>`}
-    ${ft === 'general' ? `<div class="sec-title"><h2>ดัชนีคืออะไร</h2><em>ตะกร้าหุ้นที่ตลาดคัดให้</em></div>
-    <div class="group gloss">${Object.values(INDEXES).map(ix => `<details><summary>${ix.name} <span>${esc(ix.plain)}</span></summary><p>ตลาดหลักทรัพย์ฯ ทบทวนรายชื่อทุก 6 เดือน หุ้นในแอป Owly ที่อยู่ในดัชนีนี้ตอนนี้: ${ix.stocks.map(s => IPOS[s].ticker).join(', ')} <a href="${ix.url}">ดูรายชื่อทั้งหมดที่ SET</a></p></details>`).join('')}</div>` : ''}
-    <p class="disclaimer">${ft === 'general' ? INDEX_ASOF + ' กองทุนดัชนีถือหุ้นตามรายชื่อในดัชนี สัดส่วนแต่ละตัวดูได้ใน Factsheet ของกองทุน' : ft === 'watch' ? 'รายการที่ติดตามเก็บไว้ในเครื่องนี้เท่านั้น' : 'ช่วงเสนอขายอ่านจากรายชื่อกองทุนเปิดใหม่ ณ 10 พ.ย. 2569 ดูเงื่อนไขล่าสุดที่หนังสือชี้ชวนก่อนซื้อ'} ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
+    <div class="seg fseg"><div class="track" role="tablist" aria-label="หมวดกองทุน">${TYPES.map(([k, l]) => `<button role="tab" type="button" data-ft="${k}" aria-selected="${ft === k}">${l}${k === 'watch' && state.watch.length ? ` <span class="num">${state.watch.length}</span>` : ''}</button>`).join('')}</div></div>
+    ${body}`;
 }
 function fundScreen(f){
   const ix = f.index ? INDEXES[f.index] : null, st = fundStatus(f), on = state.watch.includes(f.id);
@@ -2350,6 +2411,11 @@ function bind(){
   app.querySelectorAll('[data-backfunds]').forEach(b => b.addEventListener('click', () => go({screen:'funds'})));
   app.querySelectorAll('[data-watch]').forEach(b => b.addEventListener('click', () => toggleWatch(b.dataset.watch)));
   app.querySelectorAll('[data-ft]').forEach(b => b.addEventListener('click', () => { const y = app.scrollTop; state.ft = b.dataset.ft; rerender(); const hd = app.querySelector('.fseg'); if (hd && y > hd.offsetTop) app.scrollTop = hd.offsetTop; }));
+  app.querySelectorAll('[data-fk]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.fk, cur = (state.fk || ['ipo', 'term', 'general']).slice(), i = cur.indexOf(k);
+    if (i >= 0){ if (cur.length === 1){ toast('ต้องเลือกอย่างน้อย 1 ประเภท'); return; } cur.splice(i, 1); } else cur.push(k);
+    state.fk = cur; rerender(true); const nb = app.querySelector(`[data-fk="${k}"]`); if (nb) nb.focus();
+  }));
   app.querySelectorAll('[data-ff]').forEach(b => b.addEventListener('click', () => { state.ff = b.dataset.ff; rerender(true); }));
   app.querySelectorAll('[data-buycard]').forEach(b => b.addEventListener('click', () => openBuy(b.dataset.buycard, 'card', state.reel, 'l')));
   app.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { state.tab = b.dataset.tab; const y = document.getElementById('app').scrollTop; rerender(); const hd = document.querySelector('.seg'); if (hd && y > hd.offsetTop) document.getElementById('app').scrollTop = hd.offsetTop; }));
@@ -2365,12 +2431,13 @@ function bind(){
 }
 function bindMore(app){
   const on = (sel, fn) => app.querySelectorAll(sel).forEach(b => b.addEventListener('click', () => fn(b)));
-  on('[data-profile]', () => go({screen:'profile', pf:'main', from:state.screen}));
-  on('[data-pfback]', () => { if ((state.pf || 'main') !== 'main') go({pf:'main'}); else go({screen:state.from && state.from !== 'profile' ? state.from : 'home'}); });
+  on('[data-profile]', () => go({screen:'profile', pf:'main', pfDirect:false, from:state.screen}));
+  on('[data-topup]', () => go({screen:'profile', pf:'topup', pfDirect:true, from:state.screen}));
+  on('[data-pfback]', () => { if ((state.pf || 'main') !== 'main' && !state.pfDirect) go({pf:'main'}); else go({screen:state.from && state.from !== 'profile' ? state.from : 'home'}); });
   on('[data-pfgo]', b => go({pf:b.dataset.pfgo}));
   on('[data-mt]', b => { state.mt = b.dataset.mt; rerender(); const hd = app.querySelector('.fseg'); if (hd && app.scrollTop > hd.offsetTop) app.scrollTop = hd.offsetTop; });
   on('[data-sf]', b => { state.sf = b.dataset.sf; rerender(true); });
-  on('[data-gofunds]', b => go({screen:'funds', ft:b.dataset.gofunds}));
+  on('[data-gofunds]', b => { const v = b.dataset.gofunds; go(v === 'watch' ? {screen:'funds', ft:'watch'} : {screen:'funds', ft:'ipo', fk:[v]}); });
   on('[data-todo]', b => toast(b.dataset.todo + ' ยังไม่เปิดใช้ในเดโมนี้'));
   on('[data-askai]', () => openSheet());
   on('[data-about]', () => { const n = document.getElementById('aboutbox'); n.hidden = !n.hidden; });
@@ -2382,10 +2449,11 @@ function bindMore(app){
   if (amt) amt.addEventListener('input', () => {
     const v = Math.round(Number(amt.value)), ok = v >= 20 && v <= 50000; state.amt = v;
     document.getElementById('dotopup').disabled = !ok;
-    document.getElementById('amthint').style.color = ok ? '' : 'var(--crit)';
+    const hint = document.getElementById('amthint'); hint.style.color = ok ? '' : 'var(--crit)'; hint.textContent = amtMsg(v);
     document.getElementById('afterbal').textContent = '฿ ' + nf(walletState().bal + (ok ? v : 0));
     app.querySelectorAll('[data-amt]').forEach(q => q.setAttribute('aria-pressed', String(+q.dataset.amt === v)));
   });
+  if (amt) amt.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); document.getElementById('dotopup').click(); } });
   const go2 = document.getElementById('dotopup');
   if (go2) go2.addEventListener('click', () => {
     const v = Math.round(state.amt || 0); if (!(v >= 20 && v <= 50000)) return;
@@ -2393,7 +2461,7 @@ function bindMore(app){
     go({pf:'done'});
   });
   on('[data-reset]', () => {
-    if (!state.resetAt || Date.now() - state.resetAt > 5000){ state.resetAt = Date.now(); toast('แตะอีกครั้งภายใน 5 วินาทีเพื่อยืนยันรีเซ็ต'); return; }
+    if (!state.resetAt || Date.now() - state.resetAt > 5000){ state.resetAt = Date.now(); const t = document.querySelector('[data-reset] .mtx b'); if (t){ t.textContent = 'แตะอีกครั้งเพื่อยืนยันรีเซ็ต'; setTimeout(() => { if (t.isConnected) t.textContent = 'รีเซ็ตข้อมูลเดโม'; }, 5000); } toast('แตะอีกครั้งภายใน 5 วินาทีเพื่อยืนยัน'); return; }
     state.resetAt = 0; ['owly.wallet', 'owly.watch', 'owly.prefs', 'owly.theme'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
     state.wallet = null; state.watch = []; setTheme('auto'); rerender(); toast('รีเซ็ตข้อมูลเดโมแล้ว');
   });
