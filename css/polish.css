@@ -65,7 +65,6 @@ section[aria-label] .ftintro{margin-top:0}
   .appbar{gap:8px;padding-left:14px;padding-right:14px}
   .profbtn{gap:8px;padding-left:4px}
   .profbtn .av{width:34px;height:34px}
-  .topupbtn{padding:0 11px 0 9px}
   .who small{font-size:12px}
   .who b{font-size:15px}
   /* price on top, change under it, so the name column keeps its width */

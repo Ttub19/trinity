@@ -1,9 +1,5 @@
 /* ===== market-style rows, header, market, profile ===== */
 .appbar{justify-content:space-between}
-.topupbtn{position:relative;flex:none;display:flex;align-items:center;gap:5px;height:40px;padding:0 14px 0 11px;border:0;border-radius:999px;background:#ECCB88;color:#1A1527;font:inherit;font-weight:600;font-size:14px;cursor:pointer}
-.topupbtn svg{width:15px;height:15px}
-.topupbtn::after{content:'';position:absolute;inset:-2px 0}
-.topupbtn:hover{background:#F4DDAE}
 .appbar .brand{display:none}
 .appbar .brand .mark{width:30px;height:30px;padding:2px}
 .appbar .brand .wordmark{font-size:20px}

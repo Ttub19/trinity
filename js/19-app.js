@@ -71,7 +71,6 @@ function bindMore(app){
   on('[data-goto]', b => go({screen:b.dataset.goto}));
   const mtt = app.querySelector('.seg.scroll [aria-selected="true"]'); if (mtt){ const tr = mtt.parentElement; tr.scrollLeft = mtt.offsetLeft - (tr.clientWidth - mtt.offsetWidth) / 2; }
   on('[data-profile]', () => go({screen:'profile', pf:'main', pfDirect:false, from:state.screen}));
-  on('[data-topup]', () => go({screen:'profile', pf:'topup', pfDirect:true, from:state.screen}));
   on('[data-pfback]', () => { if ((state.pf || 'main') !== 'main' && !state.pfDirect) go({pf:'main'}); else go({screen:state.from && state.from !== 'profile' ? state.from : 'home'}); });
   on('[data-pfgo]', b => go({pf:b.dataset.pfgo}));
   on('[data-mt]', b => { state.mt = b.dataset.mt; rerender(); const hd = app.querySelector('.fseg'); if (hd && app.scrollTop > hd.offsetTop) app.scrollTop = hd.offsetTop; });

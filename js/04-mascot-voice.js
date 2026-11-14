@@ -47,10 +47,6 @@ function deskSVG(){
     <rect x="132" y="40" width="136" height="32" rx="8" fill="#1A1527" stroke="#ECCB88" stroke-opacity=".5"/>
     <text x="200" y="61" text-anchor="middle" font-size="14" font-weight="700" fill="#ECCB88" font-family="Bai Jamjuree, sans-serif">Trinity ข่าว</text></svg>`;
 }
-function tickerHTML(){
-  const items = CLAIMS.map(c => { const r = scoreClaim(c), k = r.cls === 'c-good' ? 'ok' : r.cls === 'c-crit' ? 'bad' : 'no'; return `<span>${esc(c.text)} <span class="${k}">● ${r.verdict}</span></span>`; }).join('');
-  return `<div class="ticker" aria-hidden="true"><span class="tag0">ข่าวตรวจแล้ว</span><div class="run">${items}${items}</div></div>`;
-}
 
 /* ---------- voice (device text-to-speech, Thai) ---------- */
 const voice = {supported:'speechSynthesis' in window, unlocked:false, muted:false, th:null, listed:false, male:false};
@@ -74,12 +70,11 @@ function anchorShow(i, k, ms){
   const el = anchorEl(i), r = REELS[i], line = r.lines[k]; if (!el || !line) return;
   const wrap = el.querySelector('.owlwrap');
   wrap.className = 'owlwrap mood-' + (line.mood || 'neutral');
-  el.querySelector('.subtitle').textContent = line.text;
   const ch = lineChip(line), low = el.querySelector('.lower');
   const tapOn = !el.querySelector('.tapstart').hidden;
   if (ch && !tapOn){ low.hidden = false; low.innerHTML = `<span class="chip ${ch.cls}">${esc(ch.label)}</span><span class="lbl">${esc(ch.sub)}</span>`; } else { low.hidden = true; low.innerHTML = ''; }
-  /* keep the chip row just above the subtitle, however many lines the subtitle wraps to */
-  const sub = el.querySelector('.subtitle'); low.style.bottom = (parseFloat(getComputedStyle(sub).bottom) + sub.offsetHeight + 10) + 'px';
+  /* keep the chip row just above the clip title, however many lines the title wraps to */
+  const meta = el.querySelector('.reel-meta'); low.style.bottom = (parseFloat(getComputedStyle(meta).bottom) + meta.offsetHeight + 14) + 'px';
   el.querySelector('.tapstart').style.bottom = (parseFloat(low.style.bottom) + 6) + 'px';
   el.querySelectorAll('.progress i').forEach((b, n) => {
     b.style.transition = 'none';
@@ -88,7 +83,7 @@ function anchorShow(i, k, ms){
   });
 }
 function talking(i, on){ const w = anchorEl(i) && anchorEl(i).querySelector('.owlwrap'); if (w) w.classList.toggle('talking', on); }
-/* ---------- speech engine: Gemini Thai voice (via your Worker) -> device Thai voice -> subtitles ---------- */
+/* ---------- speech engine: Gemini Thai voice (via your Worker) -> device Thai voice -> silent timing ---------- */
 const tts = {el:null, failUntil:0, cache:new Map()};
 const TTS_URL = () => AI_ENDPOINT ? AI_ENDPOINT.replace(/\/+$/, '') + '/tts' : '';
 const ttsOK = () => !!TTS_URL() && !voice.muted && Date.now() > tts.failUntil;
@@ -198,12 +193,10 @@ function anchorHTML(r, i){
   return `<section class="reel anchor" data-reel="${i}" aria-label="คลิป ${esc(r.title)}">
       <div class="progress" aria-hidden="true">${r.lines.map(() => '<span><i></i></span>').join('')}</div>
       ${studioSVG()}
-      ${tickerHTML()}
       <div class="ai-label">บทและเสียงสร้างโดย AI</div>
       <div class="anchor-stage"><div class="owlbox"><div class="owlwrap mood-neutral">${owlSVG()}</div><div class="desk">${deskSVG()}</div></div><div class="anchor-name">น้องฮูก ผู้ช่วยอ่านข่าวของ Trinity 2.0</div></div>
       <div class="lower" hidden></div>
       <div class="voicenote" hidden></div>
-      <div class="subtitle" aria-live="polite">${esc(r.lines[0].text)}</div>
       <button class="tapstart" type="button" data-tapstart="${i}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v12l11-6z" fill="currentColor"/></svg><span>แตะเพื่อฟังน้องฮูก</span></button>
       <div class="reel-meta"><b>${esc(r.title)}</b><small>${r.ipo ? 'เล่าจากการ์ดและผลตรวจข่าว ' : ''}ไม่ใช่คำแนะนำการลงทุน</small></div>
       <div class="reel-side">

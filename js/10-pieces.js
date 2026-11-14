@@ -95,7 +95,6 @@ function appbar(){
       <span class="av" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span>
       <span class="who"><small>เงินพร้อมลงทุน</small><b class="num">฿ ${nf(w.bal)}</b></span>${CHEV}
     </button>
-    <button class="topupbtn" type="button" data-topup aria-label="เติมเงิน"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>เติมเงิน</button>
   </header>`;
 }
 
