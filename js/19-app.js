@@ -9,7 +9,7 @@ function rerender(keepScroll){
   document.querySelector('.screen').classList.toggle('dark', state.screen === 'reels');
   const navOf = {reels:'reels', funds:'funds', fund:'funds', market:'market', profile:'none'}[state.screen] || 'home';
   document.querySelectorAll('[data-nav]').forEach(b => b.setAttribute('aria-current', b.dataset.nav === navOf ? 'page' : 'false'));
-  const dock = document.getElementById('aibar'); dock.hidden = state.screen === 'reels' || state.screen === 'buy' || state.screen === 'profile';
+  const dock = document.getElementById('aibar'); dock.hidden = state.screen === 'reels' || state.screen === 'buy';
   bind(); notes();
   if (state.screen === 'reels') bindReels();
   if (state.screen === 'buy') bindBuy();

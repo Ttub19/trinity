@@ -52,3 +52,34 @@ section[aria-label] .ftintro{margin-top:0}
 /* trading value sits on its own line so it is never cut off */
 .sr-id .sub2{font-size:12px;color:var(--muted);white-space:nowrap}
 .sr-id .sub em{-webkit-line-clamp:1}
+
+/* narrow screens: measured against the phone screen itself, so the desktop phone frame gets the same fixes as a real small phone */
+@container scr (max-width:380px){
+  .srow{grid-template-columns:minmax(0,1fr) 68px 82px 12px;gap:6px;padding-left:12px;padding-right:12px}
+  .srow.fr{grid-template-columns:minmax(0,1fr) 34px minmax(80px,auto);padding-right:48px}
+  .hero h1{font-size:24px;max-width:calc(100% - 96px)}
+  .profbtn{max-width:none}
+  .seg.scroll button{padding:0 10px;font-size:13px}
+}
+@container scr (max-width:350px){
+  .appbar{gap:8px;padding-left:14px;padding-right:14px}
+  .profbtn{gap:8px;padding-left:4px}
+  .profbtn .av{width:34px;height:34px}
+  .topupbtn{padding:0 12px 0 10px}
+  .who small{font-size:12px}
+  .who b{font-size:15px}
+  /* price on top, change under it, so the name column keeps its width */
+  .srow:not(.fr){grid-template-columns:minmax(0,1fr) auto 12px;grid-template-areas:"id px ch" "id chg ch";row-gap:2px}
+  .srow:not(.fr) .sr-id{grid-area:id}
+  .srow:not(.fr) .sr-px{grid-area:px;justify-self:end}
+  .srow:not(.fr) .chg{grid-area:chg;justify-self:end}
+  .srow:not(.fr) .chev{grid-area:ch}
+  .hero{margin-left:16px;margin-right:16px}
+  .hero h1{font-size:22px;max-width:calc(100% - 84px);min-height:84px}
+  .hero-owl{width:76px;height:76px;padding:8px}
+  .sec-title{flex-wrap:wrap;row-gap:2px;margin-left:16px;margin-right:16px}
+}
+/* market tabs scroll sideways: fade the edge so a cut-off tab reads as "more this way" */
+.seg.scroll .track{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);padding-right:24px}
+.seg.scroll .track.at-end{-webkit-mask-image:none;mask-image:none}
+.seg.scroll button{flex:none;min-height:44px;border-radius:10px}

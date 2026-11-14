@@ -1,0 +1,31 @@
+/* floating owl: tap to open the AI chat, drag to move, lets go and sticks to the nearest side */
+.owlfab{position:absolute;left:0;top:0;z-index:25;width:60px;height:60px;padding:5px;border:0;border-radius:50%;
+  background:#F7F4EE;box-shadow:0 0 0 2.5px #ECCB88,0 10px 22px -8px rgba(26,21,39,.55);
+  cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
+  transform:translate3d(var(--fx,0px),var(--fy,0px),0)}
+.owlfab[hidden]{display:none}
+.owlfab img{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none}
+.owlfab .fabtag{position:absolute;right:-4px;bottom:-2px;min-width:24px;padding:1px 6px;border-radius:999px;background:#1A1527;color:#ECCB88;
+  font-family:var(--display);font-size:12px;font-weight:700;line-height:18px;box-shadow:0 0 0 2px #F7F4EE}
+.owlfab:focus-visible{outline:3px solid var(--lens);outline-offset:3px}
+.owlfab.drag{cursor:grabbing;box-shadow:0 0 0 2.5px #ECCB88,0 18px 30px -10px rgba(26,21,39,.6)}
+.owlfab.drag img{transform:scale(1.06)}
+.owlfab:active:not(.drag) img{transform:scale(.94)}
+.owlfab img{transition:transform .12s ease-out}
+@media (prefers-reduced-motion: no-preference){
+  .owlfab.snap{transition:transform .3s cubic-bezier(.2,.9,.25,1)}
+}
+[data-theme="dark"] .owlfab{box-shadow:0 0 0 2.5px #ECCB88,0 10px 22px -8px rgba(0,0,0,.7)}
+
+/* chat opens as its own full screen page */
+.sheet{inset:44px 0 0 0;border-radius:0;border-top:0;box-shadow:none;padding:6px 14px 12px}
+@media (max-width:719px), (max-height:500px) and (pointer:coarse){ .sheet{inset:0;padding-top:max(6px, env(safe-area-inset-top))} }
+@media (prefers-reduced-motion: no-preference){
+  .sheet{animation:chatin .24s cubic-bezier(.2,.9,.25,1)}
+  @keyframes chatin{from{transform:translateX(28px);opacity:.3}to{transform:none;opacity:1}}
+}
+.sheet-head{padding-bottom:8px;border-bottom:1px solid var(--line);margin:0 -14px;padding-left:6px;padding-right:14px}
+.sheet .sheet-log{flex:1;min-height:0}
+/* room at the end of every screen so the last row can scroll out from under the owl */
+#app::after{content:'';display:block;height:72px}
+.screen.dark #app::after{display:none}
