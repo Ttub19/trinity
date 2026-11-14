@@ -63,7 +63,7 @@ function fundsScreen(){
     <div class="topband">
     ${appbar()}
     <section class="hero fundhero" aria-label="กองทุนคืออะไร">
-      <h1>ไม่อยากเลือกหุ้นเอง<br>ซื้อทั้ง<span class="hl">ตะกร้า</span>ได้</h1>
+      <h1>ไม่อยากเลือกหุ้นเอง<br>ซื้อทั้งตะกร้าได้</h1>
       <p>กองทุนเอาเงินของหลายคนมารวมกัน แล้วให้ผู้จัดการกองทุนลงทุนแทน ซื้อกองเดียวก็ได้หลายสิบตัว</p>
       <img class="hero-owl" src="${OWL}" alt="" width="120" height="120">
     </section>

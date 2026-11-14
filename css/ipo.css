@@ -34,7 +34,7 @@
 
 .sig{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:14px 16px}
 .sig .ico{width:22px;height:22px;margin-top:1px}
-.sig .lvl{font-size:11.5px;font-weight:600;letter-spacing:.02em}
+.sig .lvl{font-size:12.5px;font-weight:600;letter-spacing:.02em}
 .sig.crit .lvl{color:var(--crit)} .sig.warn .lvl{color:var(--warn)}
 .sig b{display:block;font-size:14.5px;line-height:1.4;margin:1px 0 4px}
 .sig p{margin:0 0 6px;font-size:13.5px;color:var(--ink-2)}
@@ -67,7 +67,7 @@ ol.list li::marker{font-family:var(--display);font-weight:600}
 .meter i{display:block;height:100%;border-radius:3px}
 .claim .why{font-size:12.5px;color:var(--muted)}
 .srcs{display:flex;flex-wrap:wrap;gap:6px}
-.srcs a{font-size:11.5px;text-decoration:none;padding:2px 8px;border-radius:6px;background:var(--paper);color:var(--ink-2);display:inline-flex;align-items:center;gap:5px}
+.srcs a{font-size:12.5px;text-decoration:none;padding:2px 8px;border-radius:6px;background:var(--paper);color:var(--ink-2);display:inline-flex;align-items:center;gap:5px}
 .srcs a::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--na)}
 .srcs a.agree::before{background:var(--good)}
 .srcs a.disagree::before{background:var(--crit)}
@@ -185,7 +185,7 @@ textarea{min-height:80px;resize:vertical}
 .anan{margin:8px 0 0;font-size:12.5px;color:var(--warn)}
 .analines{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px;counter-reset:al}
 .analines li{counter-increment:al;position:relative;padding:8px 10px 8px 34px;border-radius:10px;font-size:14px;line-height:1.65;color:var(--ink-2);transition:background .2s,color .2s}
-.analines li::before{content:counter(al);position:absolute;left:8px;top:9px;width:20px;height:20px;border-radius:50%;background:var(--track);color:var(--muted);font-size:11px;font-weight:700;display:grid;place-items:center}
+.analines li::before{content:counter(al);position:absolute;left:8px;top:9px;width:20px;height:20px;border-radius:50%;background:var(--track);color:var(--muted);font-size:12px;font-weight:700;display:grid;place-items:center}
 .analines li.done{color:var(--muted)}
 .analines li.on{background:var(--lens-soft);color:var(--ink)}
 .analines li.on::before{background:var(--btn);color:var(--btn-ink)}

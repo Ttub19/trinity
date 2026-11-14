@@ -60,9 +60,9 @@ function chgHTML(p){
   return `<span class="chg ${k}" aria-label="${k === 'up' ? 'เพิ่มขึ้น' : k === 'down' ? 'ลดลง' : 'ไม่เปลี่ยน'} ${nf(Math.abs(p))} เปอร์เซ็นต์">${TRI[k]}<span class="num">${nf(Math.abs(p))} %</span></span>`;
 }
 /* one row of the market-style list: ticker + flag/subtitle | change | price | chevron */
-function qrow({sym, mkt, sub, p, last, cur, open, badge, pre}){
+function qrow({sym, mkt, sub, sub2, p, last, cur, open, badge, pre}){
   const body = `
-    <span class="sr-id"><b>${pre || ''}${esc(sym)}${badge || ''}</b><span class="sub">${flag(mkt)}<em>${esc(sub || mkt)}</em></span></span>
+    <span class="sr-id"><b>${pre || ''}${esc(sym)}${badge || ''}</b><span class="sub">${flag(mkt)}<em>${esc(sub || mkt)}</em></span>${sub2 ? `<span class="sub2 num">${esc(sub2)}</span>` : ''}</span>
     ${chgHTML(p)}
     <span class="sr-px"><b class="num">${nf(last)}</b> <small>${cur}</small></span>
     ${open ? CHEV : '<span></span>'}`;

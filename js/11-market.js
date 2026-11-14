@@ -23,7 +23,7 @@ function moverRow([s, last, p, v]){
 function popularOwly(){ return Object.values(IPOS).filter(s => LIVE.th[s.ticker]).sort((a, b) => LIVE.th[b.ticker].v - LIVE.th[a.ticker].v); }
 function popRow(s, i){
   const q = LIVE.th[s.ticker];
-  return qrow({sym:s.ticker, mkt:'TH', sub:s.brand.split(' · ')[0] + ' · ' + nf(q.v, 0) + ' ลบ.', p:q.p, last:q.l, cur:'THB', open:s.id, pre:`<span class="rank r${i + 1}">${i + 1}</span>`});
+  return qrow({sym:s.ticker, mkt:'TH', sub:s.brand.split(' · ')[0], sub2:'มูลค่า ' + nf(q.v, 0) + ' ลบ.', p:q.p, last:q.l, cur:'THB', open:s.id, pre:`<span class="rank r${i + 1}">${i + 1}</span>`});
 }
 function recTab(){
   const pops = popularOwly().slice(0, 5);
@@ -92,7 +92,7 @@ function marketScreen(){
   }
   return `
     <div class="topband">${appbar()}
-      <section class="hero mhero" aria-label="ตลาดวันนี้"><h1>ตลาดวันนี้<br>ดูครบ<span class="hl">ในที่เดียว</span></h1><img class="hero-owl" src="${OWL}" alt="" width="120" height="120"></section>
+      <section class="hero mhero" aria-label="ตลาดวันนี้"><h1>ตลาดวันนี้<br>ดูครบในที่เดียว</h1><img class="hero-owl" src="${OWL}" alt="" width="120" height="120"></section>
     </div>
     <div class="seg fseg scroll"><div class="track" role="tablist" aria-label="ประเภทตลาด">${MKT_TABS.map(([k, l]) => `<button role="tab" type="button" data-mt="${k}" aria-selected="${mt === k}">${l}</button>`).join('')}</div></div>
     <div class="mbody">${body}</div>

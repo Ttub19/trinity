@@ -76,9 +76,11 @@ function anchorShow(i, k, ms){
   wrap.className = 'owlwrap mood-' + (line.mood || 'neutral');
   el.querySelector('.subtitle').textContent = line.text;
   const ch = lineChip(line), low = el.querySelector('.lower');
-  if (ch){ low.hidden = false; low.innerHTML = `<span class="chip ${ch.cls}">${esc(ch.label)}</span><span class="lbl">${esc(ch.sub)}</span>`; } else { low.hidden = true; low.innerHTML = ''; }
+  const tapOn = !el.querySelector('.tapstart').hidden;
+  if (ch && !tapOn){ low.hidden = false; low.innerHTML = `<span class="chip ${ch.cls}">${esc(ch.label)}</span><span class="lbl">${esc(ch.sub)}</span>`; } else { low.hidden = true; low.innerHTML = ''; }
   /* keep the chip row just above the subtitle, however many lines the subtitle wraps to */
   const sub = el.querySelector('.subtitle'); low.style.bottom = (parseFloat(getComputedStyle(sub).bottom) + sub.offsetHeight + 10) + 'px';
+  el.querySelector('.tapstart').style.bottom = (parseFloat(low.style.bottom) + 6) + 'px';
   el.querySelectorAll('.progress i').forEach((b, n) => {
     b.style.transition = 'none';
     b.style.width = n < k ? '100%' : '0%';
@@ -138,7 +140,7 @@ function speakLine(text, est, alive, cb){
 }
 const MODE_NOTE = {gemini:'', device:'', muted:'ปิดเสียงอยู่ แสดงซับแทน', nothai:'เครื่องนี้ไม่มีเสียงภาษาไทย แสดงซับแทน'};
 function anchorPlay(i, k){
-  const r = REELS[i]; if (!r || k >= r.lines.length){ player.running = false; talking(i, false); const el = anchorEl(i); if (el){ el.querySelector('.tapstart').hidden = false; el.querySelector('.tapstart span').textContent = 'ฟังอีกครั้ง'; } return; }
+  const r = REELS[i]; if (!r || k >= r.lines.length){ player.running = false; talking(i, false); const el = anchorEl(i); if (el){ el.querySelector('.tapstart').hidden = false; el.querySelector('.lower').hidden = true; el.querySelector('.tapstart span').textContent = 'ฟังอีกครั้ง'; } return; }
   anaStop();
   const token = ++player.token; player.line = k; player.running = true;
   const text = r.lines[k].text, est = Math.max(2200, text.length * 85);
@@ -158,7 +160,7 @@ function anchorReset(i){
   el.querySelectorAll('.progress i').forEach(b => { b.style.transition = 'none'; b.style.width = '0%'; });
   const tap = el.querySelector('.tapstart');
   if (voice.unlocked){ tap.hidden = true; anchorPlay(i, 0); }
-  else { tap.hidden = false; tap.querySelector('span').textContent = 'แตะเพื่อฟังน้องฮูก'; }
+  else { tap.hidden = false; el.querySelector('.lower').hidden = true; tap.querySelector('span').textContent = 'แตะเพื่อฟังน้องฮูก'; }
 }
 async function rewriteWithAI(i, btn){
   const r = REELS[i], ipo = IPOS[r.ipo];
