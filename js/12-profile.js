@@ -44,7 +44,7 @@ function profileScreen(){
   }
   const th = getTheme(), thN = {auto:'ตามเครื่อง', light:'สว่าง', dark:'มืด'}[th];
   return back + `<div class="pfwrap">
-    <div class="pfhead"><span class="av big" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span><div><h2>ผู้ใช้เดโม</h2><div class="m">บัญชีทดลองสำหรับนำเสนอ Owly</div></div></div>
+    <div class="pfhead"><span class="av big" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span><div><h2>ผู้ใช้เดโม</h2><div class="m">บัญชีทดลองสำหรับนำเสนอ Trinity 2.0</div></div></div>
     <div class="wallet"><div class="m">เงินพร้อมลงทุน</div><div class="bal num">฿ ${nf(w.bal)}</div>
       <div class="wbtns"><button type="button" class="btn" data-pfgo="topup">${IC.plus}เติมเงิน</button><button type="button" class="ghost" data-todo="ถอนเงิน">${IC.out}ถอนเงิน</button><button type="button" class="ghost" data-pfgo="history">${IC.clock}ประวัติ</button></div></div>
     <div class="pfstats"><button type="button" data-gofunds="watch"><b class="num">${state.watch.length}</b><span>กองที่ติดตาม</span></button><div><b class="num">${nf(BUDGET, 0)}</b><span>งบลงทุน/เดือน</span></div><div><b class="num">${Object.keys(IPOS).length}</b><span>หุ้นในแอป</span></div></div>
@@ -62,8 +62,8 @@ function profileScreen(){
       ${mrow('lock', 'ความปลอดภัยและ PIN', 'ล็อกแอปด้วย PIN หรือสแกนนิ้ว', '', 'data-todo="การตั้ง PIN"')}</div>
     <div class="mgroup"><h3>ช่วยเหลือ</h3>
       ${mrow('chat', 'ถามน้องฮูก (AI)', 'ถามเรื่องหุ้น กองทุน และศัพท์การเงิน', '', 'data-askai')}
-      ${mrow('info', 'เกี่ยวกับ Owly และข้อจำกัด', '', '', 'data-about')}
-      <div class="about-box" id="aboutbox" hidden><p>Owly เป็นต้นแบบสำหรับ Trinity Securities Future Finance Innovation Hackathon 2026 การซื้อ การเติมเงิน และยอดเงินทั้งหมดเป็นการจำลอง ข้อมูลตลาดเป็น snapshot ที่ดึงมาตามเวลาที่ระบุในแต่ละหน้า และไม่ใช่คำแนะนำการลงทุน</p></div>
+      ${mrow('info', 'เกี่ยวกับ Trinity 2.0 และข้อจำกัด', '', '', 'data-about')}
+      <div class="about-box" id="aboutbox" hidden><p>Trinity 2.0 เป็นต้นแบบสำหรับ Trinity Securities Future Finance Innovation Hackathon 2026 การซื้อ การเติมเงิน และยอดเงินทั้งหมดเป็นการจำลอง ข้อมูลตลาดเป็น snapshot ที่ดึงมาตามเวลาที่ระบุในแต่ละหน้า และไม่ใช่คำแนะนำการลงทุน</p></div>
       ${mrow('reset', 'รีเซ็ตข้อมูลเดโม', 'ล้างยอดเงิน ประวัติ และกองทุนที่ติดตาม', '', 'data-reset')}</div>
     <p class="disclaimer" style="padding:0;margin:14px 0 0">ข้อมูลโปรไฟล์ทั้งหมดเก็บในเบราว์เซอร์เครื่องนี้ ไม่ได้ส่งไปที่ใด</p></div>`;
 }

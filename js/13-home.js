@@ -31,7 +31,7 @@ function home(){
     <div class="noresult" id="noresult" hidden>ยังไม่มีหุ้นนี้ในเดโม ลองพิมพ์ชื่อแบรนด์อื่น</div>
     <div class="sec-title"><h2>ศัพท์หุ้นใน 10 วิ</h2><em>แตะเพื่ออ่าน</em></div>
     <div class="group gloss">${GLOSS.map(([t, hint, body]) => `<details><summary>${esc(t)} <span>${esc(hint)}</span></summary><p>${esc(body)}</p></details>`).join('')}</div>
-    <p class="disclaimer">วงแหวน 6 ช่องคือ 6 เรื่องที่ Owly ตรวจจากงบและข่าวที่เผยแพร่ การ์ดเป็นข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน</p>`;
+    <p class="disclaimer">วงแหวน 6 ช่องคือ 6 เรื่องที่ Trinity 2.0 ตรวจจากงบและข่าวที่เผยแพร่ การ์ดเป็นข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน</p>`;
 }
 
 

@@ -32,7 +32,7 @@ function ai(ipo){
    On claude.ai the page uses Claude through claude.use('sample').
    Anywhere else (GitHub Pages, your laptop) it calls AI_ENDPOINT: your own Cloudflare Worker,
    which holds the free Gemini API key. Never put an API key in this file: the repo is public. */
-const AI_ENDPOINT = ''; // เช่น 'https://owly-ai.<ชื่อของคุณ>.workers.dev'
+const AI_ENDPOINT = ''; // เช่น 'https://trinity-ai.<ชื่อของคุณ>.workers.dev'
 
 function workerSampler(endpoint){
   const call = async (input, opts = {}) => {
@@ -123,7 +123,7 @@ async function ask(ipo, q){
     bubble.textContent = a; log.push({role:'assistant', content:a});
     status.textContent = 'คำตอบตัวอย่าง (โหมดออฟไลน์)'; return;
   }
-  const sys = 'คุณคือผู้ช่วยในแอป Owly ตอบเป็นภาษาไทย สั้น ไม่เกิน 5 บรรทัด ใช้เฉพาะข้อมูลการ์ดด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าข้อมูลไม่มีให้บอกตรงๆ ว่าการ์ดไม่มีข้อมูลนี้ และแนะนำให้ถามบริษัทหรือผู้แนะนำการลงทุน ห้ามแนะนำให้ซื้อหรือขาย ห้ามคาดการณ์ราคา ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อสื่อหรือบทวิเคราะห์ที่อยู่ในช่อง "ที่มา" ของข้อมูล เช่น มิติหุ้น InnovestX บล.ทรีนีตี้ ถ้าไม่มีชื่อสื่อให้เขียนว่า "การ์ดของ Owly" ห้ามเขียนคำว่า JSON ถ้าเป็นข้อมูลสมมติให้บอกว่าเป็นข้อมูลสมมติ ห้ามใช้ markdown\n\nข้อมูลการ์ด:\n' + context(ipo);
+  const sys = 'คุณคือผู้ช่วยในแอป Trinity 2.0 ตอบเป็นภาษาไทย สั้น ไม่เกิน 5 บรรทัด ใช้เฉพาะข้อมูลการ์ดด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าข้อมูลไม่มีให้บอกตรงๆ ว่าการ์ดไม่มีข้อมูลนี้ และแนะนำให้ถามบริษัทหรือผู้แนะนำการลงทุน ห้ามแนะนำให้ซื้อหรือขาย ห้ามคาดการณ์ราคา ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อสื่อหรือบทวิเคราะห์ที่อยู่ในช่อง "ที่มา" ของข้อมูล เช่น มิติหุ้น InnovestX บล.ทรีนีตี้ ถ้าไม่มีชื่อสื่อให้เขียนว่า "การ์ดของ Trinity 2.0" ห้ามเขียนคำว่า JSON ถ้าเป็นข้อมูลสมมติให้บอกว่าเป็นข้อมูลสมมติ ห้ามใช้ markdown\n\nข้อมูลการ์ด:\n' + context(ipo);
   const msgs = [{role:'user', content:sys + '\n\nคำถามแรก: ' + log[0].content}];
   for (let i = 1; i < log.length; i++) msgs.push({role:log[i].role, content:log[i].content});
   try {

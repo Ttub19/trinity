@@ -1,21 +1,21 @@
 {
-  "name": "Owly · อ่านหุ้นจากแบรนด์ที่ใช้ทุกวัน",
-  "short_name": "Owly",
+  "name": "Trinity 2.0 · อ่านหุ้นจากแบรนด์ที่ใช้ทุกวัน",
+  "short_name": "Trinity 2.0",
   "description": "เริ่มจากแบรนด์ที่ใช้ทุกวัน แล้วแปลงบหุ้นเป็นภาษาคน ตรวจ 6 เรื่องก่อนตัดสินใจ",
   "lang": "th",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F7F4EE",
-  "theme_color": "#1A1527",
+  "background_color": "#EEF4EC",
+  "theme_color": "#230332",
   "icons": [
     {
-      "src": "assets/brand/owly-icon-192.png",
+      "src": "assets/brand/trinity-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "assets/brand/owly-icon-512.png",
+      "src": "assets/brand/trinity-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     },

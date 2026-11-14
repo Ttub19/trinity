@@ -10,7 +10,7 @@ function gsys(){
   let focus = '';
   if (state.screen === 'ipo' && IPOS[state.ipo]) focus = '\n\nผู้ใช้กำลังดูการ์ดหุ้นนี้อยู่:\n' + context(IPOS[state.ipo]);
   if (state.screen === 'fund' && FUNDS[state.fund]) focus = '\n\nผู้ใช้กำลังดูกองทุนนี้อยู่: ' + FUNDS[state.fund].code;
-  return 'คุณคือน้องฮูก ผู้ช่วยในแอป Owly ตอบเป็นภาษาไทย สั้น ไม่เกิน 6 บรรทัด ใช้เฉพาะข้อมูลแอปด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าไม่มีข้อมูลให้บอกตรงๆ ว่าแอปไม่มีข้อมูลนี้ และแนะนำให้ดูหนังสือชี้ชวนหรือถาม บลจ. ห้ามแนะนำให้ซื้อหรือขาย ห้ามบอกว่ากองไหนดีกว่า ห้ามคาดการณ์ผลตอบแทน เมื่อพูดถึงกองทุนที่เสนอขายให้บอกวันปิดขาย ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อแหล่งที่อยู่ในข้อมูล หรือ "ข้อมูลในแอป Owly" ห้ามเขียนคำว่า JSON ห้ามใช้ markdown\n\nข้อมูลแอป:\n' + appContext() + focus;
+  return 'คุณคือน้องฮูก ผู้ช่วยในแอป Trinity 2.0 ตอบเป็นภาษาไทย สั้น ไม่เกิน 6 บรรทัด ใช้เฉพาะข้อมูลแอปด้านล่าง ห้ามเดาหรือใช้ความรู้ภายนอก ถ้าไม่มีข้อมูลให้บอกตรงๆ ว่าแอปไม่มีข้อมูลนี้ และแนะนำให้ดูหนังสือชี้ชวนหรือถาม บลจ. ห้ามแนะนำให้ซื้อหรือขาย ห้ามบอกว่ากองไหนดีกว่า ห้ามคาดการณ์ผลตอบแทน เมื่อพูดถึงกองทุนที่เสนอขายให้บอกวันปิดขาย ปิดท้ายด้วยบรรทัด "ที่มา:" ตามด้วยชื่อแหล่งที่อยู่ในข้อมูล หรือ "ข้อมูลในแอป Trinity 2.0" ห้ามเขียนคำว่า JSON ห้ามใช้ markdown\n\nข้อมูลแอป:\n' + appContext() + focus;
 }
 function gSuggestions(){
   if (state.screen === 'fund' && FUNDS[state.fund]) { const c = FUNDS[state.fund].code; return ['กอง ' + c + ' ทำอะไร', c + ' เหมาะกับคนแบบไหน', 'กองทุนไหนกำลังเปิดขายอยู่']; }
@@ -31,8 +31,8 @@ function gLocal(q){
   const stock = Object.values(IPOS).find(s => { const br = s.brand.split(' · ')[0].toLowerCase(); return new RegExp('(^|[^a-z0-9])' + s.ticker.toLowerCase() + '([^a-z0-9]|$)').test(t) || (br.length >= 3 && t.includes(br)); });
   const fund = Object.values(FUNDS).find(f => t.includes(f.code.toLowerCase()));
   if (fund) return `${fund.code} ${fund.name}\n${fund.what || fund.tag}\nที่มา: ${fund.srcs[0][1]}`;
-  if (stock) { const fs = fundsHolding(stock.id).map(i => FUNDS[i].code); return /กองทุน|อยู่ใน|ถือ/.test(t) ? `${stock.ticker} ${fs.length ? 'อยู่ในดัชนีที่กองทุนเหล่านี้ลงทุนตาม: ' + fs.join(', ') : 'ยังไม่พบในกองทุนดัชนีที่ Owly ติดตาม'}\nที่มา: ข้อมูลในแอป Owly` : `${stock.ticker}: ${stock.summary}\nที่มา: การ์ดของ Owly`; }
-  if (/ipo|เปิดขาย|เสนอขาย|ออกใหม่/.test(t)) { const l = open('ipo').concat(open('term')); return l.length ? 'กองที่กำลังเปิดขาย:\n' + l.map(line).join('\n') + '\nที่มา: InfoQuest, Finnomena' : 'ตอนนี้ไม่มีกองที่เปิดขายในรายการของ Owly'; }
+  if (stock) { const fs = fundsHolding(stock.id).map(i => FUNDS[i].code); return /กองทุน|อยู่ใน|ถือ/.test(t) ? `${stock.ticker} ${fs.length ? 'อยู่ในดัชนีที่กองทุนเหล่านี้ลงทุนตาม: ' + fs.join(', ') : 'ยังไม่พบในกองทุนดัชนีที่ Trinity 2.0 ติดตาม'}\nที่มา: ข้อมูลในแอป Trinity 2.0` : `${stock.ticker}: ${stock.summary}\nที่มา: การ์ดของ Trinity 2.0`; }
+  if (/ipo|เปิดขาย|เสนอขาย|ออกใหม่/.test(t)) { const l = open('ipo').concat(open('term')); return l.length ? 'กองที่กำลังเปิดขาย:\n' + l.map(line).join('\n') + '\nที่มา: InfoQuest, Finnomena' : 'ตอนนี้ไม่มีกองที่เปิดขายในรายการของ Trinity 2.0'; }
   if (/term|ครบกำหนด|พันธบัตร|ตราสารหนี้/.test(t)) return 'Term Fund คือกองทุนที่มีอายุกำหนด ซื้อได้เฉพาะช่วงเสนอขายแล้วถือจนครบกำหนด\n' + open('term').map(line).join('\n') + '\nที่มา: Finnomena';
   if (/ติดตาม/.test(t)) return state.watch.length ? 'กองที่ติดตามอยู่: ' + state.watch.map(id => FUNDS[id].code).join(', ') : 'ยังไม่ได้ติดตามกองทุนไหน กดดาวที่การ์ดกองทุนได้เลย';
   return null;

@@ -7,7 +7,7 @@ function reelsScreen(){
       ${r.ipo ? '<div class="swipehint" aria-hidden="true">ปัดไปด้านข้าง เพื่อซื้อจำลอง</div>' : ''}
       ${r.scenes.map((sc, k) => `<div class="scene${k === 0 ? ' on' : ''}" data-scene="${k}">${sceneHTML(r, sc)}</div>`).join('')}
       <div class="pausemark" hidden>หยุดชั่วคราว</div>
-      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>สรุปจากการ์ดของ Owly ไม่ใช่คำแนะนำการลงทุน</small></div>
+      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>สรุปจากการ์ดของ Trinity 2.0 ไม่ใช่คำแนะนำการลงทุน</small></div>
       ${r.ipo ? `<div class="reel-side"><button type="button" class="buy" data-buy="${r.ipo}" data-from="${i}" aria-label="ซื้อหุ้น ${IPOS[r.ipo].ticker} แบบจำลอง"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 3.5h2.2l1.9 9h8.6l1.6-6.3H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="14.2" cy="16" r="1.4" fill="currentColor"/></svg></button><span>ซื้อ</span><button type="button" data-opencard="${r.ipo}" aria-label="เปิดการ์ดเต็มของ ${IPOS[r.ipo].ticker}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6.5 8h7M6.5 11h7M6.5 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><span>การ์ด</span></div>` : ''}
     </section>`).join('')}</div>`;
 }

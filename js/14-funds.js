@@ -10,7 +10,7 @@ function fundCard(id){
   const body = ix ? `
     <span class="fund-m">${esc(f.amc)} · ลงทุนตามดัชนี ${f.index}${f.type === 'ipo' ? ' · RMF' : ''}</span>
     <span class="fund-brands">${ix.stocks.slice(0, 5).map(s => `<i>${IPOS[s].ticker}</i>`).join('')}${ix.stocks.length > 5 ? `<i class="more">+${ix.stocks.length - 5}</i>` : ''}</span>
-    <span class="fund-n">มีหุ้นในแอป Owly <b class="num">${ix.stocks.length}</b> ตัว${f.type === 'ipo' ? ' (เมื่อกองเริ่มลงทุน)' : ''}</span>`
+    <span class="fund-n">มีหุ้นในแอป Trinity 2.0 <b class="num">${ix.stocks.length}</b> ตัว${f.type === 'ipo' ? ' (เมื่อกองเริ่มลงทุน)' : ''}</span>`
     : `
     <span class="fund-m">${esc(f.amc)}</span>
     <span class="fund-tag">${esc(f.tag)}</span>
@@ -23,7 +23,7 @@ function fundCard(id){
 }
 const FUND_FILTERS = [['all','ทั้งหมด'],['SET50','SET50'],['SET100','SET100'],['SETHD','ปันผลสูง']];
 const TYPE_INTRO = {
-  general:'กองทุนเปิดที่ซื้อขายได้ต่อเนื่อง ไม่มีวันครบอายุ ตอนนี้ Owly แสดงกองทุนดัชนีหุ้นไทยที่ถือหุ้นแบรนด์ในแอป',
+  general:'กองทุนเปิดที่ซื้อขายได้ต่อเนื่อง ไม่มีวันครบอายุ ตอนนี้ Trinity 2.0 แสดงกองทุนดัชนีหุ้นไทยที่ถือหุ้นแบรนด์ในแอป',
   ipo:'IPO กองทุน คือกองทุนใหม่ที่เปิดขายหน่วยลงทุนครั้งแรกในช่วงสั้นๆ ซื้อได้เฉพาะช่วงที่ บลจ. กำหนด หลังปิดขายกองถึงเริ่มลงทุนจริง',
   term:'Term Fund คือกองทุนที่มีอายุกำหนด เช่น 3 หรือ 6 เดือน ซื้อได้เฉพาะช่วงเสนอขายแล้วถือจนครบกำหนด ขายคืนก่อนอาจทำไม่ได้หรือได้เงินไม่เต็ม ส่วนมากลงทุนตราสารหนี้ ไม่ได้รับประกันผลตอบแทน'
 };
@@ -56,7 +56,7 @@ function fundsScreen(){
     <p class="ftintro">${fv === 'all' ? 'รวมกองที่เปิดขายอยู่ก่อน เรียงตามวันปิดขายใกล้สุด แล้วตามด้วยกองทุนทั่วไปที่ซื้อได้ต่อเนื่อง' : TYPE_INTRO[fv]}</p>
     <div class="slist">${ids.map(fundRow).join('')}</div>
     ${fv !== 'term' ? `<div class="sec-title"><h2>ดัชนีคืออะไร</h2><em>ตะกร้าหุ้นที่ตลาดคัดให้</em></div>
-    <div class="group gloss">${Object.values(INDEXES).map(ix => `<details><summary>${ix.name} <span>${esc(ix.plain)}</span></summary><p>ตลาดหลักทรัพย์ฯ ทบทวนรายชื่อทุก 6 เดือน หุ้นในแอป Owly ที่อยู่ในดัชนีนี้ตอนนี้: ${ix.stocks.map(s => IPOS[s].ticker).join(', ')} <a href="${ix.url}">ดูรายชื่อทั้งหมดที่ SET</a></p></details>`).join('')}</div>` : ''}
+    <div class="group gloss">${Object.values(INDEXES).map(ix => `<details><summary>${ix.name} <span>${esc(ix.plain)}</span></summary><p>ตลาดหลักทรัพย์ฯ ทบทวนรายชื่อทุก 6 เดือน หุ้นในแอป Trinity 2.0 ที่อยู่ในดัชนีนี้ตอนนี้: ${ix.stocks.map(s => IPOS[s].ticker).join(', ')} <a href="${ix.url}">ดูรายชื่อทั้งหมดที่ SET</a></p></details>`).join('')}</div>` : ''}
     <p class="disclaimer">${fv !== 'term' ? INDEX_ASOF + ' กองทุนดัชนีถือหุ้นตามรายชื่อในดัชนี สัดส่วนแต่ละตัวดูได้ใน Factsheet ของกองทุน ' : ''}${fv !== 'general' ? 'ช่วงเสนอขายอ่านจากรายชื่อกองทุนเปิดใหม่ ณ 10 พ.ย. 2569 ดูเงื่อนไขล่าสุดที่หนังสือชี้ชวนก่อนซื้อ ' : ''}ข้อมูลนี้ไม่ใช่คำแนะนำการลงทุน</p>`;
   }
   return `
@@ -80,7 +80,7 @@ function fundScreen(f){
   const riskLi = f.risk ? `<li><i></i><b>ความเสี่ยงระดับ ${f.risk}</b><span>${RISK_TXT[f.risk] || 'ตัวเลขยิ่งสูงยิ่งเสี่ยง จาก 1 ถึง 8'}</span></li>` : `<li><i></i><b>ระดับความเสี่ยง</b><span>ดูในหนังสือชี้ชวนของกอง</span></li>`;
   const howLi = f.type === 'general' ? `<li><i></i><b>${esc(f.how)}</b><span>${f.kind === 'ETF' ? 'ใช้บัญชีหุ้น ราคาเปลี่ยนระหว่างวัน' : 'ซื้อขายวันละครั้งตามราคา NAV สิ้นวัน'}</span></li>` : `<li><i></i><b>${esc(f.how)}</b><span>${f.type === 'term' ? 'ขายคืนก่อนครบกำหนดอาจทำไม่ได้หรือได้เงินไม่เต็ม' : 'หลังปิดขายกองถึงเริ่มลงทุนและซื้อขายได้ตามเงื่อนไขของกอง'}</span></li>`;
   const stocks = ix
-    ? `<h3 class="fh">หุ้นในแอป Owly ที่กองนี้ถืออยู่</h3>${f.type === 'ipo' ? `<p class="small muted fnote" style="margin:0 16px 8px">กองนี้ยังอยู่ช่วง IPO จะเริ่มซื้อหุ้นหลังปิดขาย แต่นโยบายคือลงทุนตามดัชนี ${ix.name}</p>` : ''}
+    ? `<h3 class="fh">หุ้นในแอป Trinity 2.0 ที่กองนี้ถืออยู่</h3>${f.type === 'ipo' ? `<p class="small muted fnote" style="margin:0 16px 8px">กองนี้ยังอยู่ช่วง IPO จะเริ่มซื้อหุ้นหลังปิดขาย แต่นโยบายคือลงทุนตามดัชนี ${ix.name}</p>` : ''}
     <div class="holds">${ix.stocks.map(stockChip).join('')}</div>
     <p class="small muted fnote">ยังมีหุ้นตัวอื่นในดัชนีอีก ดูรายชื่อเต็มได้ที่ <a href="${ix.url}">SET</a> · ${INDEX_ASOF}</p>`
     : `<div class="card"><p class="small" style="margin:0">${esc(f.noStocks || 'ดูรายการลงทุนในหนังสือชี้ชวน')}</p></div>`;
@@ -98,7 +98,7 @@ function fundScreen(f){
       <ul class="money">${riskLi}${howLi}</ul></div>
     ${stocks}
     <div class="card"><ul class="fsrc">${f.srcs.map(([u, n]) => `<li><a href="${u}">${esc(n)}</a></li>`).join('')}${ix ? `<li><a href="${ix.url}">รายชื่อหุ้นในดัชนี ${ix.name} (ตลาดหลักทรัพย์ฯ)</a></li>` : ''}</ul></div>
-    <p class="disclaimer">Owly แสดงข้อมูลเพื่อให้เข้าใจกองทุน ไม่ใช่คำแนะนำให้ซื้อหรือขาย อ่านหนังสือชี้ชวนก่อนลงทุน</p>`;
+    <p class="disclaimer">Trinity 2.0 แสดงข้อมูลเพื่อให้เข้าใจกองทุน ไม่ใช่คำแนะนำให้ซื้อหรือขาย อ่านหนังสือชี้ชวนก่อนลงทุน</p>`;
 }
 function fundsOfStockHTML(ipo){
   const ids = fundsHolding(ipo.id);
@@ -109,7 +109,7 @@ function fundsOfStockHTML(ipo){
     <div class="card fundsof">${ids.length ? `
       <p class="small muted" style="margin:0 0 10px">${ipo.ticker} อยู่ในดัชนี ${inIx.join(' · ')} กองทุนดัชนีเหล่านี้จึงถือ ${ipo.ticker} อยู่ด้วย</p>
       <div class="fundrow">${ids.map(id => `<button type="button" class="fchip" data-fund="${id}"><b>${FUNDS[id].code}</b><span>${FUNDS[id].index}${FUNDS[id].type === 'ipo' ? ' · IPO' : ''}</span></button>`).join('')}</div>${hasIpo ? '<p class="small muted" style="margin:8px 0 0">กองที่เป็น IPO จะเริ่มซื้อหุ้นหลังปิดขาย</p>' : ''}`
-      : `<p class="small" style="margin:0">ยังไม่พบในกองทุนดัชนีที่ Owly ติดตาม เพราะ ${ipo.ticker} ไม่ได้อยู่ในดัชนี SET50, SET100 หรือ SETHD รอบนี้ กองทุนแบบเลือกหุ้นเองอาจถืออยู่ ดูได้จาก Factsheet ของแต่ละกองทุน</p>`}
+      : `<p class="small" style="margin:0">ยังไม่พบในกองทุนดัชนีที่ Trinity 2.0 ติดตาม เพราะ ${ipo.ticker} ไม่ได้อยู่ในดัชนี SET50, SET100 หรือ SETHD รอบนี้ กองทุนแบบเลือกหุ้นเองอาจถืออยู่ ดูได้จาก Factsheet ของแต่ละกองทุน</p>`}
       <p class="small muted" style="margin:10px 0 0">${INDEX_ASOF}</p></div>`;
 }
 

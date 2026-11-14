@@ -19,7 +19,7 @@ function moverRow([s, last, p, v]){
   return qrow({sym:s, mkt:'TH', sub:(v ? 'มูลค่า ' + nf(v, 0) + ' ลบ.' : own ? own.brand.split(' · ')[0] : LIVE.names[s] || 'หุ้นใน SET100'), p, last, cur:'THB', open:own ? own.id : null});
 }
 
-/* popular: ranked by today's traded value on SET (real snapshot), among the stocks Owly covers */
+/* popular: ranked by today's traded value on SET (real snapshot), among the stocks Trinity 2.0 covers */
 function popularOwly(){ return Object.values(IPOS).filter(s => LIVE.th[s.ticker]).sort((a, b) => LIVE.th[b.ticker].v - LIVE.th[a.ticker].v); }
 function popRow(s, i){
   const q = LIVE.th[s.ticker];
@@ -29,7 +29,7 @@ function recTab(){
   const pops = popularOwly().slice(0, 5);
   const closing = Object.keys(FUNDS).filter(id => { const s = fundStatus(FUNDS[id]); return s && s.s === 'open' && s.left <= 3; }).sort((a, b) => FUNDS[a].to.localeCompare(FUNDS[b].to)).slice(0, 4);
   const play = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="3.5" y="3" width="13" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 7.5l4 2.5-4 2.5z" fill="currentColor"/></svg>';
-  return `<div class="sec-title" style="margin-top:6px"><h2>หุ้นยอดนิยมวันนี้</h2><em>แบรนด์ที่ Owly อ่านให้</em></div>
+  return `<div class="sec-title" style="margin-top:6px"><h2>หุ้นยอดนิยมวันนี้</h2><em>แบรนด์ที่ Trinity 2.0 อ่านให้</em></div>
     <div class="slist">${pops.map(popRow).join('')}</div>
     <p class="asof" style="margin-top:8px">จัดอันดับจากมูลค่าซื้อขายล่าสุด (ลบ. = ล้านบาท) ณ ${LIVE.asof} ไม่ใช่จำนวนคนเปิดดูในแอป เดโมนี้ยังไม่มีข้อมูลจากผู้ใช้จริง</p>
     <div class="sec-title"><h2>ตลาดคึกคักสุดวันนี้</h2><em>มูลค่าซื้อขายสูงสุดใน SET100</em></div><div class="slist">${LIVE.val.map(moverRow).join('')}</div>
@@ -85,10 +85,10 @@ function marketScreen(){
     const th = thOrder.map(t => { const own = Object.values(IPOS).find(x => x.ticker === t), q = LIVE.th[t]; return {sym:t, mkt:'TH', sub:own ? own.brand.split(' · ')[0] : LIVE.names[t], p:q.p, last:q.l, cur:'THB', open:own ? own.id : null}; });
     const mixed = [th[0], th[1], us[0], th[2], th[3], th[4], th[5], th[6]].concat(us.slice(1), th.slice(7));
     const rows = (f === 'TH' ? th : f === 'US' ? us : f === 'own' ? th.filter(r => r.open) : mixed);
-    body = `<div class="cats" role="group" aria-label="กรองตามตลาด">${[['all','ทั้งหมด'],['TH','หุ้นไทย'],['US','หุ้นสหรัฐฯ'],['own','มีการ์ด Owly']].map(([k, l]) => `<button type="button" data-sf="${k}" aria-pressed="${f === k}">${l}</button>`).join('')}</div>
+    body = `<div class="cats" role="group" aria-label="กรองตามตลาด">${[['all','ทั้งหมด'],['TH','หุ้นไทย'],['US','หุ้นสหรัฐฯ'],['own','มีการ์ด Trinity 2.0']].map(([k, l]) => `<button type="button" data-sf="${k}" aria-pressed="${f === k}">${l}</button>`).join('')}</div>
       <div class="slist">${rows.map(qrow).join('')}</div>
       <div class="idxgrid" style="margin-top:14px">${Object.entries(LIVE.usIdx).map(([k, u]) => `<div class="idxmini"><span class="m">${k}</span><b class="num">${nf(u.p)}</b>${chgHTML(u.pc)}</div>`).join('')}</div>
-      <p class="small muted" style="margin:10px 20px 0">หุ้นไทย ณ ${LIVE.asof} · หุ้นสหรัฐฯ ${LIVE.usAsof} · แถวที่มีลูกศรกดดูการ์ด Owly ได้</p>`;
+      <p class="small muted" style="margin:10px 20px 0">หุ้นไทย ณ ${LIVE.asof} · หุ้นสหรัฐฯ ${LIVE.usAsof} · แถวที่มีลูกศรกดดูการ์ด Trinity 2.0 ได้</p>`;
   }
   return `
     <div class="topband">${appbar()}
@@ -97,6 +97,6 @@ function marketScreen(){
     <div class="seg fseg scroll"><div class="track" role="tablist" aria-label="ประเภทตลาด">${MKT_TABS.map(([k, l]) => `<button role="tab" type="button" data-mt="${k}" aria-selected="${mt === k}">${l}</button>`).join('')}</div></div>
     <div class="mbody">${body}</div>
     <div class="card" style="margin:16px 16px 0"><p class="small" style="margin:0 0 6px"><b>ที่มาของข้อมูล</b></p><ul class="fsrc">${MKT_SRC[mt].map(([u, n]) => `<li><a href="${u}">${esc(n)}</a></li>`).join('')}</ul></div>
-    <p class="disclaimer">ข้อมูลนี้ Owly ดึงมาเก็บไว้ ณ ${LIVE.asof} ไม่ใช่ราคาเรียลไทม์ ใช้ประกอบความเข้าใจเท่านั้น ไม่ใช่คำแนะนำการลงทุน</p>`;
+    <p class="disclaimer">ข้อมูลนี้ Trinity 2.0 ดึงมาเก็บไว้ ณ ${LIVE.asof} ไม่ใช่ราคาเรียลไทม์ ใช้ประกอบความเข้าใจเท่านั้น ไม่ใช่คำแนะนำการลงทุน</p>`;
 }
 

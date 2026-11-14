@@ -60,7 +60,7 @@ function fin(ipo){
   return `
     <div class="card">
       <h3>${f.title || 'กำไรสุทธิ'} ${f.labels.length > 1 ? f.labels.length + ' ปี ' : 'ปี ' + f.labels[0] + ' '}(ล้านบาท)</h3>
-      <p class="small muted" style="margin-bottom:8px">แท่งลายคือปีที่ Owly คำนวณย้อนจากอัตราการเติบโตที่สื่อรายงาน แท่งแดงคือปีที่กำไรลดลง</p>
+      <p class="small muted" style="margin-bottom:8px">แท่งลายคือปีที่ Trinity 2.0 คำนวณย้อนจากอัตราการเติบโตที่สื่อรายงาน แท่งแดงคือปีที่กำไรลดลง</p>
       ${profitBars(ipo)}
       <p class="small muted" style="margin-top:6px">ที่มา: ${f.src}</p>
     </div>

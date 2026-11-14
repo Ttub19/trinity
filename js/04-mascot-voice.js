@@ -2,7 +2,7 @@
 function owlSVG(){
   const SL = '#4C6F8D', SL2 = '#3D5C78', MIST = '#84A3C0', SNOW = '#F4F9FC', NIGHT = '#141F31', TEAL = '#66D3FA', AMBER = '#F1AA53';
   const chev = (x, y) => `<path d="M${x - 6} ${y} l6 5 l6 -5" fill="none" stroke="${AMBER}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
-  return `<svg viewBox="0 0 200 224" role="img" aria-label="น้องฮูก นกฮูกผู้ช่วยอ่านข่าวของ Owly"><g class="owl"><g class="body">
+  return `<svg viewBox="0 0 200 224" role="img" aria-label="น้องฮูก นกฮูกผู้ช่วยอ่านข่าวของ Trinity 2.0"><g class="owl"><g class="body">
     <path d="M52 62 C38 44 36 26 42 10 C54 26 68 36 84 40 Z" fill="${SL}"/><path d="M148 62 C162 44 164 26 158 10 C146 26 132 36 116 40 Z" fill="${SL}"/>
     <path d="M26 116 q-10 54 30 84 q-6-44 6-84z" fill="${SL2}"/><path d="M174 116 q10 54 -30 84 q6-44 -6-84z" fill="${SL2}"/>
     <ellipse cx="100" cy="130" rx="74" ry="84" fill="${SL}"/>
@@ -36,7 +36,7 @@ function studioSVG(){
     ${bars}
     <polyline points="90,214 118,198 144,206 170,176 196,184 222,152 248,162 274,128 300,136" fill="none" stroke="#ECCB88" stroke-width="2.5" stroke-linejoin="round" opacity=".55"/>
     <circle cx="300" cy="136" r="4.5" fill="#ECCB88" opacity=".7"/>
-    <text x="80" y="120" font-size="11" fill="#ECCB88" opacity=".7" font-family="Bai Jamjuree, sans-serif" font-weight="600" letter-spacing="1.5">OWLY</text>
+    <text x="80" y="120" font-size="11" fill="#ECCB88" opacity=".7" font-family="Bai Jamjuree, sans-serif" font-weight="600" letter-spacing="1.5">TRINITY 2.0</text>
     <circle cx="70" cy="40" r="90" fill="#ECCB88" opacity=".05"/><circle cx="330" cy="60" r="110" fill="#F1AA53" opacity=".04"/>
     <rect y="470" width="390" height="230" fill="#120E1C"/>
     <ellipse cx="195" cy="470" rx="220" ry="18" fill="#ECCB88" opacity=".06"/>
@@ -45,7 +45,7 @@ function studioSVG(){
 function deskSVG(){
   return `<svg viewBox="0 0 400 96" aria-hidden="true"><path d="M8 18 H392 L372 92 H28 Z" fill="#262035"/><rect x="0" y="8" width="400" height="16" rx="6" fill="#3B4866"/><rect x="0" y="8" width="400" height="3" rx="1.5" fill="#ECCB88" opacity=".6"/>
     <rect x="132" y="40" width="136" height="32" rx="8" fill="#1A1527" stroke="#ECCB88" stroke-opacity=".5"/>
-    <text x="200" y="61" text-anchor="middle" font-size="14" font-weight="700" fill="#ECCB88" font-family="Bai Jamjuree, sans-serif">Owly ข่าว</text></svg>`;
+    <text x="200" y="61" text-anchor="middle" font-size="14" font-weight="700" fill="#ECCB88" font-family="Bai Jamjuree, sans-serif">Trinity ข่าว</text></svg>`;
 }
 function tickerHTML(){
   const items = CLAIMS.map(c => { const r = scoreClaim(c), k = r.cls === 'c-good' ? 'ok' : r.cls === 'c-crit' ? 'bad' : 'no'; return `<span>${esc(c.text)} <span class="${k}">● ${r.verdict}</span></span>`; }).join('');
@@ -166,7 +166,7 @@ async function rewriteWithAI(i, btn){
   btn.disabled = true; note.hidden = false; note.textContent = 'AI กำลังเขียนบทจากการ์ดและผลตรวจข่าว...';
   const claims = CLAIMS.filter(c => c.stock === r.ipo).map(c => ({id:c.id, ข่าว:c.text, ผลตรวจ:scoreClaim(c).verdict}));
   try {
-    const v = await sample.json('คุณคือ "น้องฮูก" นกฮูกผู้ช่วยอ่านข่าวของแอป Owly น้ำเสียงเป็นกันเองแต่น่าเชื่อถือ ใช้ครับ เขียนบทคลิปสั้นภาษาไทย 5 ถึง 6 บรรทัด แต่ละบรรทัดไม่เกิน 110 ตัวอักษร พูดเป็นภาษาพูดที่อ่านออกเสียงได้ ใช้เฉพาะข้อมูลที่ให้มา ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ข่าวที่ผลตรวจไม่ใช่ "น่าเชื่อถือ" ต้องพูดชัดว่ายังยืนยันไม่ได้หรือข้อมูลยังขัดกัน บรรทัดสุดท้ายชวนให้เปิดการ์ดอ่านก่อนตัดสินใจ ตอบเป็น JSON เท่านั้น รูปแบบ {"lines":[{"text":"...","mood":"neutral|concerned|happy","claim":"id ของข่าวที่พูดถึง หรือ null"}]}\n\nข้อมูลการ์ด: ' + context(ipo) + '\n\nผลตรวจข่าว: ' + JSON.stringify(claims), {modelTier:'default', cache:false});
+    const v = await sample.json('คุณคือ "น้องฮูก" นกฮูกผู้ช่วยอ่านข่าวของแอป Trinity 2.0 น้ำเสียงเป็นกันเองแต่น่าเชื่อถือ ใช้ครับ เขียนบทคลิปสั้นภาษาไทย 5 ถึง 6 บรรทัด แต่ละบรรทัดไม่เกิน 110 ตัวอักษร พูดเป็นภาษาพูดที่อ่านออกเสียงได้ ใช้เฉพาะข้อมูลที่ให้มา ห้ามแนะนำให้ซื้อ ขาย หรือจอง ห้ามคาดการณ์ราคา ข่าวที่ผลตรวจไม่ใช่ "น่าเชื่อถือ" ต้องพูดชัดว่ายังยืนยันไม่ได้หรือข้อมูลยังขัดกัน บรรทัดสุดท้ายชวนให้เปิดการ์ดอ่านก่อนตัดสินใจ ตอบเป็น JSON เท่านั้น รูปแบบ {"lines":[{"text":"...","mood":"neutral|concerned|happy","claim":"id ของข่าวที่พูดถึง หรือ null"}]}\n\nข้อมูลการ์ด: ' + context(ipo) + '\n\nผลตรวจข่าว: ' + JSON.stringify(claims), {modelTier:'default', cache:false});
     const ok = v && Array.isArray(v.lines) && v.lines.length >= 3 && v.lines.length <= 8 && v.lines.every(l => typeof l.text === 'string' && l.text.length > 0 && l.text.length <= 160);
     if (!ok) throw new Error('bad');
     r.lines = v.lines.map(l => ({text:l.text, mood:['neutral','concerned','happy'].includes(l.mood) ? l.mood : 'neutral', claim:CLAIMS.some(c => c.id === l.claim) ? l.claim : undefined}));
@@ -185,7 +185,7 @@ function sceneHTML(reel, sc){
     case 'split': return `<div class="big red num" data-count="${parseInt(sc.big)}" data-suffix="%">${esc(sc.big)}</div><p class="sub">${esc(sc.label)}</p><div class="split" style="--w:${sc.w}%"><i></i></div><div class="splitlab"><span>${esc(sc.left)}</span><span>${esc(sc.right)}</span></div><p class="src">${esc(sc.src)}</p>`;
     case 'compare': return `<p class="sub" style="font-size:18px;color:#F2F6FA;font-weight:600">${esc(sc.label)}</p><div class="cmp2 num"><span class="from">${esc(sc.from)}<small>${esc(sc.fromNote)}</small></span><span aria-hidden="true" style="font-size:32px;color:#8FA1B5">→</span><span class="to">${esc(sc.to)}<small>${esc(sc.toNote)}</small></span></div><p class="src">${esc(sc.src)}</p>`;
     case 'ring': return `<div>${ring(ipo, 150)}</div><h2 style="font-size:28px">${esc(sc.h)}</h2><p class="sub">${esc(sc.sub)}</p>`;
-    case 'checks': return `<h2 style="font-size:24px">6 เรื่องที่ Owly ตรวจ</h2><ul class="reelchecks">${CHECKS.map((k, i) => `<li style="transition-delay:${0.2 + i * 0.35}s"><i></i>${k.label}</li>`).join('')}</ul>`;
+    case 'checks': return `<h2 style="font-size:24px">6 เรื่องที่ Trinity 2.0 ตรวจ</h2><ul class="reelchecks">${CHECKS.map((k, i) => `<li style="transition-delay:${0.2 + i * 0.35}s"><i></i>${k.label}</li>`).join('')}</ul>`;
     case 'ask': return `<h2 style="font-size:26px">ก่อนตัดสินใจ ถามเรื่องนี้</h2><ol class="reelqs">${ipo.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol><button class="cta" type="button" data-opencard="${ipo.id}">เปิดการ์ดเต็ม</button>`;
   }
   return '';
@@ -196,7 +196,7 @@ function anchorHTML(r, i){
       ${studioSVG()}
       ${tickerHTML()}
       <div class="ai-label">บทและเสียงสร้างโดย AI</div>
-      <div class="anchor-stage"><div class="owlbox"><div class="owlwrap mood-neutral">${owlSVG()}</div><div class="desk">${deskSVG()}</div></div><div class="anchor-name">น้องฮูก ผู้ช่วยอ่านข่าวของ Owly</div></div>
+      <div class="anchor-stage"><div class="owlbox"><div class="owlwrap mood-neutral">${owlSVG()}</div><div class="desk">${deskSVG()}</div></div><div class="anchor-name">น้องฮูก ผู้ช่วยอ่านข่าวของ Trinity 2.0</div></div>
       <div class="lower" hidden></div>
       <div class="voicenote" hidden></div>
       <div class="subtitle" aria-live="polite">${esc(r.lines[0].text)}</div>
