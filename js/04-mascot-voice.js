@@ -205,7 +205,7 @@ function anchorHTML(r, i){
       <div class="voicenote" hidden></div>
       <div class="subtitle" aria-live="polite">${esc(r.lines[0].text)}</div>
       <button class="tapstart" type="button" data-tapstart="${i}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2v12l11-6z" fill="currentColor"/></svg><span>แตะเพื่อฟังน้องฮูก</span></button>
-      <div class="reel-meta"><b>${esc(r.title)}</b><span class="tag">${r.tag}</span><small>${r.ipo ? 'เล่าจากการ์ดและผลตรวจข่าว ' : ''}ไม่ใช่คำแนะนำการลงทุน</small></div>
+      <div class="reel-meta"><b>${esc(r.title)}</b><small>${r.ipo ? 'เล่าจากการ์ดและผลตรวจข่าว ' : ''}ไม่ใช่คำแนะนำการลงทุน</small></div>
       <div class="reel-side">
         <button type="button" data-mute aria-pressed="${voice.muted}" aria-label="เปิดหรือปิดเสียง">${voice.muted ? '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/><path d="M13 7l5 6M18 7l-5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>' : '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/><path d="M13 7.5a3.5 3.5 0 010 5M15 5.5a6.5 6.5 0 010 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>'}</button><span>เสียง</span>
         ${r.ipo ? `<button type="button" data-rewrite="${i}" aria-label="ให้ AI เขียนบทใหม่"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l1.8 4.2L16 8l-4.2 1.8L10 14l-1.8-4.2L4 8l4.2-1.8z" fill="currentColor"/><path d="M15.5 13l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z" fill="currentColor"/></svg></button><span>บทใหม่</span>

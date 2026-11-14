@@ -7,7 +7,7 @@ function ring(ipo, size){
   CHECKS.forEach((k, i) => {
     s += `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${col[ipo.checks[k.key]]}" stroke-width="${size * 0.11}" stroke-dasharray="${seg - gap} ${C - seg + gap}" stroke-dashoffset="${-i * seg}" transform="rotate(-90 ${c} ${c})" stroke-linecap="butt"/>`;
   });
-  s += `<text x="${c}" y="${c + size * 0.08}" text-anchor="middle" font-size="${size * 0.26}" font-weight="700" fill="var(--ink)">${found}<tspan font-size="${size * 0.14}" fill="var(--muted)">/6</tspan></text></svg>`;
+  s += `<text x="${c}" y="${c + size * 0.08}" text-anchor="middle" font-size="${size * 0.26}" font-weight="700" fill="var(--ink)">${found}<tspan font-size="${Math.max(11, size * 0.17)}" fill="var(--muted)">/6</tspan></text></svg>`;
   return s;
 }
 function foundCount(ipo){ return CHECKS.filter(k => ['crit','warn'].includes(ipo.checks[k.key])).length; }

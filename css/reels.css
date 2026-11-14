@@ -70,7 +70,7 @@
 .ticker .ok{color:#6FD39B} .ticker .no{color:#F1AA53} .ticker .bad{color:#EF7A72}
 @media (prefers-reduced-motion: no-preference){ .ticker .run{animation:ticker 26s linear infinite} @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}} }
 .ai-label{position:absolute;top:72px;right:12px;z-index:3;font-size:12px;padding:2px 9px;border-radius:999px;background:rgba(236,203,136,.16);color:#9FE3E9;pointer-events:none}
-.anchor-stage{position:absolute;left:0;right:0;top:78px;display:grid;justify-items:center;gap:6px;pointer-events:none}
+.anchor-stage{position:absolute;left:0;right:0;top:90px;display:grid;justify-items:center;gap:6px;pointer-events:none}
 .owlwrap{width:100%}
 .owlwrap svg{display:block;width:100%;height:auto;overflow:visible}
 .anchor-name{font-size:12px;color:#9FB0C3;margin-top:40px;position:relative}
@@ -89,7 +89,7 @@
 .lower{position:absolute;left:16px;right:70px;bottom:168px;z-index:3;display:flex;gap:8px;align-items:center;flex-wrap:wrap;pointer-events:none}
 .lower .chip{font-size:12.5px}
 .lower span.lbl{font-size:13px;color:#DDE6EF}
-.subtitle{position:absolute;left:14px;right:70px;bottom:84px;z-index:3;min-height:72px;background:rgba(4,10,20,.62);border-radius:14px;padding:10px 14px;font-size:17px;line-height:1.45;color:#fff;display:flex;align-items:center;pointer-events:none}
+.subtitle{position:absolute;left:14px;right:70px;bottom:100px;z-index:3;min-height:72px;background:rgba(4,10,20,.62);border-radius:14px;padding:10px 14px;font-size:17px;line-height:1.45;color:#fff;display:flex;align-items:center;pointer-events:none}
 .tapstart{position:absolute;left:50%;bottom:180px;transform:translateX(-50%);z-index:4;border:0;border-radius:999px;padding:12px 20px;background:#ECCB88;color:#1A1527;font-weight:600;font-size:15px;cursor:pointer;display:flex;gap:8px;align-items:center;white-space:nowrap}
 .voicenote{position:absolute;left:16px;right:16px;bottom:160px;z-index:3;font-size:12.5px;color:#F1AA53;text-align:center;pointer-events:none}
 .reel.anchor .reel-meta{right:76px}

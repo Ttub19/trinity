@@ -30,7 +30,7 @@ function buyScreen(ipo){
     </div></div>`;
   return head + `
     <div class="buywrap">
-      <div class="card riskmini">${ring(ipo, 56)}<div><b>ก่อนซื้อ อ่าน 6 เรื่องนี้แล้วหรือยัง</b>
+      <div class="card riskmini">${ring(ipo, 64)}<div><b>ก่อนซื้อ อ่าน 6 เรื่องนี้แล้วหรือยัง</b>
         ${warn.length ? `<ul>${warn.map(sg => `<li>${esc(sg.title)}</li>`).join('')}</ul>` : `<p class="ok">ยังไม่พบเรื่องที่ต้องระวังจากข้อมูลที่มี</p>`}
         ${na ? `<p class="hintline">อีก ${na} เรื่องยังไม่มีข้อมูล</p>` : ''}
         <button class="textbtn" type="button" data-open="${ipo.id}" style="margin-top:2px">อ่านการ์ดเต็ม</button></div></div>

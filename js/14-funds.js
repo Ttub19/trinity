@@ -82,7 +82,7 @@ function fundScreen(f){
   const stocks = ix
     ? `<h3 class="fh">หุ้นในแอป Trinity 2.0 ที่กองนี้ถืออยู่</h3>${f.type === 'ipo' ? `<p class="small muted fnote" style="margin:0 16px 8px">กองนี้ยังอยู่ช่วง IPO จะเริ่มซื้อหุ้นหลังปิดขาย แต่นโยบายคือลงทุนตามดัชนี ${ix.name}</p>` : ''}
     <div class="holds">${ix.stocks.map(stockChip).join('')}</div>
-    <p class="small muted fnote">ยังมีหุ้นตัวอื่นในดัชนีอีก ดูรายชื่อเต็มได้ที่ <a href="${ix.url}">SET</a> · ${INDEX_ASOF}</p>`
+    <p class="small muted fnote">ยังมีหุ้นตัวอื่นในดัชนีอีก <a href="${ix.url}">ดูรายชื่อเต็มที่ SET</a> · ${INDEX_ASOF}</p>`
     : `<div class="card"><p class="small" style="margin:0">${esc(f.noStocks || 'ดูรายการลงทุนในหนังสือชี้ชวน')}</p></div>`;
   return `
     <div class="topbar"><button class="back" type="button" data-backfunds aria-label="กลับไปหน้ากองทุน"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="tbr"><span class="chip c-info">${f.kind}</span>${starBtn(f.id)}</span></div>

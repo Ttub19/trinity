@@ -1,12 +1,14 @@
-/* floating owl button (id="aibar"): tap opens the chat page, drag moves it, release snaps it to the nearest side.
+/* floating owl button (id="aibar"): tap opens the chat page, drag moves it, release tucks it half into the nearest side.
+   While tucked, the first tap slides it out and the next tap opens the chat; it tucks itself back after a few seconds.
    Position is kept in this browser. Arrow keys move it too, so it never needs a drag. */
 (function(){
   const fab = document.getElementById('aibar');
   const screen = document.querySelector('.screen');
   if (!fab || !screen) return;
   const KEY = 'owly.fab', SIZE = 60, EDGE = 10;
-  let pos = {side:'right', y:1};
-  try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && (s.side === 'left' || s.side === 'right') && s.y >= 0 && s.y <= 1) pos = s; } catch(e){}
+  let pos = {side:'right', y:1, tuck:false};
+  try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && (s.side === 'left' || s.side === 'right') && s.y >= 0 && s.y <= 1) pos = {side:s.side, y:s.y, tuck:!!s.tuck}; } catch(e){}
+  let peek = false, peekT = 0;
 
   function bounds(){
     const W = screen.clientWidth, H = screen.clientHeight;
@@ -17,8 +19,15 @@
   }
   function setXY(x, y){ fab.style.setProperty('--fx', x + 'px'); fab.style.setProperty('--fy', y + 'px'); }
   function place(){
-    const b = bounds();
-    setXY(pos.side === 'left' ? EDGE : b.W - SIZE - EDGE, b.top + pos.y * (b.bottom - b.top));
+    const b = bounds(), tucked = pos.tuck && !peek, left = pos.side === 'left';
+    const x = tucked ? (left ? -SIZE / 2 : b.W - SIZE / 2) : (left ? EDGE : b.W - SIZE - EDGE);
+    fab.classList.toggle('tucked', tucked); fab.dataset.side = pos.side;
+    setXY(x, b.top + pos.y * (b.bottom - b.top));
+  }
+  function setPeek(on, ms){
+    clearTimeout(peekT);
+    if (on){ peek = true; fab.classList.add('snap'); place(); }
+    if (pos.tuck) peekT = setTimeout(() => { if (drag) return; peek = false; fab.classList.add('snap'); place(); }, on ? (ms || 4000) : 0);
   }
   function save(){ try { localStorage.setItem(KEY, JSON.stringify(pos)); } catch(e){} }
 
@@ -32,7 +41,7 @@
   fab.addEventListener('pointermove', e => {
     if (!drag || e.pointerId !== drag.id) return;
     if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < 6) return;
-    if (!drag.moved){ drag.moved = true; fab.classList.remove('snap'); fab.classList.add('drag'); }
+    if (!drag.moved){ drag.moved = true; clearTimeout(peekT); fab.classList.remove('snap', 'tucked'); fab.classList.add('drag'); }
     const sr = screen.getBoundingClientRect(), b = bounds();
     const x = Math.min(Math.max(e.clientX - sr.left - drag.ox, 0), b.W - SIZE);
     const y = Math.min(Math.max(e.clientY - sr.top - drag.oy, b.top), b.bottom);
@@ -47,12 +56,21 @@
     const sr = screen.getBoundingClientRect(), r = fab.getBoundingClientRect(), b = bounds();
     pos.side = (r.left + SIZE / 2 - sr.left) < b.W / 2 ? 'left' : 'right';
     pos.y = b.bottom > b.top ? Math.min(Math.max((r.top - sr.top - b.top) / (b.bottom - b.top), 0), 1) : 0;
+    pos.tuck = true; peek = false;
     fab.classList.add('snap'); place(); save();
   }
   fab.addEventListener('pointerup', end);
   fab.addEventListener('pointercancel', end);
   /* a drag must not also open the chat: stop the click before the chat's own listener sees it */
-  screen.addEventListener('click', e => { if (justDragged && fab.contains(e.target)){ e.stopPropagation(); e.preventDefault(); justDragged = false; } }, true);
+  screen.addEventListener('click', e => {
+    if (!fab.contains(e.target)) return;
+    if (justDragged){ e.stopPropagation(); e.preventDefault(); justDragged = false; return; }
+    /* tucked: the first tap only slides the owl out */
+    if (fab.classList.contains('tucked')){ e.stopPropagation(); e.preventDefault(); setPeek(true); }
+  }, true);
+  /* keyboard users get the whole owl as soon as it has focus, so Enter opens the chat straight away */
+  fab.addEventListener('focus', () => { if (fab.matches(':focus-visible')) setPeek(true, 60000); });
+  fab.addEventListener('blur', () => { if (peek) setPeek(true, 600); });
   fab.addEventListener('dragstart', e => e.preventDefault());
 
   fab.addEventListener('keydown', e => {

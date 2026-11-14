@@ -52,9 +52,8 @@ function profileScreen(){
     <div class="pfhead"><span class="av big" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 22 22"><circle cx="11" cy="7.5" r="3.6" fill="currentColor"/><path d="M3.8 19c.6-4 3.5-6 7.2-6s6.6 2 7.2 6" fill="currentColor"/></svg></span><div><h2>ผู้ใช้เดโม</h2><div class="m">บัญชีทดลองสำหรับนำเสนอ Trinity 2.0</div></div></div>
     <div class="wallet"><div class="m">เงินพร้อมลงทุน</div><div class="bal num">฿ ${nf(w.bal)}</div>
       <div class="wbtns"><button type="button" class="btn" data-pfgo="topup">${IC.plus}เติมเงิน</button><button type="button" class="ghost" data-todo="ถอนเงิน">${IC.out}ถอนเงิน</button><button type="button" class="ghost" data-pfgo="history">${IC.clock}ประวัติ</button></div></div>
-    <div class="pfstats"><button type="button" data-gofunds="watch"><b class="num">${state.watch.length}</b><span>กองที่ติดตาม</span></button><div><b class="num">${nf(BUDGET, 0)}</b><span>งบลงทุน/เดือน</span></div><div><b class="num">${Object.keys(IPOS).length}</b><span>หุ้นในแอป</span></div></div>
+    <div class="pfstats"><button type="button" data-gofunds="watch"><b class="num">${state.watch.length}</b><span>กองที่ติดตาม</span></button><button type="button" data-pfgo="history"><b class="num">${w.tx.length}</b><span>ธุรกรรม</span></button><div><b class="num">${Object.keys(IPOS).length}</b><span>หุ้นในแอป</span></div></div>
     <div class="mgroup"><h3>การเงิน</h3>
-      ${mrow('plus', 'เติมเงิน', 'พร้อมเพย์ บัตรเดบิต โอนเงิน', '', 'data-pfgo="topup"')}
       ${mrow('clock', 'ประวัติธุรกรรม', w.tx.length + ' รายการ', '', 'data-pfgo="history"')}
       ${mrow('bank', 'บัญชีธนาคารที่ผูกไว้', 'ใช้ถอนเงินและรับปันผล', '', 'data-todo="การผูกบัญชีธนาคาร"')}
       ${mrow('target', 'งบลงทุนต่อเดือน', 'เตือนเมื่อซื้อเกินงบ', `<span class="mval num">฿ ${nf(BUDGET, 0)}</span>`, 'data-todo="การแก้งบลงทุน"')}</div>
