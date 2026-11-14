@@ -16,7 +16,7 @@ function home(){
     ${appbar()}
     <section class="hero" aria-label="ค้นหาหุ้นจากแบรนด์">
       <h1>หุ้นของแบรนด์ที่คุณใช้<span class="hl">ทุกวัน</span></h1>
-      <div class="search"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="8" cy="8" r="5.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12.3 12.3L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="find" type="search" aria-label="ค้นหาด้วยชื่อแบรนด์หรือชื่อหุ้น" placeholder="ลองพิมพ์ เซเว่น, AIS, คาเฟ่อเมซอน" autocomplete="off"></div>
+      <div class="search"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="8" cy="8" r="5.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12.3 12.3L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="find" type="search" aria-label="ค้นหาด้วยชื่อแบรนด์หรือชื่อหุ้น" placeholder="ลองพิมพ์ เซเว่น, AIS, คาเฟ่อเมซอน" autocomplete="off" aria-controls="findres"></div><div class="findres" id="findres" aria-live="polite" hidden></div>
       <div class="brands">${pick.map(id => `<button type="button" data-open="${id}">${esc(IPOS[id].brand.split(' · ')[0])}<b>${IPOS[id].ticker}</b></button>`).join('')}</div>
       <img class="hero-owl" src="${OWL}" alt="" width="120" height="120">
     </section>

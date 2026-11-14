@@ -16,27 +16,32 @@ const IC = {
 const TOPUP_AMTS = [500, 1000, 2000, 5000];
 const TOPUP_WAYS = [['พร้อมเพย์', 'โอนผ่านแอปธนาคาร'], ['บัตรเดบิต', 'ตัดผ่านบัตร'], ['โอนเข้าบัญชีโบรกเกอร์', 'โอนเงินด้วยตัวเอง']];
 function mrow(ic, title, sub, right, attr){ return `<button type="button" class="mrow" ${attr}><span class="mic">${IC[ic]}</span><span class="mtx"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</span>${right || CHEV}</button>`; }
+const WAY_IC = [
+  '<svg width="22" height="22" viewBox="0 0 22 22"><rect x="3" y="3" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="3" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="13" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13h2v2h-2zM17 13h2M13 17h2M17 17h2v2" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>',
+  '<svg width="22" height="22" viewBox="0 0 22 22"><rect x="2.5" y="5" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M2.5 9h17M6 13.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  '<svg width="22" height="22" viewBox="0 0 22 22"><path d="M3.5 9L11 4.5 18.5 9M5.5 10v6M9 10v6M13 10v6M16.5 10v6M3 18.5h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'];
+const topupLabel = v => v ? `เติม ฿ ${v.toLocaleString('en-US')} (จำลอง)` : 'แก้จำนวนเงินก่อนเติม';
 const amtMsg = v => !(v >= 20) ? 'เติมอย่างน้อย 20 บาท' : v > 50000 ? 'เติมได้ไม่เกิน 50,000 บาทต่อครั้ง' : 'เติมได้ครั้งละ 20 ถึง 50,000 บาท';
 function profileScreen(){
   const w = walletState(), pf = state.pf || 'main', prefs = getPrefs();
   const back = `<div class="topbar"><button class="back" type="button" data-pfback aria-label="${pf === 'main' ? 'ปิดโปรไฟล์' : 'กลับไปโปรไฟล์'}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><b class="pftitle">${{main:'โปรไฟล์', topup:'เติมเงิน', done:'เติมเงินแล้ว', history:'ประวัติธุรกรรม'}[pf]}</b><span class="chip sim">บัญชีทดลอง</span></div>`;
   if (pf === 'topup'){
     const amt = state.amt || 1000, way = state.way ?? 0, bad = !(amt >= 20 && amt <= 50000);
-    return back + `<div class="pfwrap">
-      <div class="card"><label for="amt"><b>จำนวนเงินที่เติม</b></label>
-        <div class="amtinput"><span>฿</span><input id="amt" type="number" inputmode="numeric" enterkeyhint="done" min="20" max="50000" step="1" value="${amt}" aria-describedby="amthint"></div>
-        <div class="quick">${TOPUP_AMTS.map(a => `<button type="button" data-amt="${a}" aria-pressed="${amt === a}">${a.toLocaleString('en-US')}</button>`).join('')}</div>
-        <p class="hintline" id="amthint" ${bad ? 'style="color:var(--crit)" role="alert"' : ''}>${amtMsg(amt)}</p></div>
-      <div class="card"><b>ช่องทางเติมเงิน</b><div class="ways" role="radiogroup" aria-label="ช่องทางเติมเงิน">${TOPUP_WAYS.map(([t, s], i) => `<button type="button" class="way" role="radio" aria-checked="${way === i}" data-way="${i}"><span><b>${t}</b><small>${s}</small></span><i></i></button>`).join('')}</div></div>
-      <div class="card"><div class="metric"><span>ยอดหลังเติม</span><b class="num" id="afterbal">฿ ${nf(w.bal + (bad ? 0 : amt))}</b></div><div class="metric"><span>ค่าธรรมเนียม</span><b class="num">฿ 0.00</b></div></div>
-      <button class="btn confirm" type="button" id="dotopup" ${bad ? 'disabled' : ''}>เติมเงินจำลอง</button>
-      <p class="disclaimer" style="padding:0;margin:0">เติมเงินในเดโมเป็นการจำลอง ไม่มีเงินจริงเข้าหรือออกจากบัญชีใดๆ ในเวอร์ชันจริงขั้นตอนนี้จะเชื่อมกับพร้อมเพย์หรือบัญชีโบรกเกอร์</p></div>`;
+    return back + `<div class="pfwrap tuwrap">
+      <div class="card"><div class="tuhead"><label for="amt"><b>จำนวนเงินที่เติม</b></label><span class="num">มีอยู่ ฿ ${nf(w.bal)}</span></div>
+        <div class="amtinput${bad ? ' bad' : ''}"><span>฿</span><input id="amt" type="number" inputmode="numeric" enterkeyhint="done" min="20" max="50000" step="1" value="${amt}" aria-describedby="amthint" ${bad ? 'aria-invalid="true"' : ''}></div>
+        <div class="quick tuquick">${TOPUP_AMTS.map(a => `<button type="button" data-amt="${a}" aria-pressed="${amt === a}">${a.toLocaleString('en-US')}</button>`).join('')}</div>
+        <p class="hintline" id="amthint" ${bad ? 'role="alert"' : ''}>${amtMsg(amt)}</p></div>
+      <div class="card"><b>ช่องทางเติมเงิน</b><div class="ways" role="radiogroup" aria-label="ช่องทางเติมเงิน">${TOPUP_WAYS.map(([t, s], i) => `<button type="button" class="way" role="radio" aria-checked="${way === i}" data-way="${i}"><span class="wic" aria-hidden="true">${WAY_IC[i]}</span><span><b>${t}</b><small>${s}</small></span><i></i></button>`).join('')}</div></div>
+      <p class="disclaimer" style="padding:0;margin:0">เติมเงินในเดโมเป็นการจำลอง ไม่มีเงินจริงเข้าหรือออกจากบัญชีใดๆ ในเวอร์ชันจริงขั้นตอนนี้จะเชื่อมกับพร้อมเพย์หรือบัญชีโบรกเกอร์</p>
+      <div class="tubar"><div class="tusum"><span>ยอดหลังเติม</span><b class="num" id="afterbal">฿ ${nf(w.bal + (bad ? 0 : amt))}</b><small>ไม่มีค่าธรรมเนียม</small></div>
+        <button class="btn confirm" type="button" id="dotopup" ${bad ? 'disabled' : ''}>${topupLabel(bad ? 0 : amt)}</button></div></div>`;
   }
   if (pf === 'done'){
     const t = w.tx[0];
     return back + `<div class="pfwrap"><div class="card done"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="var(--good-soft)"/><path d="M17 29l7.5 7.5L39 21" fill="none" stroke="var(--good)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <h3>เติมเงินจำลองสำเร็จ</h3><p class="num">+ ฿ ${nf(t.a)} · ${esc(t.m)}</p><p class="num" style="margin:0">เงินพร้อมลงทุนตอนนี้ ฿ ${nf(w.bal)}</p>
-      <button class="btn" type="button" data-pfgo="main">กลับไปโปรไฟล์</button><button class="textbtn" type="button" data-pfgo="topup">เติมอีกครั้ง</button></div></div>`;
+      ${state.pfDirect && state.from && state.from !== 'profile' ? `<button class="btn" type="button" data-pfback>กลับไปหน้าเดิม</button><button class="textbtn" type="button" data-pfgo="main">ดูโปรไฟล์</button>` : `<button class="btn" type="button" data-pfgo="main">กลับไปโปรไฟล์</button>`}<button class="textbtn" type="button" data-pfgo="topup">เติมอีกครั้ง</button></div></div>`;
   }
   if (pf === 'history'){
     return back + `<div class="pfwrap">${w.tx.length ? `<div class="slist">${w.tx.map(t => `<div class="srow static txrow"><span class="sr-id"><b>${esc(t.m)}</b><span class="sub"><em>${fmtD(t.d)}</em></span></span><span></span><span class="sr-px"><b class="num ${t.k === 'in' ? 'up' : 'down'}">${t.k === 'in' ? '+' : '−'}${nf(t.a)}</b> <small>THB</small></span><span></span></div>`).join('')}</div>` : '<div class="card"><p class="small" style="margin:0">ยังไม่มีธุรกรรม</p></div>'}

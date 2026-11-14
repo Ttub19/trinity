@@ -9,7 +9,7 @@ function rerender(keepScroll){
   document.querySelector('.screen').classList.toggle('dark', state.screen === 'reels');
   const navOf = {reels:'reels', funds:'funds', fund:'funds', market:'market', profile:'none'}[state.screen] || 'home';
   document.querySelectorAll('[data-nav]').forEach(b => b.setAttribute('aria-current', b.dataset.nav === navOf ? 'page' : 'false'));
-  const dock = document.getElementById('aibar'); dock.hidden = state.screen === 'reels' || state.screen === 'buy';
+  const dock = document.getElementById('aibar'); dock.hidden = state.screen === 'reels' || state.screen === 'buy' || (state.screen === 'profile' && state.pf === 'topup');
   bind(); notes();
   if (state.screen === 'reels') bindReels();
   if (state.screen === 'buy') bindBuy();
@@ -22,10 +22,22 @@ function bind(){
   if (find){
     let cat = 'all';
     const filter = () => {
-      const q = find.value.trim().toLowerCase().replace('เซเว่น', '7-eleven').replace('เอไอเอส', 'ais').replace('คาเฟ่อเมซอน', 'café amazon').replace('อเมซอน', 'amazon').replace('กสิกร', 'k plus').replace('เอ็มเค', 'mk').replace('เซ็นทรัล', 'central').replace('ทรู', 'true').replace('ดีแทค', 'dtac').replace('พิซซ่า', 'pizza').replace('บานาน่า', 'banana').replace('เมเจอร์', 'major');
+      const q = find.value.trim().toLowerCase().replace('เซเว่น', '7-eleven').replace('เอไอเอส', 'ais').replace('คาเฟ่อเมซอน', 'café amazon').replace('อเมซอน', 'amazon').replace('กาแฟ', 'café').replace('กสิกร', 'k plus').replace('เอ็มเค', 'mk').replace('เซ็นทรัล', 'central').replace('ทรู', 'true').replace('ดีแทค', 'dtac').replace('พิซซ่า', 'pizza').replace('บานาน่า', 'banana').replace('เมเจอร์', 'major');
       let shown = 0;
       app.querySelectorAll('#stocklist .srow').forEach(t => { const hit = (!q || t.dataset.find.includes(q)) && (cat === 'all' || t.dataset.cat === cat); t.hidden = !hit; if (hit) shown++; });
       document.getElementById('noresult').hidden = shown > 0;
+      /* show matches right under the box, so typing gives an answer without scrolling */
+      const box = document.getElementById('findres');
+      if (box){
+        if (!q){ box.hidden = true; box.innerHTML = ''; }
+        else {
+          const hits = [...app.querySelectorAll('#stocklist .srow')].filter(t => !t.hidden).slice(0, 4).map(t => IPOS[t.dataset.open]).filter(Boolean);
+          box.hidden = false;
+          box.innerHTML = hits.length ? hits.map(s => `<button type="button" data-open="${s.id}"><b>${esc(s.ticker)}</b><span>${esc(s.brand.split(' · ')[0])}</span>${CHEV}</button>`).join('') + (shown > 4 ? `<small>และอีก ${shown - 4} ตัวในรายการด้านล่าง</small>` : '')
+                                     : '<small>ยังไม่มีหุ้นนี้ในเดโม ลองพิมพ์ชื่อแบรนด์อื่น เช่น เซเว่น หรือ AIS</small>';
+          box.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => go({screen:'ipo', ipo:b.dataset.open, tab:'summary'})));
+        }
+      }
     };
     find.addEventListener('input', filter);
     app.querySelectorAll('[data-cat-btn]').forEach(b => b.addEventListener('click', () => {
@@ -77,7 +89,9 @@ function bindMore(app){
   if (amt) amt.addEventListener('input', () => {
     const v = Math.round(Number(amt.value)), ok = v >= 20 && v <= 50000; state.amt = v;
     document.getElementById('dotopup').disabled = !ok;
-    const hint = document.getElementById('amthint'); hint.style.color = ok ? '' : 'var(--crit)'; hint.textContent = amtMsg(v);
+    const hint = document.getElementById('amthint'); hint.textContent = amtMsg(v); if (ok) hint.removeAttribute('role'); else hint.setAttribute('role', 'alert');
+    amt.closest('.amtinput').classList.toggle('bad', !ok); if (ok) amt.removeAttribute('aria-invalid'); else amt.setAttribute('aria-invalid', 'true');
+    document.getElementById('dotopup').textContent = topupLabel(ok ? v : 0);
     document.getElementById('afterbal').textContent = '฿ ' + nf(walletState().bal + (ok ? v : 0));
     app.querySelectorAll('[data-amt]').forEach(q => q.setAttribute('aria-pressed', String(+q.dataset.amt === v)));
   });
