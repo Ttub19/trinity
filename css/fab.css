@@ -37,17 +37,20 @@
 .amtinput.bad:focus-within{box-shadow:0 0 0 3px color-mix(in srgb, var(--crit) 22%, transparent)}
 .amtinput.bad + .tuquick + .hintline{color:var(--crit)}
 .tuquick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.tuquick button{padding:0 4px}
+.tuquick button{padding:0 4px;min-height:44px;border-radius:12px;font-size:14px}
+.tuquick button[aria-pressed="true"]{background:color-mix(in srgb, var(--ink) 8%, var(--surface));border-color:var(--ink);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.tuquick + .hintline{margin-top:10px}
 .way{justify-content:flex-start}
 .way > span:nth-child(2){flex:1;min-width:0}
 .wic{flex:none;width:40px;height:40px;border-radius:10px;background:var(--track);color:var(--ink);display:grid;place-items:center}
 .way[aria-checked="true"] .wic{background:var(--btn);color:var(--btn-ink)}
 .tuwrap{padding-bottom:0}
-.tubar{position:sticky;bottom:0;z-index:3;margin:4px -16px 0;padding:12px 16px 14px;background:var(--paper);border-top:1px solid var(--line);display:grid;gap:10px}
-.tusum{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:8px}
-.tusum span{font-size:13px;color:var(--ink-2)}
-.tusum b{justify-self:end;font-size:18px}
-.tusum small{grid-column:1 / -1;font-size:12px;color:var(--muted)}
+.tubar{position:sticky;bottom:0;z-index:3;margin:4px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.tusum{flex:1;min-width:0;display:grid;gap:1px}
+.tusum span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tusum b{font-size:17px;line-height:1.3}
+.tubtn{flex:none;min-width:128px;min-height:44px;padding:0 18px;border-radius:12px;font-size:15px}
+.tubtn:disabled{opacity:.45;cursor:not-allowed}
 .screen:has(#aibar[hidden]) #app::after{display:none}
 
 /* search answers right under the box */
