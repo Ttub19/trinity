@@ -20,7 +20,7 @@ const WAY_IC = [
   '<svg width="22" height="22" viewBox="0 0 22 22"><rect x="3" y="3" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="13" y="3" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="13" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13h2v2h-2zM17 13h2M13 17h2M17 17h2v2" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>',
   '<svg width="22" height="22" viewBox="0 0 22 22"><rect x="2.5" y="5" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M2.5 9h17M6 13.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
   '<svg width="22" height="22" viewBox="0 0 22 22"><path d="M3.5 9L11 4.5 18.5 9M5.5 10v6M9 10v6M13 10v6M16.5 10v6M3 18.5h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'];
-const topupLabel = v => v ? `เติม ฿ ${v.toLocaleString('en-US')} (จำลอง)` : 'แก้จำนวนเงินก่อนเติม';
+const topupLabel = v => v ? `เติม ฿${v.toLocaleString('en-US')}` : 'ระบุจำนวนเงิน';
 const amtMsg = v => !(v >= 20) ? 'เติมอย่างน้อย 20 บาท' : v > 50000 ? 'เติมได้ไม่เกิน 50,000 บาทต่อครั้ง' : 'เติมได้ครั้งละ 20 ถึง 50,000 บาท';
 function profileScreen(){
   const w = walletState(), pf = state.pf || 'main', prefs = getPrefs();
@@ -34,8 +34,8 @@ function profileScreen(){
         <p class="hintline" id="amthint" ${bad ? 'role="alert"' : ''}>${amtMsg(amt)}</p></div>
       <div class="card"><b>ช่องทางเติมเงิน</b><div class="ways" role="radiogroup" aria-label="ช่องทางเติมเงิน">${TOPUP_WAYS.map(([t, s], i) => `<button type="button" class="way" role="radio" aria-checked="${way === i}" data-way="${i}"><span class="wic" aria-hidden="true">${WAY_IC[i]}</span><span><b>${t}</b><small>${s}</small></span><i></i></button>`).join('')}</div></div>
       <p class="disclaimer" style="padding:0;margin:0">เติมเงินในเดโมเป็นการจำลอง ไม่มีเงินจริงเข้าหรือออกจากบัญชีใดๆ ในเวอร์ชันจริงขั้นตอนนี้จะเชื่อมกับพร้อมเพย์หรือบัญชีโบรกเกอร์</p>
-      <div class="tubar"><div class="tusum"><span>ยอดหลังเติม</span><b class="num" id="afterbal">฿ ${nf(w.bal + (bad ? 0 : amt))}</b><small>ไม่มีค่าธรรมเนียม</small></div>
-        <button class="btn confirm" type="button" id="dotopup" ${bad ? 'disabled' : ''}>${topupLabel(bad ? 0 : amt)}</button></div></div>`;
+      <div class="tubar"><div class="tusum"><span>ยอดหลังเติม · ไม่มีค่าธรรมเนียม</span><b class="num" id="afterbal">฿ ${nf(w.bal + (bad ? 0 : amt))}</b></div>
+        <button class="btn tubtn" type="button" id="dotopup" ${bad ? 'disabled' : ''}>${topupLabel(bad ? 0 : amt)}</button></div></div>`;
   }
   if (pf === 'done'){
     const t = w.tx[0];
