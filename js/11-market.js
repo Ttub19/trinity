@@ -37,7 +37,7 @@ function recTab(){
     <button class="textbtn" type="button" data-gofunds="all" style="margin:8px 20px 0">ดูกองทุนทั้งหมด</button>` : ''}
     <div class="sec-title"><h2>น้องฮูกพาเรียนรู้</h2><em>ความรู้ ไม่ใช่คำแนะนำซื้อขาย</em></div>
     <div class="mgroup" style="margin:0 16px">
-      <button type="button" class="mrow" data-reelof="news-intro"><span class="mic">${play}</span><span class="mtx"><b>รู้จักหุ้นใน 1 นาที</b><small>คลิปสั้นมีเสียง ปัดคลิปเพื่อซื้อจำลอง</small></span>${CHEV}</button>
+      <button type="button" class="mrow" data-reelof="news-intro"><span class="mic">${play}</span><span class="mtx"><b>สรุปบทวิเคราะห์ PTT ใน 1 นาที</b><small>คลิปสั้นมีเสียง จากบทวิเคราะห์ บล.ทรีนีตี้</small></span>${CHEV}</button>
       <button type="button" class="mrow" data-askai><span class="mic">${IC.chat}</span><span class="mtx"><b>ถามน้องฮูก (AI)</b><small>ศัพท์หุ้น กองทุน หรือบริษัทที่สนใจ</small></span>${CHEV}</button>
       <button type="button" class="mrow" data-goto="home"><span class="mic">${IC.info}</span><span class="mtx"><b>อ่านการ์ดหุ้นแบรนด์ดัง</b><small>ตรวจ 6 เรื่องก่อนซื้อ จากงบและข่าว</small></span>${CHEV}</button>
     </div>`;

@@ -21,7 +21,7 @@ function home(){
       <img class="hero-owl" src="${OWL}" alt="" width="120" height="120">
     </section>
     </div>
-    <button class="promo" type="button" data-reelof="news-intro"><img src="${OWL}" alt="" width="56" height="56"><span><b>น้องฮูกพารู้จักหุ้น</b><span>คลิปสั้นมีเสียง ปัดคลิปเพื่อซื้อจำลอง</span></span><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span></button>
+    <button class="promo" type="button" data-reelof="news-intro"><img src="${OWL}" alt="" width="56" height="56"><span><b>น้องฮูกสรุปบทวิเคราะห์ PTT</b><span>คลิปสั้นมีเสียง จากบทวิเคราะห์ บล.ทรีนีตี้</span></span><span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M4 2.5l7.5 4.5L4 11.5z" fill="currentColor"/></svg></span></button>
     <div class="sec-title"><h2>หุ้นยอดนิยมวันนี้</h2><button class="textbtn" type="button" data-mkt-rec>ดูทั้งหมด</button></div>
     <div class="slist">${popularOwly().slice(0, 3).map(popRow).join('')}</div>
     <div class="sec-title"><h2>หุ้นของแบรนด์ดัง</h2><em>${ids.length} ตัว · งบจริงปี 2568</em></div>

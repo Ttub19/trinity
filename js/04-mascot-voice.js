@@ -77,6 +77,8 @@ function anchorShow(i, k, ms){
   el.querySelector('.subtitle').textContent = line.text;
   const ch = lineChip(line), low = el.querySelector('.lower');
   if (ch){ low.hidden = false; low.innerHTML = `<span class="chip ${ch.cls}">${esc(ch.label)}</span><span class="lbl">${esc(ch.sub)}</span>`; } else { low.hidden = true; low.innerHTML = ''; }
+  /* keep the chip row just above the subtitle, however many lines the subtitle wraps to */
+  const sub = el.querySelector('.subtitle'); low.style.bottom = (parseFloat(getComputedStyle(sub).bottom) + sub.offsetHeight + 10) + 'px';
   el.querySelectorAll('.progress i').forEach((b, n) => {
     b.style.transition = 'none';
     b.style.width = n < k ? '100%' : '0%';
